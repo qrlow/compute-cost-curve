@@ -1,0 +1,1484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Global Compute Cost Curve</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Global Compute Cost Curve" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Global Compute Cost Curve&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(--background) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: light-dark(rgb(255 255 255), rgb(24 24 24));
+  --foreground: light-dark(rgb(26 28 31), rgb(255 255 255));
+  --card: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --card-foreground: var(--foreground);
+  --popover: light-dark(rgb(255 255 255), rgb(45 45 45));
+  --popover-foreground: var(--foreground);
+  --primary: light-dark(rgb(51 156 255), rgb(131 195 255));
+  --primary-foreground: light-dark(rgb(255 255 255), rgb(13 13 13));
+  --secondary: light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%));
+  --secondary-foreground: var(--foreground);
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: light-dark(
+    rgb(26 28 31 / 49.4%),
+    rgb(255 255 255 / 49.8%)
+  );
+  --accent: light-dark(rgb(229 242 255), rgb(13 39 63));
+  --accent-foreground: var(--primary);
+  --destructive: light-dark(rgb(226 85 7), rgb(255 133 73));
+  --border: light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%));
+  --input: light-dark(
+    rgb(26 28 31 / 11.8%),
+    color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+  );
+  --ring: light-dark(rgb(51 156 255), rgb(131 195 255 / 76%));
+  --font-size-base: 14px;
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: 12.5px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+  --color-background-primary: var(--background);
+  --color-text-primary: var(--foreground);
+  --color-border-secondary: var(--border);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--viz-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+    [aria-pressed=&quot;true&quot;],
+    [aria-selected=&quot;true&quot;],
+    .is-selected
+  ) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;compute-cost-curve-viz&quot;&gt;
+  &lt;style&gt;
+    #compute-cost-curve-viz {
+      width: 100%;
+      color: var(--foreground);
+    }
+    #compute-cost-curve-viz .ccc-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+    #compute-cost-curve-viz .viz-controls {
+      align-items: end;
+      margin-bottom: 0.8rem;
+    }
+    #compute-cost-curve-viz .ccc-field {
+      min-width: 10rem;
+      flex: 1 1 10rem;
+    }
+    #compute-cost-curve-viz .ccc-slider {
+      min-width: 13rem;
+      flex: 1 1 13rem;
+    }
+    #compute-cost-curve-viz .ccc-output {
+      font-variant-numeric: tabular-nums;
+      color: var(--foreground);
+    }
+    #compute-cost-curve-viz .ccc-chart-wrap {
+      position: relative;
+      width: 100%;
+      margin-top: 0.65rem;
+    }
+    #compute-cost-curve-viz .ccc-chart {
+      display: block;
+      width: 100%;
+      height: auto;
+      color: var(--foreground);
+      overflow: visible;
+    }
+    #compute-cost-curve-viz .ccc-gridline,
+    #compute-cost-curve-viz .ccc-axis {
+      stroke: var(--border);
+      vector-effect: non-scaling-stroke;
+    }
+    #compute-cost-curve-viz .ccc-gridline {
+      stroke-width: 1;
+    }
+    #compute-cost-curve-viz .ccc-axis {
+      stroke-width: 1.25;
+    }
+    #compute-cost-curve-viz .ccc-axis-label,
+    #compute-cost-curve-viz .ccc-tick,
+    #compute-cost-curve-viz .ccc-bar-label,
+    #compute-cost-curve-viz .ccc-value-label {
+      fill: var(--foreground);
+      font-family: inherit;
+    }
+    #compute-cost-curve-viz .ccc-tick,
+    #compute-cost-curve-viz .ccc-bar-label {
+      font-size: calc(var(--font-size-base) * 0.82);
+    }
+    #compute-cost-curve-viz .ccc-axis-label,
+    #compute-cost-curve-viz .ccc-value-label {
+      font-size: calc(var(--font-size-base) * 0.9);
+      font-weight: 500;
+    }
+    #compute-cost-curve-viz .ccc-whisker {
+      stroke: var(--foreground);
+      stroke-width: 1.25;
+      vector-effect: non-scaling-stroke;
+    }
+    #compute-cost-curve-viz .ccc-lowest {
+      margin-top: 0.35rem;
+      min-height: 1.4rem;
+    }
+    #compute-cost-curve-viz .ccc-legend {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 0.45rem;
+    }
+    #compute-cost-curve-viz .ccc-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    #compute-cost-curve-viz .ccc-swatch {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    #compute-cost-curve-viz .ccc-china { background: var(--viz-series-1); }
+    #compute-cost-curve-viz .ccc-us { background: var(--viz-series-2); }
+    #compute-cost-curve-viz .ccc-row { background: var(--viz-series-3); }
+    #compute-cost-curve-viz .ccc-note {
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 520px) {
+      #compute-cost-curve-viz .ccc-field,
+      #compute-cost-curve-viz .ccc-slider {
+        min-width: 100%;
+      }
+    }
+  &lt;/style&gt;
+
+  &lt;div class=&quot;ccc-topline&quot;&gt;
+    &lt;span class=&quot;viz-badge&quot;&gt;Illustrative scenario&lt;/span&gt;
+    &lt;span class=&quot;text-small text-muted&quot;&gt;Whiskers show an illustrative ±18% input range&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;viz-controls&quot; aria-label=&quot;Cost curve controls&quot;&gt;
+    &lt;label class=&quot;form-label ccc-field&quot; for=&quot;ccc-workload&quot;&gt;Workload
+      &lt;select id=&quot;ccc-workload&quot; class=&quot;form-select&quot;&gt;
+        &lt;option value=&quot;bulk&quot;&gt;Bulk extraction&lt;/option&gt;
+        &lt;option value=&quot;coding&quot; selected&gt;Reasoning &amp;amp; coding&lt;/option&gt;
+        &lt;option value=&quot;agentic&quot;&gt;Agentic work&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label ccc-field&quot; for=&quot;ccc-metric&quot;&gt;Metric
+      &lt;select id=&quot;ccc-metric&quot; class=&quot;form-select&quot;&gt;
+        &lt;option value=&quot;allin&quot; selected&gt;All-in $ / success&lt;/option&gt;
+        &lt;option value=&quot;cash&quot;&gt;Cash $ / success&lt;/option&gt;
+        &lt;option value=&quot;energy&quot;&gt;kWh / success&lt;/option&gt;
+        &lt;option value=&quot;carbon&quot;&gt;kg CO₂e / success&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label ccc-slider&quot; for=&quot;ccc-power&quot;&gt;China power-price discount · &lt;output id=&quot;ccc-power-out&quot; class=&quot;ccc-output&quot;&gt;35%&lt;/output&gt;
+      &lt;input id=&quot;ccc-power&quot; class=&quot;form-range&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;60&quot; step=&quot;5&quot; value=&quot;35&quot;&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label ccc-slider&quot; for=&quot;ccc-hardware&quot;&gt;China hardware productivity gap · &lt;output id=&quot;ccc-hardware-out&quot; class=&quot;ccc-output&quot;&gt;30%&lt;/output&gt;
+      &lt;input id=&quot;ccc-hardware&quot; class=&quot;form-range&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;65&quot; step=&quot;5&quot; value=&quot;30&quot;&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label ccc-slider&quot; for=&quot;ccc-model&quot;&gt;China model compute advantage · &lt;output id=&quot;ccc-model-out&quot; class=&quot;ccc-output&quot;&gt;35%&lt;/output&gt;
+      &lt;input id=&quot;ccc-model&quot; class=&quot;form-range&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;65&quot; step=&quot;5&quot; value=&quot;35&quot;&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label ccc-slider&quot; for=&quot;ccc-util&quot;&gt;China utilization · &lt;output id=&quot;ccc-util-out&quot; class=&quot;ccc-output&quot;&gt;55%&lt;/output&gt;
+      &lt;input id=&quot;ccc-util&quot; class=&quot;form-range&quot; type=&quot;range&quot; min=&quot;20&quot; max=&quot;90&quot; step=&quot;5&quot; value=&quot;55&quot;&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;viz-grid&quot; aria-live=&quot;polite&quot;&gt;
+    &lt;div class=&quot;card viz-stat&quot;&gt;
+      &lt;div class=&quot;text-muted&quot; id=&quot;ccc-gap-label&quot;&gt;China vs US weighted cost&lt;/div&gt;
+      &lt;div class=&quot;viz-stat-value&quot; id=&quot;ccc-gap-value&quot;&gt;—&lt;/div&gt;
+      &lt;div class=&quot;text-small&quot; id=&quot;ccc-gap-context&quot;&gt;—&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card viz-stat&quot;&gt;
+      &lt;div class=&quot;text-muted&quot; id=&quot;ccc-parity-label&quot;&gt;China parity condition&lt;/div&gt;
+      &lt;div class=&quot;viz-stat-value&quot; id=&quot;ccc-parity-value&quot;&gt;—&lt;/div&gt;
+      &lt;div class=&quot;text-small&quot; id=&quot;ccc-parity-context&quot;&gt;—&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;ccc-chart-wrap&quot;&gt;
+    &lt;svg id=&quot;ccc-chart&quot; class=&quot;ccc-chart&quot; viewBox=&quot;0 0 736 390&quot; role=&quot;img&quot; aria-labelledby=&quot;ccc-svg-title ccc-svg-desc&quot;&gt;
+      &lt;title id=&quot;ccc-svg-title&quot;&gt;Illustrative global compute cost curve&lt;/title&gt;
+      &lt;desc id=&quot;ccc-svg-desc&quot;&gt;Stacks are ranked from lowest to highest cost. Bar width represents annual successful-task capacity and bar height represents the selected cost or resource intensity.&lt;/desc&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+
+  &lt;div id=&quot;ccc-lowest&quot; class=&quot;ccc-lowest text-small&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;ccc-legend text-small&quot; aria-label=&quot;Country legend&quot;&gt;
+    &lt;span class=&quot;ccc-legend-item&quot;&gt;&lt;span class=&quot;ccc-swatch ccc-china&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;China&lt;/span&gt;
+    &lt;span class=&quot;ccc-legend-item&quot;&gt;&lt;span class=&quot;ccc-swatch ccc-us&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;United States&lt;/span&gt;
+    &lt;span class=&quot;ccc-legend-item&quot;&gt;&lt;span class=&quot;ccc-swatch ccc-row&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;Rest of world&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ccc-note text-small text-muted&quot;&gt;Synthetic values demonstrate the intended interaction and layout; no ranking shown here is a research result.&lt;/div&gt;
+
+  &lt;script&gt;
+    (() =&gt; {
+      const root = document.getElementById(&#x27;compute-cost-curve-viz&#x27;);
+      if (!root) return;
+
+      const stacks = [
+        { name: &#x27;Inner Mongolia · Ascend&#x27;, short: [&#x27;Inner&#x27;, &#x27;Mongolia&#x27;], country: &#x27;China&#x27;, capacity: 38, fixed: 0.48, other: 0.08, kwh: 3.40, price: 0.070, carbon: 0.58, util: 0.55 },
+        { name: &#x27;Guizhou · Ascend&#x27;, short: [&#x27;Guizhou&#x27;, &#x27;Ascend&#x27;], country: &#x27;China&#x27;, capacity: 26, fixed: 0.52, other: 0.09, kwh: 3.10, price: 0.080, carbon: 0.42, util: 0.55 },
+        { name: &#x27;Shanghai · mixed fleet&#x27;, short: [&#x27;Shanghai&#x27;, &#x27;mixed&#x27;], country: &#x27;China&#x27;, capacity: 22, fixed: 0.60, other: 0.11, kwh: 3.00, price: 0.100, carbon: 0.49, util: 0.55 },
+        { name: &#x27;Texas · B-series&#x27;, short: [&#x27;Texas&#x27;, &#x27;B-series&#x27;], country: &#x27;US&#x27;, capacity: 34, fixed: 0.42, other: 0.08, kwh: 1.80, price: 0.075, carbon: 0.39, util: 0.75 },
+        { name: &#x27;Virginia · H-series&#x27;, short: [&#x27;Virginia&#x27;, &#x27;H-series&#x27;], country: &#x27;US&#x27;, capacity: 30, fixed: 0.55, other: 0.10, kwh: 2.10, price: 0.088, carbon: 0.34, util: 0.75 },
+        { name: &#x27;Gulf · B-series&#x27;, short: [&#x27;Gulf&#x27;, &#x27;B-series&#x27;], country: &#x27;RoW&#x27;, capacity: 28, fixed: 0.46, other: 0.09, kwh: 2.00, price: 0.055, carbon: 0.47, util: 0.70 },
+        { name: &#x27;Nordics · H-series&#x27;, short: [&#x27;Nordics&#x27;, &#x27;H-series&#x27;], country: &#x27;RoW&#x27;, capacity: 18, fixed: 0.51, other: 0.09, kwh: 1.65, price: 0.070, carbon: 0.08, util: 0.70 }
+      ];
+
+      const workloads = {
+        bulk: { factor: 0.46, label: &#x27;bulk extraction&#x27; },
+        coding: { factor: 1.00, label: &#x27;reasoning &amp; coding&#x27; },
+        agentic: { factor: 2.35, label: &#x27;agentic work&#x27; }
+      };
+
+      const colors = {
+        China: &#x27;var(--viz-series-1)&#x27;,
+        US: &#x27;var(--viz-series-2)&#x27;,
+        RoW: &#x27;var(--viz-series-3)&#x27;
+      };
+
+      const metricMeta = {
+        allin: { axis: &#x27;All-in USD / successful task&#x27;, short: &#x27;$ / success&#x27; },
+        cash: { axis: &#x27;Cash USD / successful task&#x27;, short: &#x27;cash $ / success&#x27; },
+        energy: { axis: &#x27;kWh / successful task&#x27;, short: &#x27;kWh / success&#x27; },
+        carbon: { axis: &#x27;kg CO₂e / successful task&#x27;, short: &#x27;kg CO₂e / success&#x27; }
+      };
+
+      const els = {
+        workload: root.querySelector(&#x27;#ccc-workload&#x27;),
+        metric: root.querySelector(&#x27;#ccc-metric&#x27;),
+        power: root.querySelector(&#x27;#ccc-power&#x27;),
+        hardware: root.querySelector(&#x27;#ccc-hardware&#x27;),
+        model: root.querySelector(&#x27;#ccc-model&#x27;),
+        util: root.querySelector(&#x27;#ccc-util&#x27;),
+        powerOut: root.querySelector(&#x27;#ccc-power-out&#x27;),
+        hardwareOut: root.querySelector(&#x27;#ccc-hardware-out&#x27;),
+        modelOut: root.querySelector(&#x27;#ccc-model-out&#x27;),
+        utilOut: root.querySelector(&#x27;#ccc-util-out&#x27;),
+        gapLabel: root.querySelector(&#x27;#ccc-gap-label&#x27;),
+        gapValue: root.querySelector(&#x27;#ccc-gap-value&#x27;),
+        gapContext: root.querySelector(&#x27;#ccc-gap-context&#x27;),
+        parityLabel: root.querySelector(&#x27;#ccc-parity-label&#x27;),
+        parityValue: root.querySelector(&#x27;#ccc-parity-value&#x27;),
+        parityContext: root.querySelector(&#x27;#ccc-parity-context&#x27;),
+        chart: root.querySelector(&#x27;#ccc-chart&#x27;),
+        lowest: root.querySelector(&#x27;#ccc-lowest&#x27;),
+        desc: root.querySelector(&#x27;#ccc-svg-desc&#x27;)
+      };
+
+      const ns = &#x27;http://www.w3.org/2000/svg&#x27;;
+
+      function svgEl(tag, attrs = {}, textValue = &#x27;&#x27;) {
+        const el = document.createElementNS(ns, tag);
+        Object.entries(attrs).forEach(([key, value]) =&gt; el.setAttribute(key, String(value)));
+        if (textValue) el.textContent = textValue;
+        return el;
+      }
+
+      function state() {
+        return {
+          workload: els.workload.value,
+          metric: els.metric.value,
+          powerDiscount: Number(els.power.value) / 100,
+          hardwareGap: Number(els.hardware.value) / 100,
+          modelAdvantage: Number(els.model.value) / 100,
+          chinaUtil: Number(els.util.value) / 100
+        };
+      }
+
+      function calculate(s, st, modelOverride) {
+        const isChina = s.country === &#x27;China&#x27;;
+        const workload = workloads[st.workload];
+        const modelAdvantage = modelOverride === undefined ? st.modelAdvantage : modelOverride;
+        const productivity = isChina
+          ? Math.max(0.15, (1 - st.hardwareGap) / Math.max(0.20, 1 - modelAdvantage))
+          : 1;
+        const resourceFactor = workload.factor / productivity;
+        const utilization = isChina ? st.chinaUtil : s.util;
+        const effectivePrice = s.price * (isChina ? 1 - st.powerDiscount : 1);
+        const kwh = s.kwh * resourceFactor;
+        const cash = (kwh * effectivePrice) + (s.other * resourceFactor);
+        const fixed = s.fixed * resourceFactor * (s.util / utilization);
+        const values = {
+          cash,
+          allin: cash + fixed,
+          energy: kwh,
+          carbon: kwh * s.carbon
+        };
+        return {
+          ...s,
+          value: values[st.metric],
+          capacityValue: s.capacity * (utilization / s.util) * productivity / workload.factor,
+          cash,
+          fixed,
+          energy: kwh,
+          carbonValue: kwh * s.carbon
+        };
+      }
+
+      function weightedAverage(rows, country) {
+        const subset = rows.filter((r) =&gt; r.country === country);
+        const totalCapacity = subset.reduce((sum, r) =&gt; sum + r.capacityValue, 0);
+        return subset.reduce((sum, r) =&gt; sum + r.value * r.capacityValue, 0) / totalCapacity;
+      }
+
+      function formatValue(value, metric) {
+        if (metric === &#x27;allin&#x27; || metric === &#x27;cash&#x27;) return `$${value.toFixed(value &lt; 1 ? 2 : 1)}`;
+        if (metric === &#x27;energy&#x27;) return `${value.toFixed(value &lt; 1 ? 2 : 1)} kWh`;
+        return `${value.toFixed(value &lt; 1 ? 2 : 1)} kg`;
+      }
+
+      function niceMax(value) {
+        if (value &lt;= 0) return 1;
+        const magnitude = 10 ** Math.floor(Math.log10(value));
+        const normalized = value / magnitude;
+        const nice = normalized &lt;= 1.2 ? 1.2 : normalized &lt;= 1.5 ? 1.5 : normalized &lt;= 2 ? 2 : normalized &lt;= 3 ? 3 : normalized &lt;= 4 ? 4 : normalized &lt;= 5 ? 5 : normalized &lt;= 6 ? 6 : 8;
+        return nice * magnitude;
+      }
+
+      function findParity(st, usAverage) {
+        for (let pct = 0; pct &lt;= 80; pct += 1) {
+          const rows = stacks.map((s) =&gt; calculate(s, st, pct / 100));
+          if (weightedAverage(rows, &#x27;China&#x27;) &lt;= usAverage) return pct;
+        }
+        return null;
+      }
+
+      function updateSummary(rows, st) {
+        const china = weightedAverage(rows, &#x27;China&#x27;);
+        const us = weightedAverage(rows, &#x27;US&#x27;);
+        const delta = ((china / us) - 1) * 100;
+        els.gapLabel.textContent = `China vs US weighted ${metricMeta[st.metric].short}`;
+        els.gapValue.textContent = `${formatValue(china, st.metric)} / ${formatValue(us, st.metric)}`;
+        els.gapContext.textContent = `China is ${Math.abs(delta).toFixed(0)}% ${delta &lt;= 0 ? &#x27;lower&#x27; : &#x27;higher&#x27;} in this scenario`;
+
+        if (st.metric === &#x27;allin&#x27; || st.metric === &#x27;cash&#x27;) {
+          const parity = findParity(st, us);
+          els.parityLabel.textContent = &#x27;China parity condition&#x27;;
+          if (china &lt;= us) {
+            els.parityValue.textContent = &#x27;Below US cost&#x27;;
+            els.parityContext.textContent = `At a ${Math.round(st.modelAdvantage * 100)}% model compute advantage`;
+          } else if (parity !== null) {
+            els.parityValue.textContent = `≥ ${parity}%`;
+            els.parityContext.textContent = &#x27;Model compute advantage needed, other inputs fixed&#x27;;
+          } else {
+            els.parityValue.textContent = &#x27;Not reached&#x27;;
+            els.parityContext.textContent = &#x27;Even at the top of the modeled model-efficiency range&#x27;;
+          }
+        } else {
+          const lowCostChinaCapacity = rows
+            .filter((r) =&gt; r.country === &#x27;China&#x27; &amp;&amp; r.value &lt;= us)
+            .reduce((sum, r) =&gt; sum + r.capacityValue, 0);
+          const chinaCapacity = rows
+            .filter((r) =&gt; r.country === &#x27;China&#x27;)
+            .reduce((sum, r) =&gt; sum + r.capacityValue, 0);
+          els.parityLabel.textContent = &#x27;China capacity below US average&#x27;;
+          els.parityValue.textContent = `${Math.round(100 * lowCostChinaCapacity / chinaCapacity)}%`;
+          els.parityContext.textContent = `Of modeled Chinese ${workloads[st.workload].label} capacity`;
+        }
+      }
+
+      function draw(rows, st) {
+        const svg = els.chart;
+        while (svg.lastChild &amp;&amp; ![&#x27;title&#x27;, &#x27;desc&#x27;].includes(svg.lastChild.tagName)) svg.removeChild(svg.lastChild);
+
+        const sorted = [...rows].sort((a, b) =&gt; a.value - b.value);
+        const width = 736;
+        const height = 390;
+        const margin = { top: 30, right: 18, bottom: 82, left: 68 };
+        const plotW = width - margin.left - margin.right;
+        const plotH = height - margin.top - margin.bottom;
+        const totalCapacity = sorted.reduce((sum, r) =&gt; sum + r.capacityValue, 0);
+        const maxValue = niceMax(Math.max(...sorted.map((r) =&gt; r.value * 1.18)) * 1.08);
+        const y = (v) =&gt; margin.top + plotH - (v / maxValue) * plotH;
+        const x = (v) =&gt; margin.left + (v / totalCapacity) * plotW;
+
+        for (let i = 0; i &lt;= 4; i += 1) {
+          const value = maxValue * i / 4;
+          const py = y(value);
+          svg.appendChild(svgEl(&#x27;line&#x27;, { x1: margin.left, y1: py, x2: width - margin.right, y2: py, class: &#x27;ccc-gridline&#x27; }));
+          svg.appendChild(svgEl(&#x27;text&#x27;, { x: margin.left - 10, y: py + 4, &#x27;text-anchor&#x27;: &#x27;end&#x27;, class: &#x27;ccc-tick&#x27; }, st.metric === &#x27;allin&#x27; || st.metric === &#x27;cash&#x27; ? `$${value.toFixed(value &lt; 1 ? 2 : 1)}` : value.toFixed(value &lt; 1 ? 2 : 1)));
+        }
+
+        svg.appendChild(svgEl(&#x27;line&#x27;, { x1: margin.left, y1: margin.top, x2: margin.left, y2: margin.top + plotH, class: &#x27;ccc-axis&#x27; }));
+        svg.appendChild(svgEl(&#x27;line&#x27;, { x1: margin.left, y1: margin.top + plotH, x2: width - margin.right, y2: margin.top + plotH, class: &#x27;ccc-axis&#x27; }));
+
+        const yLabel = svgEl(&#x27;text&#x27;, { x: 18, y: margin.top + plotH / 2, transform: `rotate(-90 18 ${margin.top + plotH / 2})`, &#x27;text-anchor&#x27;: &#x27;middle&#x27;, class: &#x27;ccc-axis-label&#x27; }, metricMeta[st.metric].axis);
+        svg.appendChild(yLabel);
+        svg.appendChild(svgEl(&#x27;text&#x27;, { x: margin.left + plotW / 2, y: height - 12, &#x27;text-anchor&#x27;: &#x27;middle&#x27;, class: &#x27;ccc-axis-label&#x27; }, &#x27;Annual useful-task capacity · million successful tasks&#x27;));
+
+        let cumulative = 0;
+        sorted.forEach((r) =&gt; {
+          const x0 = x(cumulative);
+          const x1 = x(cumulative + r.capacityValue);
+          const barW = Math.max(2, x1 - x0 - 1);
+          const barY = y(r.value);
+          const barH = margin.top + plotH - barY;
+          const center = x0 + barW / 2;
+          const color = colors[r.country];
+
+          const rect = svgEl(&#x27;rect&#x27;, { x: x0 + 0.5, y: barY, width: barW, height: barH, fill: color, &#x27;fill-opacity&#x27;: &#x27;0.72&#x27; });
+          rect.appendChild(svgEl(&#x27;title&#x27;, {}, `${r.name}: ${formatValue(r.value, st.metric)}; ${r.capacityValue.toFixed(0)}M successful tasks/year`));
+          svg.appendChild(rect);
+
+          const lowY = y(Math.max(0, r.value * 0.82));
+          const highY = y(r.value * 1.18);
+          svg.appendChild(svgEl(&#x27;line&#x27;, { x1: center, y1: lowY, x2: center, y2: highY, class: &#x27;ccc-whisker&#x27; }));
+          svg.appendChild(svgEl(&#x27;line&#x27;, { x1: center - 5, y1: lowY, x2: center + 5, y2: lowY, class: &#x27;ccc-whisker&#x27; }));
+          svg.appendChild(svgEl(&#x27;line&#x27;, { x1: center - 5, y1: highY, x2: center + 5, y2: highY, class: &#x27;ccc-whisker&#x27; }));
+
+          svg.appendChild(svgEl(&#x27;text&#x27;, { x: center, y: Math.max(margin.top + 12, highY - 7), &#x27;text-anchor&#x27;: &#x27;middle&#x27;, class: &#x27;ccc-value-label&#x27; }, formatValue(r.value, st.metric)));
+          const label = svgEl(&#x27;text&#x27;, { x: center, y: margin.top + plotH + 20, &#x27;text-anchor&#x27;: &#x27;middle&#x27;, class: &#x27;ccc-bar-label&#x27; });
+          label.appendChild(svgEl(&#x27;tspan&#x27;, { x: center, dy: 0 }, r.short[0]));
+          label.appendChild(svgEl(&#x27;tspan&#x27;, { x: center, dy: 15 }, r.short[1]));
+          svg.appendChild(label);
+
+          cumulative += r.capacityValue;
+        });
+
+        const lowest = sorted[0];
+        els.lowest.textContent = `Lowest in this scenario: ${lowest.name} at ${formatValue(lowest.value, st.metric)}, representing ${lowest.capacityValue.toFixed(0)}M successful tasks/year.`;
+        els.desc.textContent = `${workloads[st.workload].label} stacks ranked by ${metricMeta[st.metric].axis}. ${lowest.name} is lowest at ${formatValue(lowest.value, st.metric)}.`;
+      }
+
+      function update() {
+        const st = state();
+        els.powerOut.value = `${Math.round(st.powerDiscount * 100)}%`;
+        els.hardwareOut.value = `${Math.round(st.hardwareGap * 100)}%`;
+        els.modelOut.value = `${Math.round(st.modelAdvantage * 100)}%`;
+        els.utilOut.value = `${Math.round(st.chinaUtil * 100)}%`;
+        const rows = stacks.map((s) =&gt; calculate(s, st));
+        updateSummary(rows, st);
+        draw(rows, st);
+      }
+
+      [els.workload, els.metric, els.power, els.hardware, els.model, els.util].forEach((el) =&gt; {
+        el.addEventListener(&#x27;input&#x27;, update);
+        el.addEventListener(&#x27;change&#x27;, update);
+      });
+
+      update();
+    })();
+  &lt;/script&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handleLeave = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>
