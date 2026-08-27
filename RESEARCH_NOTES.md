@@ -1,18 +1,14 @@
-# Electricity-only compute curve: evidence notes
+# China electricity-only compute curve: evidence notes
 
 ## What the chart measures
 
-The chart is a counterfactual. It asks how much raw dense-BF16 compute one
-electricity dollar would buy if every location filled its documented operating
-IT capacity with the same hardware and ran the same workload.
-
-The reference system is an NVIDIA GB200 NVL72 rack:
+The chart asks how much raw dense-BF16 compute one electricity dollar would buy
+if every location used the same hardware and facility efficiency. The reference
+system is an NVIDIA GB200 NVL72 rack:
 
 - 180 dense-BF16 PFLOP/s;
 - approximately 120 kW at full rack power; and
-- a common PUE of 1.20 in every location.
-
-The calculation is:
+- a common PUE of 1.20.
 
 ```text
 raw FLOPs per electricity dollar
@@ -20,68 +16,102 @@ raw FLOPs per electricity dollar
     / (120 kW x 1.20 x electricity USD/kWh)
 ```
 
-Because hardware and PUE are fixed globally, electricity price alone determines
-the vertical ordering. The absolute result is a hardware-based translation of
-the price, not a claim about useful model output.
+Electricity price alone determines vertical ordering. The result is not a
+measurement of useful model output.
 
-## Capacity boundary
+## National and provincial capacity boundary
 
-Every width is backed by a published operating-capacity observation. They are
-not all complete regional totals:
+China reported 10.43 million in-use standard racks at the end of March 2025.
+The national data standard converts physical racks at different densities to a
+2.5 kW standard rack. CAICT defines an in-use standard rack as design rack
+capacity in a commissioned computing center.
 
-- CBRE's North American figures are wholesale data-center market inventory.
-- Saudi Arabia is a national operational-capacity figure reported by the Saudi
-  Press Agency.
-- Zhongwei is one operating China Mobile campus.
-- Hohhot is a documented 11-facility subset of the larger hub. Its 269.4 MW IT
-  load is derived from 326 MW of reported facility power divided by a reported
-  PUE of 1.21.
+The resulting national design IT denominator is:
 
-The blocks therefore show the capacity covered by the matched public evidence,
-not total national data-center or AI capacity. The chart must not be used to
-compare the total size of the US and Chinese data-center sectors.
+```text
+10.43 million standard racks x 2.5 kW = 26.075 GW
+```
+
+This is commissioned design IT capacity, not measured load, occupied-rack
+capacity, or GPU power.
+
+CAICT's 2025 Comprehensive Computing Power Index publishes the provincial
+distribution as a treemap without numerical provincial values. The provincial
+widths in the chart were reconstructed from rectangle areas and rescaled to the
+official 10.43-million-rack total. Areas cover 99.93% of the plotted treemap.
+Values are rounded and must be described as estimates.
+
+The top-ten provincial estimates sum to 18.203 GW, or 69.8% of the national
+denominator. CAICT independently confirms the top-ten order, that each top-six
+province exceeds 600,000 standard racks, and that the top six together exceed
+50% of the national total.
+
+## Hub-capacity splits
+
+Two low-cost hub prices can be matched to capacity without assigning the hub
+price to an entire province:
+
+- Hohhot / Helinger: 269.4 MW for a documented 11-center subset. The figure is
+  derived from 326 MW facility power divided by reported PUE 1.21.
+- Gui'an: 137,400 powered-on standard racks, converted to 343.5 MW.
+
+These blocks are deducted from their respective provincial estimates. The
+remainder of Inner Mongolia and Guizhou uses the relevant grid-tariff proxy.
 
 ## Electricity-price boundary
 
-- The China observations are reported data-center or hub electricity costs.
-- Hydro-Quebec Rate L is an effective large-load price at 120 kV and 100% load
-  factor.
-- Saudi Arabia's value is the regulated cloud-computing tariff.
-- US values are EIA state industrial averages. They are not disclosed
-  hyperscale contracts and may omit differences caused by demand charges,
-  riders, tax treatment or negotiated procurement.
+Reported prices and tariff-derived estimates are not treated as the same type
+of evidence.
 
-This is the most important remaining comparability limitation. The page labels
-the price boundary rather than presenting the values as identical contracts.
+### Reported prices
+
+- Hohhot / Helinger: CNY 0.35/kWh reported delivered green-power transaction
+  price.
+- Gui'an: CNY 0.35/kWh 2025 policy-backed data-center price target.
+
+### Tariff proxies
+
+Where a current facility contract is not public, the chart calculates:
+
+```text
+tariff proxy
+  = published non-time-of-use high-voltage energy charge
+    + maximum-demand charge / (730 hours x 90% load factor)
+```
+
+The proxy represents a large, steady high-voltage grid customer. It is not a
+claimed hyperscaler power-purchase agreement. Direct-market purchases,
+time-of-use schedules, voltage, taxes, subsidies, and load factor can change an
+actual bill. A future edition should replace the monthly snapshots with a full
+12-month hourly tariff calculation and a direct-market price scenario.
+
+Shanxi's tariff observation is April 2026 because a machine-readable 2025 table
+was not obtained. Its later price vintage is labelled in both the page and CSV.
+
+## Comparison boundary
+
+Global values appear only as horizontal price benchmarks. They carry no width.
+This avoids comparing China's national commissioned capacity with a selected
+set of US wholesale markets. A combined China-US width comparison requires a
+national US commissioned-design-IT denominator assembled on the same boundary.
 
 ## Currency conversion
 
-- CNY and CAD use the US Federal Reserve's 2025 annual averages: CNY 7.1875 and
-  CAD 1.3973 per US dollar.
-- SAR uses the official fixed rate of SAR 3.75 per US dollar.
+CNY values use the US Federal Reserve's 2025 annual average of CNY 7.1875 per US
+dollar. The benchmark values retain the earlier source-specific conversions.
 
-## Why some places are excluded
+## Main sources
 
-- Gui'an has a well-sourced electricity price, but no directly comparable public
-  operating IT-MW figure was found.
-- Beijing and Shanghai have published operational market-size estimates, but a
-  single delivered data-center electricity price could not be established
-  without selecting voltage, time-of-use and demand-charge assumptions.
-- Quebec and Saudi Arabia are included because both a usable large-load tariff
-  and an operating-capacity observation are public.
-- Planned projects are excluded. Only operating capacity appears in the curve.
+- [CAICT Comprehensive Computing Power Index 2025](https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf)
+- [National standard-rack definition](https://www.nda.gov.cn/sjj/ywpd/szkjyjcss/0608/ff808081-96b465bf-0197-4f0dae39-0700.pdf)
+- [Official 10.43-million-rack national total](https://english.scio.gov.cn/m/pressroom/node_8021725_2.html)
+- [Hohhot capacity derivation](https://pdf.dfcfw.com/pdf/H3_AP202503031643671670_1.pdf)
+- [Hohhot reported data-center price](https://www.nea.gov.cn/20250718/410e42d872e4417687cb5b0ab357d088/c.html)
+- [Gui'an powered-on capacity](https://www.guiyang.gov.cn/zwgk/zwgkzdlyxxgkjyta/zwgkzdlyxxgkjytazxtawfws/zwgkzdlyxxgkjytazxtawfwsqs/202506/t20250603_87956837.html)
+- [Gui'an 2025 price target](https://nyj.guizhou.gov.cn/zwgk/xxgkml/zdlyxx/czzj/202503/P020250307503578350701.pdf)
+- [Federal Reserve exchange rates](https://www.federalreserve.gov/releases/g5a/current/default.htm)
+- [NVIDIA GB200 NVL72 specifications](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
+- [NVIDIA GB200 NVL72 rack-power estimate](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html)
 
-## Primary and research sources
-
-- [China National Energy Administration: Hohhot price](https://www.nea.gov.cn/20250718/410e42d872e4417687cb5b0ab357d088/c.html)
-- [NEA Northwest Bureau: Zhongwei operating IT load and price](https://xbj.nea.gov.cn/dtyw/hyxx/202606/t20260626_303639.html)
-- [CBRE: H2 2025 North American market inventory](https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025)
-- [US EIA: 2024 industrial electricity prices](https://www.eia.gov/electricity/annual/table.php?t=epa_02_10.html)
-- [Hydro-Quebec: 2025 Rate L](https://www.hydroquebec.com/data/documents-donnees/pdf/rates-chart-2025.pdf)
-- [Saudi regulator: cloud-computing electricity tariff](https://sera.gov.sa/en/consumer/electric-tariff/electric-tariff-categories/consumption-tariff)
-- [Saudi Press Agency: 2025 operational capacity](https://www.spa.gov.sa/ar/w2575816)
-- [Federal Reserve: 2025 exchange rates](https://www.federalreserve.gov/releases/g5a/current/default.htm)
-- [Saudi Central Bank: fixed exchange rate](https://sama.gov.sa/en-US/Currency/FinExc/Pages/Currency.aspx)
-- [NVIDIA: GB200 NVL72 specifications](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
-- [NVIDIA: GB200 NVL72 rack-power estimate](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html)
-- [Hohhot capacity derivation source](https://pdf.dfcfw.com/pdf/H3_AP202503031643671670_1.pdf)
+Every tariff source and calculation is recorded per row in
+[`electricity-capacity-data.csv`](electricity-capacity-data.csv).
