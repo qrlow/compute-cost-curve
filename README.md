@@ -23,7 +23,12 @@ The calculation uses an NVIDIA GB200 NVL72 rack at 180 dense-BF16 PFLOP/s,
 approximately 120 kW, and a common PUE of 1.20. Construction, financing,
 hardware purchases, labor, utilization, and model quality are excluded.
 
-The underlying observations and calculations are in
-[`electricity-capacity-data.csv`](electricity-capacity-data.csv). Source choices,
-derivations, and exclusions are explained in
+The underlying China observations are in
+[`electricity-capacity-data.csv`](electricity-capacity-data.csv). A separate,
+proportional-width panel shows the sourced capacity behind the Montreal, Saudi
+Arabia, Dallas-Fort Worth, and Northern Virginia price benchmarks; those rows
+are in [`global-benchmark-capacity-data.csv`](global-benchmark-capacity-data.csv).
+The panels remain separate because the North American figures are wholesale
+market inventory while Saudi Arabia is a national operational total. Source
+choices, derivations, and exclusions are explained in
 [`RESEARCH_NOTES.md`](RESEARCH_NOTES.md).

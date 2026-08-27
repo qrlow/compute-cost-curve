@@ -17,6 +17,9 @@
       --china-dark: #8f3027;
       --china-light: #e6a493;
       --benchmark: #2d658f;
+      --us: #356d9b;
+      --canada: #d29b28;
+      --saudi: #3c866c;
       --accent: #244d40;
       --white: #fffdf8;
     }
@@ -127,6 +130,9 @@
     .curve .axis-line { stroke: var(--ink); stroke-width: 1.2; }
     .curve .block { stroke: var(--paper-2); stroke-width: 1.2; }
     .curve .reported-block { fill: var(--china-dark); }
+    .curve .us-block { fill: var(--us); }
+    .curve .canada-block { fill: var(--canada); }
+    .curve .saudi-block { fill: var(--saudi); }
     .curve .block-number { fill: var(--white); font-size: 11px; font-weight: 850; text-anchor: middle; }
     .curve .small-number { fill: var(--china-dark); font-size: 11px; font-weight: 850; text-anchor: middle; }
     .curve .benchmark-line { stroke: var(--benchmark); stroke-width: 1.4; stroke-dasharray: 5 5; }
@@ -149,10 +155,12 @@
     .key-item:nth-child(3n + 2), .key-item:nth-child(3n + 3) { padding-left: 18px; border-left: 1px solid var(--line); }
     .key-number { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; color: var(--white); background: var(--china); font-size: 11px; font-weight: 850; }
     .key-item.reported .key-number { background: var(--china-dark); }
+    .global-key .key-number { background: var(--item-color); }
     .key-item h3 { margin: 0 0 3px; font-size: 13px; line-height: 1.3; }
     .key-item p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
 
     .findings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 70px 0; }
+    .global-section { margin-top: 72px; }
     .finding { padding: 27px; border: 1px solid var(--line); background: var(--paper-2); }
     .finding strong { display: block; margin-bottom: 9px; font-family: Georgia, serif; font-size: 34px; font-weight: 500; line-height: 1; }
     .finding p { margin: 0; color: #46514c; font-size: 14px; }
@@ -269,6 +277,23 @@
       <div id="curve-key" class="curve-key" aria-label="Chart key"></div>
     </section>
 
+    <section class="global-section" aria-labelledby="global-title">
+      <div class="chart-head">
+        <div><p class="section-kicker">Figure 2</p><h2 id="global-title">Capacity behind the global benchmarks</h2></div>
+        <p class="dek">Widths are proportional within this panel. Measurement boundaries remain explicit.</p>
+      </div>
+      <figure>
+        <div class="chart-wrap">
+          <svg id="global-curve" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="global-svg-title global-svg-desc">
+            <title id="global-svg-title">Capacity-weighted global electricity-price benchmarks</title>
+            <desc id="global-svg-desc">A proportional-width step chart for Montreal, Saudi Arabia, Dallas-Fort Worth, and Northern Virginia. The North American observations are wholesale market inventory and Saudi Arabia is a national operational total.</desc>
+          </svg>
+        </div>
+        <figcaption><strong>Same vertical scale as Figure 1.</strong><span>Montreal, Dallas and Northern Virginia are wholesale-market inventory; Saudi Arabia is a national operational total.</span></figcaption>
+      </figure>
+      <div id="global-key" class="curve-key global-key" aria-label="Global benchmark chart key"></div>
+    </section>
+
     <section class="findings" aria-label="Main findings">
       <article class="finding"><strong>26.1 GW</strong><p>National commissioned design IT capacity implied by 10.43 million in-use standard racks in March 2025.</p></article>
       <article class="finding"><strong>18.2 GW</strong><p>Capacity represented here: the ten largest provinces, including separately matched Hohhot and Gui’an blocks.</p></article>
@@ -306,7 +331,7 @@
   </main>
 
   <footer class="page">
-    <p>Data and calculations: <a href="electricity-capacity-data.csv">download CSV</a> · <a href="RESEARCH_NOTES.md">read evidence notes</a> · <a href="https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf">CAICT capacity source</a></p>
+    <p>Data and calculations: <a href="electricity-capacity-data.csv">China CSV</a> · <a href="global-benchmark-capacity-data.csv">global benchmark CSV</a> · <a href="RESEARCH_NOTES.md">read evidence notes</a> · <a href="https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf">CAICT capacity source</a></p>
     <p>Last checked 27 August 2026.</p>
   </footer>
 
@@ -324,6 +349,13 @@
       {n:10, name:"Guangdong", province:"Guangdong", mw:2532, cny:.70818, usd:.0985294, flops:4.5672, type:"proxy", cap:"Province estimate", price:"Weighted Yuebei / Pearl River tariff proxy", priceUrl:"https://www.gdsx.gov.cn/sgsxgdj/attachment/0/272/272080/2734391.pdf"},
       {n:11, name:"Shandong", province:"Shandong", mw:1044, cny:.72845, usd:.1013496, flops:4.4401, type:"proxy", cap:"Province estimate", price:"March 2025 35–110 kV tariff proxy", priceUrl:"https://www.yantai.gov.cn/art/2025/3/20/art_70253_3244147.html"},
       {n:12, name:"Shanghai", province:"Shanghai", mw:1607, cny:.7484, usd:.1041252, flops:4.3217, type:"proxy", cap:"Province estimate", price:"June 2025 35 kV tariff proxy", priceUrl:"https://www.shanghai.gov.cn/cmsres/8d/8dbc9d8c392e43b791295f493f1d247e/5b1658885ab19ab927050e05dfbb83f9.pdf"}
+    ];
+
+    const globalData = [
+      {n:1, name:"Montreal, Quebec", mw:229.5, usd:.0375438, flops:11.9860, type:"canada", boundary:"Wholesale-market inventory, H2 2025", price:"Hydro-Québec Rate L effective price", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.hydroquebec.com/data/documents-donnees/pdf/rates-chart-2025.pdf"},
+      {n:2, name:"Saudi Arabia", mw:440, usd:.048, flops:9.3750, type:"saudi", boundary:"National operational capacity, 2025", price:"Regulated cloud-computing tariff", capacityUrl:"https://www.spa.gov.sa/ar/w2575816", priceUrl:"https://sera.gov.sa/en/consumer/electric-tariff/electric-tariff-categories/consumption-tariff"},
+      {n:3, name:"Dallas–Fort Worth", mw:1067.3, usd:.0612, flops:7.3529, type:"us", boundary:"Wholesale-market inventory, H2 2025", price:"Texas 2024 industrial average", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/annual/table.php?t=epa_02_10.html"},
+      {n:4, name:"Northern Virginia", mw:4039.6, usd:.0899, flops:5.0056, type:"us", boundary:"Wholesale-market inventory, H2 2025", price:"Virginia 2024 industrial average", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/annual/table.php?t=epa_02_10.html"}
     ];
 
     const capacityUrl = "https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf";
@@ -389,6 +421,51 @@
       article.className = `key-item ${d.type}`;
       article.innerHTML = `<span class="key-number">${d.n}</span><div><h3>${d.name}</h3><p>${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ¥${d.cny.toFixed(3)}/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$</p></div>`;
       key.appendChild(article);
+    });
+
+    const globalSvg = document.getElementById("global-curve");
+    const addGlobal = (tag, attrs = {}, text = "") => {
+      const el = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) el.setAttribute(key, value);
+      });
+      if (text) el.textContent = text;
+      globalSvg.appendChild(el);
+      return el;
+    };
+    const globalTotalGW = globalData.reduce((sum, d) => sum + d.mw, 0) / 1000;
+    const globalX = value => plot.left + value / globalTotalGW * (plot.right - plot.left);
+    [0,2,4,6,8,10,12].forEach(tick => {
+      addGlobal("line", {class:"grid", x1:plot.left, y1:y(tick), x2:plot.right, y2:y(tick)});
+      addGlobal("text", {class:"axis", x:plot.left - 14, y:y(tick) + 4, "text-anchor":"end"}, tick);
+    });
+    let globalCumulative = 0;
+    globalData.forEach(d => {
+      const start = globalX(globalCumulative);
+      const end = globalX(globalCumulative + d.mw / 1000);
+      const top = y(d.flops);
+      const width = end - start;
+      addGlobal("rect", {class:`block ${d.type}-block`, x:start, y:top, width, height:plot.bottom - top});
+      addGlobal("text", {class:"block-number", x:start + width / 2, y:top + 19}, d.n);
+      globalCumulative += d.mw / 1000;
+    });
+    addGlobal("line", {class:"axis-line", x1:plot.left, y1:plot.bottom, x2:plot.right, y2:plot.bottom});
+    [0,1,2,3,4,5,globalTotalGW].forEach((tick, index, arr) => {
+      const tx = globalX(tick);
+      addGlobal("line", {class:"axis-line", x1:tx, y1:plot.bottom, x2:tx, y2:plot.bottom + 8});
+      addGlobal("text", {class:"axis", x:tx, y:plot.bottom + 28, "text-anchor":index === arr.length - 1 ? "end" : "middle"}, tick === globalTotalGW ? globalTotalGW.toFixed(2) : tick);
+    });
+    addGlobal("text", {class:"axis-title", x:(plot.left + plot.right) / 2, y:580, "text-anchor":"middle"}, "Cumulative operating capacity covered by benchmark observations (GW)");
+    addGlobal("text", {class:"axis-title", transform:"translate(23 290) rotate(-90)", "text-anchor":"middle"}, "Dense BF16 FLOPs per electricity $ (×10¹⁹)");
+
+    const globalKey = document.getElementById("global-key");
+    const itemColors = {canada:"var(--canada)", saudi:"var(--saudi)", us:"var(--us)"};
+    globalData.forEach(d => {
+      const article = document.createElement("article");
+      article.className = "key-item";
+      article.style.setProperty("--item-color", itemColors[d.type]);
+      article.innerHTML = `<span class="key-number">${d.n}</span><div><h3>${d.name}</h3><p>${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${(d.usd * 100).toFixed(2)}¢/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.boundary} · <a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a></p></div>`;
+      globalKey.appendChild(article);
     });
 
     const rows = document.getElementById("evidence-rows");

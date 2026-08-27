@@ -90,10 +90,13 @@ was not obtained. Its later price vintage is labelled in both the page and CSV.
 
 ## Comparison boundary
 
-Global values appear only as horizontal price benchmarks. They carry no width.
-This avoids comparing China's national commissioned capacity with a selected
-set of US wholesale markets. A combined China-US width comparison requires a
-national US commissioned-design-IT denominator assembled on the same boundary.
+Global price benchmarks appear as horizontal lines in the China panel and as a
+second proportional-width curve. That second panel covers 5.7764 GW: Montreal
+229.5 MW, Saudi Arabia 440 MW, Dallas-Fort Worth 1,067.3 MW, and Northern
+Virginia 4,039.6 MW. The panels remain separate because Montreal, Dallas, and
+Northern Virginia are wholesale-market inventory while Saudi Arabia is a
+national operational total. A combined China-US curve still requires a national
+US commissioned-design-IT denominator assembled on the same boundary.
 
 ## Currency conversion
 
@@ -112,6 +115,10 @@ dollar. The benchmark values retain the earlier source-specific conversions.
 - [Federal Reserve exchange rates](https://www.federalreserve.gov/releases/g5a/current/default.htm)
 - [NVIDIA GB200 NVL72 specifications](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
 - [NVIDIA GB200 NVL72 rack-power estimate](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html)
+- [CBRE H2 2025 North American market inventory](https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025)
+- [Saudi Press Agency 2025 operational capacity](https://www.spa.gov.sa/ar/w2575816)
 
 Every tariff source and calculation is recorded per row in
 [`electricity-capacity-data.csv`](electricity-capacity-data.csv).
+Global benchmark rows are recorded in
+[`global-benchmark-capacity-data.csv`](global-benchmark-capacity-data.csv).
