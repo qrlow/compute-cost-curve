@@ -90,13 +90,14 @@ was not obtained. Its later price vintage is labelled in both the page and CSV.
 
 ## Comparison boundary
 
-Global price benchmarks appear as horizontal lines in the China panel and as a
-second proportional-width curve. That second panel covers 5.7764 GW: Montreal
-229.5 MW, Saudi Arabia 440 MW, Dallas-Fort Worth 1,067.3 MW, and Northern
-Virginia 4,039.6 MW. The panels remain separate because Montreal, Dallas, and
-Northern Virginia are wholesale-market inventory while Saudi Arabia is a
-national operational total. A combined China-US curve still requires a national
-US commissioned-design-IT denominator assembled on the same boundary.
+China and the four global benchmarks appear on one proportional-width curve,
+covering 23.9794 GW in total. The China observations contribute 18.203 GW. The
+global observations contribute 5.7764 GW: Montreal 229.5 MW, Saudi Arabia 440
+MW, Dallas-Fort Worth 1,067.3 MW, and Northern Virginia 4,039.6 MW. The chart
+retains the measurement caveat: Montreal, Dallas, and Northern Virginia are
+wholesale-market inventory; Saudi Arabia is a national operational total; and
+China is commissioned design IT capacity. The combined curve is a comparison
+of sourced observations, not a complete or boundary-harmonized global census.
 
 ## Currency conversion
 
