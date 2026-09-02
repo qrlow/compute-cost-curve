@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A sourced, capacity-weighted electricity cost curve placing Chinese data-center capacity and global benchmark markets on one chart.">
+  <meta name="description" content="Two sourced, capacity-weighted electricity cost curves comparing equal technology with an export-control-constrained China technology scenario.">
   <link rel="icon" href="data:,">
   <title>China and global benchmark electricity-only AI compute cost curve</title>
   <style>
@@ -106,6 +106,7 @@
     .premise strong { display: block; font-family: Georgia, serif; font-size: 21px; font-weight: 500; line-height: 1.25; }
 
     main { padding: 72px 0; }
+    .scenario-section + .scenario-section { margin-top: 86px; padding-top: 70px; border-top: 1px solid var(--ink); }
     .chart-head { display: flex; justify-content: space-between; gap: 32px; align-items: end; margin-bottom: 28px; }
     .legend { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 18px; color: var(--muted); font-size: 12px; }
     .legend span { display: inline-flex; align-items: center; gap: 7px; }
@@ -124,6 +125,21 @@
       background: rgb(255 250 242 / .72);
       scrollbar-width: thin;
     }
+    .cost-order {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 18px;
+      min-width: 920px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .cost-order span:nth-child(2) { text-align: center; }
+    .cost-order span:last-child { text-align: right; }
     .curve { display: block; width: 100%; min-width: 920px; height: auto; }
     .curve text { font-family: Inter, ui-sans-serif, sans-serif; fill: var(--ink); }
     .curve .axis { font-size: 12px; fill: var(--muted); }
@@ -201,6 +217,7 @@
       font-size: 13px;
     }
     .date-standard strong { color: var(--ink); }
+    .technology-standard { border-left-color: var(--china-dark); }
     .status {
       display: inline-block;
       padding: 2px 7px;
@@ -254,27 +271,27 @@
 <body>
   <header class="page">
     <div class="topbar">
-      <strong>China + global benchmark cost curve</strong>
+      <strong>China + global benchmark cost curves</strong>
       <span>Observation reference date · 31 December 2025</span>
     </div>
     <div class="hero">
       <div>
-        <p class="eyebrow">Electricity only · equal technology</p>
-        <h1>How much of China’s data-center capacity sits on cheap power?</h1>
+        <p class="eyebrow">Electricity only · two technology scenarios</p>
+        <h1>Can cheap power offset restricted access to frontier chips?</h1>
       </div>
-      <p class="dek">A single capacity-weighted curve places China beside global benchmarks. Every location runs the same hardware and model; only electricity cost changes. Observation timing—not publication timing—governs the headline data.</p>
+      <p class="dek">Two capacity-weighted curves separate China’s electricity-price advantage from the energy-efficiency penalty of an export-constrained domestic technology stack. Both run from the lowest compute cost on the left to the highest on the right.</p>
     </div>
     <div class="premise" aria-label="Core assumptions">
       <div><small>Reference date</small><strong>Latest observed value on or before 31 December 2025</strong></div>
-      <div><small>Same technology</small><strong>GB200 NVL72 and PUE 1.20 everywhere</strong></div>
-      <div><small>Costs included</small><strong>Electricity after the facility is built</strong></div>
+      <div><small>Curve 1</small><strong>GB200 NVL72 and PUE 1.20 everywhere</strong></div>
+      <div><small>Curve 2</small><strong>CloudMatrix384 in China; GB200 elsewhere</strong></div>
     </div>
   </header>
 
   <main class="page">
-    <section aria-labelledby="curve-title">
+    <section class="scenario-section" aria-labelledby="standard-curve-title">
       <div class="chart-head">
-        <div><p class="section-kicker">Figure 1</p><h2 id="curve-title">Observation-standardized compute yield curve</h2></div>
+        <div><p class="section-kicker">Figure 1 · electricity-price counterfactual</p><h2 id="standard-curve-title">Same technology everywhere</h2></div>
         <div class="legend" aria-label="Evidence legend">
           <span><i class="reported"></i>China: reported price</span>
           <span><i class="proxy"></i>China: tariff proxy</span>
@@ -283,40 +300,74 @@
         </div>
       </div>
 
-      <p class="date-standard"><strong>Common reference date: 31 December 2025.</strong> Each block uses the latest capacity observation and electricity-price period ending on or before that date. Source dates—or normalized period ends where a source reports only a month, half-year or year—are displayed below. Targets, post-2025 values, prices with no effective date and unsupported price-source matches are excluded from the headline curve.</p>
+      <p class="date-standard"><strong>GB200 NVL72 and PUE 1.20 at every location.</strong> This curve isolates electricity price. Each block uses the latest capacity observation and electricity-price period ending on or before 31 December 2025.</p>
 
       <figure>
         <div class="chart-wrap">
-          <svg id="curve" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="svg-title svg-desc">
-            <title id="svg-title">China and global benchmarks on one data-center compute yield curve</title>
-            <desc id="svg-desc">A single step chart combining about 15.0 gigawatts of Chinese commissioned design IT capacity with 5.3 gigawatts covered by three global benchmark observations that pass the observation-date rule. Width is proportional to capacity and height is standardized dense BF16 compute per electricity dollar.</desc>
+          <div class="cost-order" aria-hidden="true"><span>Lowest cost / FLOP</span><span>Cost increases →</span><span>Highest cost / FLOP</span></div>
+          <svg id="curve-standard" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="standard-svg-title standard-svg-desc">
+            <title id="standard-svg-title">Same-technology data-center compute yield curve</title>
+            <desc id="standard-svg-desc">A step chart combining about 15.0 gigawatts of Chinese commissioned design IT capacity with 5.3 gigawatts covered by three global benchmarks. Every location uses a GB200 NVL72. Blocks are ordered from the lowest electricity cost per dense BF16 FLOP on the left to the highest on the right.</desc>
             <defs>
-              <pattern id="proxy-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <pattern id="proxy-hatch-standard" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <rect width="8" height="8" fill="#e6a493"></rect>
                 <rect width="2" height="8" fill="#c7533f"></rect>
               </pattern>
             </defs>
           </svg>
         </div>
-        <figcaption><strong>Higher is cheaper compute; wider is more capacity.</strong><span>Only observation-eligible blocks are plotted; exact dates and exclusions appear in the ledger.</span></figcaption>
+        <figcaption><strong>Higher is cheaper compute; wider is more capacity.</strong><span>All blocks are independently sorted from lowest to highest electricity cost per dense BF16 FLOP.</span></figcaption>
       </figure>
 
-      <div id="curve-key" class="curve-key" aria-label="Chart key"></div>
+      <div id="curve-key-standard" class="curve-key" aria-label="Same-technology chart key"></div>
+    </section>
+
+    <section class="scenario-section" aria-labelledby="constrained-curve-title">
+      <div class="chart-head">
+        <div><p class="section-kicker">Figure 2 · technology-access counterfactual</p><h2 id="constrained-curve-title">Technology constrained by current export controls</h2></div>
+        <div class="legend" aria-label="Evidence legend">
+          <span><i class="reported"></i>China: reported price</span>
+          <span><i class="proxy"></i>China: tariff proxy</span>
+          <span><i class="canada"></i>Canada</span>
+          <span><i class="us"></i>United States</span>
+        </div>
+      </div>
+
+      <p class="date-standard technology-standard"><strong>China uses Huawei CloudMatrix384; global benchmarks retain GB200 NVL72.</strong> Huawei reports up to 300 PFLOP/s; SemiAnalysis identifies that figure as dense BF16, versus NVIDIA’s 180 dense-BF16 PFLOP/s. SemiAnalysis also estimates CloudMatrix384 uses 4.1× the total system power and therefore about 2.5× more electricity per dense-BF16 FLOP. This curve applies that 2.5× efficiency penalty to every included China block. The hardware allocation is a scenario, not an inventory of installed systems. <a href="https://www.huawei.com/en/news/2025/9/hc-xu-keynote-speech">Huawei</a> · <a href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">NVIDIA</a> · <a href="https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72">system comparison</a></p>
+
+      <figure>
+        <div class="chart-wrap">
+          <div class="cost-order" aria-hidden="true"><span>Lowest cost / FLOP</span><span>Cost increases →</span><span>Highest cost / FLOP</span></div>
+          <svg id="curve-constrained" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="constrained-svg-title constrained-svg-desc">
+            <title id="constrained-svg-title">Export-control-constrained data-center compute yield curve</title>
+            <desc id="constrained-svg-desc">A step chart using Huawei CloudMatrix384 for Chinese locations and GB200 NVL72 for the three global benchmarks. Blocks are ordered from the lowest electricity cost per dense BF16 FLOP on the left to the highest on the right.</desc>
+            <defs>
+              <pattern id="proxy-hatch-constrained" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect width="8" height="8" fill="#e6a493"></rect>
+                <rect width="2" height="8" fill="#c7533f"></rect>
+              </pattern>
+            </defs>
+          </svg>
+        </div>
+        <figcaption><strong>The same electricity prices and capacities, but different accessible technology.</strong><span>GB200 is not treated as generally available to PRC end users; approved H200 imports, legacy chips and actual fleet mix are outside this scenario.</span></figcaption>
+      </figure>
+
+      <div id="curve-key-constrained" class="curve-key" aria-label="Technology-constrained chart key"></div>
     </section>
 
     <section class="findings" aria-label="Main findings">
-      <article class="finding"><strong>26.1 GW</strong><p>National commissioned design IT capacity implied by 10.43 million in-use standard racks in March 2025.</p></article>
-      <article class="finding"><strong>15.0 GW</strong><p>Chinese capacity retained after removing a target-priced block, a post-reference tariff and an unsupported price-source match.</p></article>
-      <article class="finding"><strong>5.34 GW</strong><p>Capacity covered by Montreal, Dallas–Fort Worth and Northern Virginia after the undated Saudi tariff is excluded.</p></article>
+      <article class="finding"><strong>4.1×</strong><p>Estimated CloudMatrix384 total system power relative to GB200 NVL72. This is a third-party engineering estimate, not a primary metered measurement.</p></article>
+      <article class="finding"><strong>2.5×</strong><p>Estimated electricity required per peak dense-BF16 FLOP after accounting for CloudMatrix384’s higher peak compute.</p></article>
+      <article class="finding"><strong>3 markets</strong><p>Montreal, Dallas–Fort Worth and Northern Virginia rank ahead of China’s cheapest eligible block once the 2.5× efficiency penalty is applied.</p></article>
     </section>
 
     <section class="explanation" aria-labelledby="reading-title">
-      <div><p class="section-kicker">How to read it</p><h2 id="reading-title">One curve, with different capacity boundaries made explicit.</h2></div>
+      <div><p class="section-kicker">How to read it</p><h2 id="reading-title">The first curve values cheap power. The second tests whether chip access overwhelms it.</h2></div>
       <div>
-        <p>Hohhot uses a reported data-center price only for capacity that can be matched to that hub. The remaining included provincial blocks use published high-voltage grid tariffs plus a transparent demand-charge calculation. Gui’an is retained in the evidence ledger but removed from the curve because its CNY 0.35/kWh figure is a target rather than an observed price.</p>
-        <p>Montreal, Dallas–Fort Worth and Northern Virginia carry width on the same axis. Saudi Arabia remains in the ledger but is excluded because the tariff page does not state an effective date. The chart is standardized to one reference date using the latest eligible observation; it is not presented as an exact same-day global census.</p>
-        <div class="formula">FLOPs per $ = 180 PFLOP/s × 3,600<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ (120 kW × 1.20 PUE × electricity $/kWh)<br><br>Tariff proxy = non-TOU energy charge<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ demand charge / (730 h × 90%)</div>
-        <p>Construction, financing, hardware purchases, labor and model quality are excluded. The result isolates the geographic value of electricity under identical technology.</p>
+        <p>The first curve is the clean electricity-price experiment: every block uses 180 dense-BF16 PFLOP/s, 120 kW rack power and PUE 1.20. Because the technology is identical, cheaper electricity always appears farther left.</p>
+        <p>The second is a domestic-frontier counterfactual. Current BIS rules permit H200-class exports to approved China customers only case by case; they do not make a GB200 NVL72 generally available. The scenario therefore assigns CloudMatrix384 to China and GB200 to the non-China benchmarks. This is an analytical assumption, not legal advice or a claim about every installed accelerator.</p>
+        <div class="formula">Same-technology FLOPs/$<br>&nbsp;&nbsp;= 180 PFLOP/s × 3,600<br>&nbsp;&nbsp;&nbsp;&nbsp;/ (120 kW × 1.20 PUE × electricity $/kWh)<br><br>Constrained China FLOPs/$<br>&nbsp;&nbsp;= same-location GB200 result / 2.5<br><br>2.5 ≈ 4.1× system power / 1.67× dense-BF16 compute</div>
+        <p>Both curves use peak dense-BF16 specifications rather than measured useful model output. Construction, financing, hardware purchase price, utilization and model quality remain excluded.</p>
       </div>
     </section>
 
@@ -335,14 +386,14 @@
       <div class="method-note">
         <div><h3>Observation rule</h3><p>The reference date is 31 December 2025. A displayed value must describe a period ending on or before that date; its source timing or normalized period end remains visible.</p></div>
         <div><h3>Cost denominator</h3><p>Tariff blocks are transparent counterfactual bills for a large, steady high-voltage load. They are not claimed hyperscaler contracts.</p></div>
-        <div><h3>Remaining uncertainty</h3><p>The other 21 Chinese provinces and most global markets are omitted. Publication dates are retained only as provenance and do not change the observation vintage.</p></div>
+        <div><h3>Remaining uncertainty</h3><p>The CloudMatrix power adjustment is estimated rather than a primary full-system measurement. The other 21 Chinese provinces and most global markets are also omitted.</p></div>
       </div>
     </section>
   </main>
 
   <footer class="page">
-    <p>Data and calculations: <a href="electricity-capacity-data.csv">China CSV</a> · <a href="global-benchmark-capacity-data.csv">global benchmark CSV</a> · <a href="outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx">dated source register</a> · <a href="RESEARCH_NOTES.md">read evidence notes</a> · <a href="https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf">CAICT capacity source</a></p>
-    <p>Research publication cutoff: 24 August 2026. This is a provenance note, not the observation date.</p>
+    <p>Data and calculations: <a href="electricity-capacity-data.csv">China CSV</a> · <a href="global-benchmark-capacity-data.csv">global benchmark CSV</a> · <a href="technology-scenario-data.csv">technology scenario CSV</a> · <a href="outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx">dated source register</a> · <a href="RESEARCH_NOTES.md">read evidence notes</a></p>
+    <p>Research publication cutoff: 24 August 2026. Observation reference date: 31 December 2025. Export-control policy checked: 2 September 2026.</p>
   </footer>
 
   <script>
@@ -373,67 +424,81 @@
       ...curveData.map(d => ({...d, geography:"china"})),
       ...globalData.map(d => ({...d, geography:"global"}))
     ];
-    const combinedData = allData.filter(d => d.include).sort((a, b) => b.flops - a.flops);
-    combinedData.forEach((d, index) => { d.chartN = index + 1; });
-
-    const svg = document.getElementById("curve");
     const NS = "http://www.w3.org/2000/svg";
-    const add = (tag, attrs = {}, text = "") => {
-      const el = document.createElementNS(NS, tag);
-      Object.entries(attrs).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) el.setAttribute(key, value);
+    const itemColors = {canada:"var(--canada)", saudi:"var(--saudi)", us:"var(--us)"};
+    const efficiencyPenalty = 2.5;
+    const eligibleData = allData.filter(d => d.include);
+    const standardData = eligibleData
+      .map(d => ({...d, computeYield:d.flops, technology:"NVIDIA GB200 NVL72"}))
+      .sort((a, b) => b.computeYield - a.computeYield || a.name.localeCompare(b.name));
+    const constrainedData = eligibleData
+      .map(d => ({
+        ...d,
+        computeYield:d.geography === "china" ? d.flops / efficiencyPenalty : d.flops,
+        technology:d.geography === "china" ? "Huawei CloudMatrix384" : "NVIDIA GB200 NVL72"
+      }))
+      .sort((a, b) => b.computeYield - a.computeYield || a.name.localeCompare(b.name));
+
+    const renderCurve = ({svgId, keyId, patternId, data}) => {
+      const svg = document.getElementById(svgId);
+      const key = document.getElementById(keyId);
+      const add = (tag, attrs = {}, text = "") => {
+        const el = document.createElementNS(NS, tag);
+        Object.entries(attrs).forEach(([name, value]) => {
+          if (value !== undefined && value !== null) el.setAttribute(name, value);
+        });
+        if (text) el.textContent = text;
+        svg.appendChild(el);
+        return el;
+      };
+
+      const plot = {left:90, right:1150, top:58, bottom:510};
+      const totalGW = data.reduce((sum, d) => sum + d.mw, 0) / 1000;
+      const yMax = 12.5;
+      const x = value => plot.left + value / totalGW * (plot.right - plot.left);
+      const y = value => plot.bottom - value / yMax * (plot.bottom - plot.top);
+
+      [0,2,4,6,8,10,12].forEach(tick => {
+        add("line", {class:"grid", x1:plot.left, y1:y(tick), x2:plot.right, y2:y(tick)});
+        add("text", {class:"axis", x:plot.left - 14, y:y(tick) + 4, "text-anchor":"end"}, tick);
       });
-      if (text) el.textContent = text;
-      svg.appendChild(el);
-      return el;
+
+      let cumulative = 0;
+      data.forEach((d, index) => {
+        const start = x(cumulative);
+        const end = x(cumulative + d.mw / 1000);
+        const top = y(d.computeYield);
+        const width = end - start;
+        const chartNumber = index + 1;
+        const blockClass = d.geography === "global" ? `${d.type}-block` : d.type === "reported" ? "reported-block" : "";
+        add("rect", {class:`block ${blockClass}`, x:start, y:top, width, height:plot.bottom - top, fill:d.type === "proxy" ? `url(#${patternId})` : undefined});
+        const numberClass = width < 23 ? `small-number ${d.type}-number` : "block-number";
+        const numberY = width < 23 ? top - 8 : top + 19;
+        add("text", {class:numberClass, x:start + width / 2, y:numberY}, chartNumber);
+        cumulative += d.mw / 1000;
+
+        const article = document.createElement("article");
+        article.className = `key-item ${d.geography === "global" ? "global" : d.type}`;
+        if (d.geography === "global") article.style.setProperty("--item-color", itemColors[d.type]);
+        const priceDetail = d.geography === "china"
+          ? `¥${d.cny.toFixed(3)}/kWh · Capacity: ${d.capacityDate} · Price: ${d.priceDate}`
+          : `${(d.usd * 100).toFixed(2)}¢/kWh · ${d.boundary}`;
+        article.innerHTML = `<span class="key-number">${chartNumber}</span><div><h3>${d.name}</h3><p>${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${d.computeYield.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.technology} · ${priceDetail}</p></div>`;
+        key.appendChild(article);
+      });
+
+      add("line", {class:"axis-line", x1:plot.left, y1:plot.bottom, x2:plot.right, y2:plot.bottom});
+      [0,4,8,12,16,20,totalGW].forEach((tick, index, ticks) => {
+        const tx = x(tick);
+        add("line", {class:"axis-line", x1:tx, y1:plot.bottom, x2:tx, y2:plot.bottom + 8});
+        add("text", {class:"axis", x:tx, y:plot.bottom + 28, "text-anchor":index === ticks.length - 1 ? "end" : "middle"}, tick === totalGW ? totalGW.toFixed(1) : tick);
+      });
+      add("text", {class:"axis-title", x:(plot.left + plot.right) / 2, y:580, "text-anchor":"middle"}, "Cumulative capacity covered by observations (GW)");
+      add("text", {class:"axis-title", transform:"translate(23 290) rotate(-90)", "text-anchor":"middle"}, "Dense BF16 FLOPs per electricity $ (×10¹⁹)");
     };
 
-    const plot = {left:90, right:1150, top:58, bottom:510};
-    const totalGW = combinedData.reduce((sum, d) => sum + d.mw, 0) / 1000;
-    const yMax = 12.5;
-    const x = value => plot.left + value / totalGW * (plot.right - plot.left);
-    const y = value => plot.bottom - value / yMax * (plot.bottom - plot.top);
-
-    [0,2,4,6,8,10,12].forEach(tick => {
-      add("line", {class:"grid", x1:plot.left, y1:y(tick), x2:plot.right, y2:y(tick)});
-      add("text", {class:"axis", x:plot.left - 14, y:y(tick) + 4, "text-anchor":"end"}, tick);
-    });
-
-    let cumulative = 0;
-    combinedData.forEach(d => {
-      const start = x(cumulative);
-      const end = x(cumulative + d.mw / 1000);
-      const top = y(d.flops);
-      const width = end - start;
-      const blockClass = d.geography === "global" ? `${d.type}-block` : d.type === "reported" ? "reported-block" : "";
-      add("rect", {class:`block ${blockClass}`, x:start, y:top, width, height:plot.bottom - top, fill:d.type === "proxy" ? "url(#proxy-hatch)" : undefined});
-      const numberClass = width < 23 ? `small-number ${d.type}-number` : "block-number";
-      const numberY = width < 23 ? top - 8 : top + 19;
-      add("text", {class:numberClass, x:start + width / 2, y:numberY}, d.chartN);
-      cumulative += d.mw / 1000;
-    });
-
-    add("line", {class:"axis-line", x1:plot.left, y1:plot.bottom, x2:plot.right, y2:plot.bottom});
-    [0,4,8,12,16,20,totalGW].forEach((tick, index, arr) => {
-      const tx = x(tick);
-      add("line", {class:"axis-line", x1:tx, y1:plot.bottom, x2:tx, y2:plot.bottom + 8});
-      add("text", {class:"axis", x:tx, y:plot.bottom + 28, "text-anchor":index === arr.length - 1 ? "end" : "middle"}, tick === totalGW ? totalGW.toFixed(1) : tick);
-    });
-    add("text", {class:"axis-title", x:(plot.left + plot.right) / 2, y:580, "text-anchor":"middle"}, "Cumulative capacity covered by observations (GW)");
-    add("text", {class:"axis-title", transform:"translate(23 290) rotate(-90)", "text-anchor":"middle"}, "Dense BF16 FLOPs per electricity $ (×10¹⁹)");
-
-    const key = document.getElementById("curve-key");
-    const itemColors = {canada:"var(--canada)", saudi:"var(--saudi)", us:"var(--us)"};
-    combinedData.forEach(d => {
-      const article = document.createElement("article");
-      article.className = `key-item ${d.geography === "global" ? "global" : d.type}`;
-      if (d.geography === "global") article.style.setProperty("--item-color", itemColors[d.type]);
-      const detail = d.geography === "china"
-        ? `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ¥${d.cny.toFixed(3)}/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>Capacity: ${d.capacityDate} · Price: ${d.priceDate}`
-        : `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${(d.usd * 100).toFixed(2)}¢/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.boundary} · Capacity: ${d.capacityDate} · Price: ${d.priceDate} · <a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a>`;
-      article.innerHTML = `<span class="key-number">${d.chartN}</span><div><h3>${d.name}</h3><p>${detail}</p></div>`;
-      key.appendChild(article);
-    });
+    renderCurve({svgId:"curve-standard", keyId:"curve-key-standard", patternId:"proxy-hatch-standard", data:standardData});
+    renderCurve({svgId:"curve-constrained", keyId:"curve-key-constrained", patternId:"proxy-hatch-constrained", data:constrainedData});
 
     const rows = document.getElementById("evidence-rows");
     curveData.forEach(d => {

@@ -2,8 +2,7 @@
 
 This project is a static, source-backed visualization of how much raw AI
 compute one electricity dollar would buy across China's largest data-center
-provinces and four global benchmark locations if every location used the same
-hardware, workload, and facility efficiency.
+provinces and global benchmark locations under two technology scenarios.
 
 [View the published curve](https://qrlow.github.io/compute-cost-curve/)
 
@@ -29,8 +28,10 @@ provincial capacity cross-checks found so far. Unknown publication dates remain
 explicitly blank rather than being inferred from an undated webpage.
 
 The height of each block is dense-BF16 FLOPs per electricity dollar. Its width
-is the capacity covered by that observation. After applying the observation
-rule, the plotted curve covers 20.2909 GW: 14.9545 GW across the Chinese sample
+is the capacity covered by that observation. Both curves are independently
+ordered from the lowest electricity cost per dense-BF16 FLOP on the left to the
+highest on the right. After applying the observation rule, each curve covers
+20.2909 GW: 14.9545 GW across the Chinese sample
 and 5.3364 GW across Montreal, Dallas-Fort Worth, and Northern Virginia. China's March 2025 national
 denominator is 10.43 million in-use standard racks, or 26.075 GW at the official
 2.5 kW standard-rack conversion.
@@ -41,17 +42,32 @@ total. Reported Hohhot and Gui'an data-center prices are applied only to matched
 capacity. Other blocks use clearly labelled high-voltage tariff proxies rather
 than claiming undisclosed hyperscaler contract prices.
 
-The calculation uses an NVIDIA GB200 NVL72 rack at 180 dense-BF16 PFLOP/s,
-approximately 120 kW, and a common PUE of 1.20. Construction, financing,
-hardware purchases, labor, utilization, and model quality are excluded.
+The first curve uses an NVIDIA GB200 NVL72 rack at 180 dense-BF16 PFLOP/s,
+approximately 120 kW, and a common PUE of 1.20 everywhere. It isolates
+electricity price.
+
+The second curve is an export-control-constrained technology counterfactual.
+Non-China blocks retain GB200 NVL72. China blocks use Huawei CloudMatrix384.
+Huawei reports up to 300 PFLOP/s from 384 Ascend 910C chips. SemiAnalysis
+estimates that the system uses 4.1 times the total power of GB200 NVL72 and 2.5
+times as much electricity per dense-BF16 FLOP. The curve therefore divides each
+China block's same-technology yield by 2.5. The power adjustment is a
+third-party engineering estimate, not a primary metered full-system result.
+
+The technology scenario does not claim that all Chinese capacity currently
+uses CloudMatrix384. It also does not model approved H200 imports, legacy
+accelerators, special export licences, or illicit access. Construction,
+financing, hardware purchases, labor, utilization, and model quality are
+excluded from both curves.
 
 The underlying China observations are in
 [`electricity-capacity-data.csv`](electricity-capacity-data.csv). The sourced
 capacity behind the Montreal, Saudi Arabia, Dallas-Fort Worth, and Northern
 Virginia benchmarks is in
 [`global-benchmark-capacity-data.csv`](global-benchmark-capacity-data.csv). All
-eligible observations appear as proportional-width blocks on one curve,
-ordered by electricity-only compute yield. Excluded records remain visible in
+technology assumptions are recorded in
+[`technology-scenario-data.csv`](technology-scenario-data.csv). All eligible
+observations appear as proportional-width blocks on both curves. Excluded records remain visible in
 the evidence ledger. The chart labels the included records' different boundaries:
 the North American figures are wholesale-market inventory and China is
 commissioned design IT capacity.

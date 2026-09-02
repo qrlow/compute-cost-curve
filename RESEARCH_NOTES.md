@@ -1,10 +1,12 @@
-# China electricity-only compute curve: evidence notes
+# China electricity-only compute curves: evidence notes
 
 ## What the chart measures
 
-The chart asks how much raw dense-BF16 compute one electricity dollar would buy
-if every location used the same hardware and facility efficiency. The reference
-system is an NVIDIA GB200 NVL72 rack:
+The project asks how much raw dense-BF16 compute one electricity dollar would
+buy under two technology scenarios. Both curves use the same electricity-price
+and capacity observations, the same PUE of 1.20, and the same vertical unit.
+
+The first curve uses an NVIDIA GB200 NVL72 rack everywhere:
 
 - 180 dense-BF16 PFLOP/s;
 - approximately 120 kW at full rack power; and
@@ -16,8 +18,57 @@ raw FLOPs per electricity dollar
     / (120 kW x 1.20 x electricity USD/kWh)
 ```
 
-Electricity price alone determines vertical ordering. The result is not a
-measurement of useful model output.
+Electricity price alone determines vertical ordering in the first curve. The
+result is not a measurement of useful model output.
+
+## Export-control-constrained technology scenario
+
+The second curve assigns Huawei CloudMatrix384 to every included China block
+and retains GB200 NVL72 for Montreal, Dallas–Fort Worth, and Northern Virginia.
+It is a domestic-frontier counterfactual, not an inventory of installed
+accelerators.
+
+The technology inputs are:
+
+- NVIDIA lists GB200 NVL72 at 360 sparse FP16/BF16 PFLOP/s and states that the
+  dense figure is half, giving 180 dense-BF16 PFLOP/s. NVIDIA documents an
+  approximately 120 kW full-load rack budget including rack components.
+- Huawei says CloudMatrix384/Atlas 900 A3 connects 384 Ascend 910C chips and
+  delivers up to 300 PFLOP/s.
+- SemiAnalysis estimates CloudMatrix384 uses 4.1 times the total system power
+  of GB200 NVL72 and has 2.5 times worse power per dense-BF16 FLOP. This is a
+  third-party engineering model. No primary full-system metered load-power
+  result for CloudMatrix384 was found.
+
+The often-repeated claim that CloudMatrix384 uses about 3.9 times more power
+depends on the selected system boundary and an earlier approximately 559 kW
+estimate. The source used for the chart currently reports **4.1 times total
+system power**. Total power is not the correct multiplier for a FLOPs-per-dollar
+curve because CloudMatrix384 also has 1.67 times the peak dense-BF16 compute.
+The relevant chart adjustment is therefore **2.5 times more electricity per
+dense-BF16 FLOP**:
+
+```text
+constrained China FLOPs per electricity dollar
+  = same-location GB200 FLOPs per electricity dollar / 2.5
+
+2.5 approximately equals
+  4.1 x total system power / (300 / 180 dense-BF16 compute)
+```
+
+As of **2 September 2026**, BIS permits H200, MI325X, and similar products to
+approved China customers only through case-by-case licensing. The current EAR
+provides case-by-case review only below stated performance and memory-bandwidth
+thresholds and a presumption of denial for other covered applications to China.
+The scenario therefore does not treat GB200 NVL72 as generally available to
+PRC end users. This is a modeling boundary, not legal advice. Approved H200
+imports, special licenses, legacy inventory, illicit access, and the actual
+regional accelerator mix are not modeled.
+
+Each curve is independently sorted from the lowest electricity cost per peak
+dense-BF16 FLOP on the left to the highest on the right. Technology inputs and
+source boundaries are recorded in
+[`technology-scenario-data.csv`](technology-scenario-data.csv).
 
 ## Observation-date policy
 
@@ -110,7 +161,7 @@ Shanxi's available tariff observation is April 2026 because a machine-readable
 
 ## Comparison boundary
 
-After applying the observation rule, the proportional-width curve covers
+After applying the observation rule, each proportional-width curve covers
 20.2909 GW. Included China observations contribute 14.9545 GW. Included global
 observations contribute 5.3364 GW: Montreal 229.5 MW, Dallas-Fort Worth 1,067.3
 MW, and Northern Virginia 4,039.6 MW. Saudi Arabia remains in the ledger but is
@@ -143,6 +194,10 @@ replaces the earlier 2024 annual values so the US price observation matches the
 - [Federal Reserve exchange rates](https://www.federalreserve.gov/releases/g5a/current/default.htm)
 - [NVIDIA GB200 NVL72 specifications](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
 - [NVIDIA GB200 NVL72 rack-power estimate](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html)
+- [Huawei CloudMatrix384 performance and deployment](https://www.huawei.com/en/news/2025/9/hc-xu-keynote-speech)
+- [SemiAnalysis CloudMatrix384 system-power estimate](https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72)
+- [BIS January 2026 China licensing policy](https://media.bis.gov/press-release/department-commerce-revises-license-review-policy-semiconductors-exported-china)
+- [Current EAR §742.6](https://www.bis.gov/regulations/ear/742)
 - [CBRE H2 2025 North American market inventory](https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025)
 - [Saudi Press Agency 2025 operational capacity](https://www.spa.gov.sa/ar/w2575816)
 
