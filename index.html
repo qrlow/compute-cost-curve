@@ -306,8 +306,8 @@
         <div class="chart-wrap">
           <div class="cost-order" aria-hidden="true"><span>Lowest cost / FLOP</span><span>Cost increases →</span><span>Highest cost / FLOP</span></div>
           <svg id="curve-standard" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="standard-svg-title standard-svg-desc">
-            <title id="standard-svg-title">Same-technology data-center compute yield curve</title>
-            <desc id="standard-svg-desc">A step chart combining about 15.0 gigawatts of Chinese commissioned design IT capacity with 5.3 gigawatts covered by three global benchmarks. Every location uses a GB200 NVL72. Blocks are ordered from the lowest electricity cost per dense BF16 FLOP on the left to the highest on the right.</desc>
+            <title id="standard-svg-title">Same-technology data-center electricity cost curve</title>
+            <desc id="standard-svg-desc">An ascending step chart combining about 15.0 gigawatts of Chinese commissioned design IT capacity with 5.3 gigawatts covered by three global benchmarks. Every location uses a GB200 NVL72. Height is electricity cost per fixed quantity of dense BF16 compute, and blocks run from the lowest cost on the left to the highest on the right.</desc>
             <defs>
               <pattern id="proxy-hatch-standard" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <rect width="8" height="8" fill="#e6a493"></rect>
@@ -316,7 +316,7 @@
             </defs>
           </svg>
         </div>
-        <figcaption><strong>Higher is cheaper compute; wider is more capacity.</strong><span>All blocks are independently sorted from lowest to highest electricity cost per dense BF16 FLOP.</span></figcaption>
+        <figcaption><strong>Lower is cheaper compute; wider is more capacity.</strong><span>Blocks form a conventional ascending cost curve from lowest cost on the left to highest cost on the right.</span></figcaption>
       </figure>
 
       <div id="curve-key-standard" class="curve-key" aria-label="Same-technology chart key"></div>
@@ -339,8 +339,8 @@
         <div class="chart-wrap">
           <div class="cost-order" aria-hidden="true"><span>Lowest cost / FLOP</span><span>Cost increases →</span><span>Highest cost / FLOP</span></div>
           <svg id="curve-constrained" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="constrained-svg-title constrained-svg-desc">
-            <title id="constrained-svg-title">Export-control-constrained data-center compute yield curve</title>
-            <desc id="constrained-svg-desc">A step chart using Huawei CloudMatrix384 for Chinese locations and GB200 NVL72 for the three global benchmarks. Blocks are ordered from the lowest electricity cost per dense BF16 FLOP on the left to the highest on the right.</desc>
+            <title id="constrained-svg-title">Export-control-constrained data-center electricity cost curve</title>
+            <desc id="constrained-svg-desc">An ascending step chart using Huawei CloudMatrix384 for Chinese locations and GB200 NVL72 for the three global benchmarks. Height is electricity cost per fixed quantity of dense BF16 compute, and blocks run from the lowest cost on the left to the highest on the right.</desc>
             <defs>
               <pattern id="proxy-hatch-constrained" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <rect width="8" height="8" fill="#e6a493"></rect>
@@ -349,7 +349,7 @@
             </defs>
           </svg>
         </div>
-        <figcaption><strong>The same electricity prices and capacities, but different accessible technology.</strong><span>GB200 is not treated as generally available to PRC end users; approved H200 imports, legacy chips and actual fleet mix are outside this scenario.</span></figcaption>
+        <figcaption><strong>Lower is cheaper; the same prices and capacities now face different accessible technology.</strong><span>GB200 is not treated as generally available to PRC end users; approved H200 imports, legacy chips and actual fleet mix are outside this scenario.</span></figcaption>
       </figure>
 
       <div id="curve-key-constrained" class="curve-key" aria-label="Technology-constrained chart key"></div>
@@ -366,7 +366,7 @@
       <div>
         <p>The first curve is the clean electricity-price experiment: every block uses 180 dense-BF16 PFLOP/s, 120 kW rack power and PUE 1.20. Because the technology is identical, cheaper electricity always appears farther left.</p>
         <p>The second is a domestic-frontier counterfactual. Current BIS rules permit H200-class exports to approved China customers only case by case; they do not make a GB200 NVL72 generally available. The scenario therefore assigns CloudMatrix384 to China and GB200 to the non-China benchmarks. This is an analytical assumption, not legal advice or a claim about every installed accelerator.</p>
-        <div class="formula">Same-technology FLOPs/$<br>&nbsp;&nbsp;= 180 PFLOP/s × 3,600<br>&nbsp;&nbsp;&nbsp;&nbsp;/ (120 kW × 1.20 PUE × electricity $/kWh)<br><br>Constrained China FLOPs/$<br>&nbsp;&nbsp;= same-location GB200 result / 2.5<br><br>2.5 ≈ 4.1× system power / 1.67× dense-BF16 compute</div>
+        <div class="formula">Electricity $ per 10¹⁹ dense-BF16 FLOPs<br>&nbsp;&nbsp;= (120 kW × 1.20 PUE × electricity $/kWh)<br>&nbsp;&nbsp;&nbsp;&nbsp;/ (180 PFLOP/s × 3,600) × 10¹⁹<br><br>Constrained China cost<br>&nbsp;&nbsp;= same-location GB200 cost × 2.5<br><br>2.5 ≈ 4.1× system power / 1.67× dense-BF16 compute</div>
         <p>Both curves use peak dense-BF16 specifications rather than measured useful model output. Construction, financing, hardware purchase price, utilization and model quality remain excluded.</p>
       </div>
     </section>
@@ -429,15 +429,20 @@
     const efficiencyPenalty = 2.5;
     const eligibleData = allData.filter(d => d.include);
     const standardData = eligibleData
-      .map(d => ({...d, computeYield:d.flops, technology:"NVIDIA GB200 NVL72"}))
-      .sort((a, b) => b.computeYield - a.computeYield || a.name.localeCompare(b.name));
+      .map(d => ({...d, computeCost:1 / d.flops, technology:"NVIDIA GB200 NVL72"}))
+      .sort((a, b) => a.computeCost - b.computeCost || a.name.localeCompare(b.name));
     const constrainedData = eligibleData
       .map(d => ({
         ...d,
-        computeYield:d.geography === "china" ? d.flops / efficiencyPenalty : d.flops,
+        computeCost:d.geography === "china" ? efficiencyPenalty / d.flops : 1 / d.flops,
         technology:d.geography === "china" ? "Huawei CloudMatrix384" : "NVIDIA GB200 NVL72"
       }))
-      .sort((a, b) => b.computeYield - a.computeYield || a.name.localeCompare(b.name));
+      .sort((a, b) => a.computeCost - b.computeCost || a.name.localeCompare(b.name));
+    const sharedYMax = Math.ceil(Math.max(
+      ...standardData.map(d => d.computeCost),
+      ...constrainedData.map(d => d.computeCost)
+    ) * 10) / 10;
+    const yTicks = Array.from({length:Math.round(sharedYMax * 10) + 1}, (_, index) => index / 10);
 
     const renderCurve = ({svgId, keyId, patternId, data}) => {
       const svg = document.getElementById(svgId);
@@ -454,20 +459,19 @@
 
       const plot = {left:90, right:1150, top:58, bottom:510};
       const totalGW = data.reduce((sum, d) => sum + d.mw, 0) / 1000;
-      const yMax = 12.5;
       const x = value => plot.left + value / totalGW * (plot.right - plot.left);
-      const y = value => plot.bottom - value / yMax * (plot.bottom - plot.top);
+      const y = value => plot.bottom - value / sharedYMax * (plot.bottom - plot.top);
 
-      [0,2,4,6,8,10,12].forEach(tick => {
+      yTicks.forEach(tick => {
         add("line", {class:"grid", x1:plot.left, y1:y(tick), x2:plot.right, y2:y(tick)});
-        add("text", {class:"axis", x:plot.left - 14, y:y(tick) + 4, "text-anchor":"end"}, tick);
+        add("text", {class:"axis", x:plot.left - 14, y:y(tick) + 4, "text-anchor":"end"}, tick.toFixed(1));
       });
 
       let cumulative = 0;
       data.forEach((d, index) => {
         const start = x(cumulative);
         const end = x(cumulative + d.mw / 1000);
-        const top = y(d.computeYield);
+        const top = y(d.computeCost);
         const width = end - start;
         const chartNumber = index + 1;
         const blockClass = d.geography === "global" ? `${d.type}-block` : d.type === "reported" ? "reported-block" : "";
@@ -483,7 +487,7 @@
         const priceDetail = d.geography === "china"
           ? `¥${d.cny.toFixed(3)}/kWh · Capacity: ${d.capacityDate} · Price: ${d.priceDate}`
           : `${(d.usd * 100).toFixed(2)}¢/kWh · ${d.boundary}`;
-        article.innerHTML = `<span class="key-number">${chartNumber}</span><div><h3>${d.name}</h3><p>${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${d.computeYield.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.technology} · ${priceDetail}</p></div>`;
+        article.innerHTML = `<span class="key-number">${chartNumber}</span><div><h3>${d.name}</h3><p>${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · $${d.computeCost.toFixed(3)} per 10¹⁹ FLOPs<br>${d.technology} · ${priceDetail}</p></div>`;
         key.appendChild(article);
       });
 
@@ -494,7 +498,7 @@
         add("text", {class:"axis", x:tx, y:plot.bottom + 28, "text-anchor":index === ticks.length - 1 ? "end" : "middle"}, tick === totalGW ? totalGW.toFixed(1) : tick);
       });
       add("text", {class:"axis-title", x:(plot.left + plot.right) / 2, y:580, "text-anchor":"middle"}, "Cumulative capacity covered by observations (GW)");
-      add("text", {class:"axis-title", transform:"translate(23 290) rotate(-90)", "text-anchor":"middle"}, "Dense BF16 FLOPs per electricity $ (×10¹⁹)");
+      add("text", {class:"axis-title", transform:"translate(23 290) rotate(-90)", "text-anchor":"middle"}, "Electricity cost (USD per 10¹⁹ dense-BF16 FLOPs)");
     };
 
     renderCurve({svgId:"curve-standard", keyId:"curve-key-standard", patternId:"proxy-hatch-standard", data:standardData});

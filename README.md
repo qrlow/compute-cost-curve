@@ -1,7 +1,7 @@
 # China + global benchmark electricity-only AI compute cost curve
 
-This project is a static, source-backed visualization of how much raw AI
-compute one electricity dollar would buy across China's largest data-center
+This project is a static, source-backed visualization of the electricity cost
+of a fixed amount of raw AI compute across China's largest data-center
 provinces and global benchmark locations under two technology scenarios.
 
 [View the published curve](https://qrlow.github.io/compute-cost-curve/)
@@ -27,10 +27,11 @@ source boundary, and observation eligibility for every current chart input and t
 provincial capacity cross-checks found so far. Unknown publication dates remain
 explicitly blank rather than being inferred from an undated webpage.
 
-The height of each block is dense-BF16 FLOPs per electricity dollar. Its width
-is the capacity covered by that observation. Both curves are independently
-ordered from the lowest electricity cost per dense-BF16 FLOP on the left to the
-highest on the right. After applying the observation rule, each curve covers
+The height of each block is electricity cost in US dollars per 10¹⁹ peak
+dense-BF16 FLOPs. Its width is the capacity covered by that observation. Both
+curves are independently ordered from the lowest cost on the left to the
+highest on the right, producing a conventional ascending cost staircase. After
+applying the observation rule, each curve covers
 20.2909 GW: 14.9545 GW across the Chinese sample
 and 5.3364 GW across Montreal, Dallas-Fort Worth, and Northern Virginia. China's March 2025 national
 denominator is 10.43 million in-use standard racks, or 26.075 GW at the official
@@ -50,8 +51,8 @@ The second curve is an export-control-constrained technology counterfactual.
 Non-China blocks retain GB200 NVL72. China blocks use Huawei CloudMatrix384.
 Huawei reports up to 300 PFLOP/s from 384 Ascend 910C chips. SemiAnalysis
 estimates that the system uses 4.1 times the total power of GB200 NVL72 and 2.5
-times as much electricity per dense-BF16 FLOP. The curve therefore divides each
-China block's same-technology yield by 2.5. The power adjustment is a
+times as much electricity per dense-BF16 FLOP. The curve therefore multiplies
+each China block's same-technology compute cost by 2.5. The power adjustment is a
 third-party engineering estimate, not a primary metered full-system result.
 
 The technology scenario does not claim that all Chinese capacity currently

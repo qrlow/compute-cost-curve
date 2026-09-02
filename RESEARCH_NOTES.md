@@ -2,9 +2,10 @@
 
 ## What the chart measures
 
-The project asks how much raw dense-BF16 compute one electricity dollar would
-buy under two technology scenarios. Both curves use the same electricity-price
-and capacity observations, the same PUE of 1.20, and the same vertical unit.
+The project compares the electricity cost of a fixed amount of raw dense-BF16
+compute under two technology scenarios. Both curves use the same electricity-
+price and capacity observations, the same PUE of 1.20, and the same vertical
+unit: US dollars per 10¹⁹ peak dense-BF16 FLOPs.
 
 The first curve uses an NVIDIA GB200 NVL72 rack everywhere:
 
@@ -13,13 +14,15 @@ The first curve uses an NVIDIA GB200 NVL72 rack everywhere:
 - a common PUE of 1.20.
 
 ```text
-raw FLOPs per electricity dollar
-  = 180e15 FLOP/s x 3,600 seconds
-    / (120 kW x 1.20 x electricity USD/kWh)
+electricity USD per 10^19 dense-BF16 FLOPs
+  = (120 kW x 1.20 x electricity USD/kWh)
+    / (180e15 FLOP/s x 3,600 seconds) x 10^19
 ```
 
-Electricity price alone determines vertical ordering in the first curve. The
-result is not a measurement of useful model output.
+Electricity price alone determines block height and ordering in the first
+curve. Lower-cost blocks appear on the left and the staircase rises toward
+higher-cost blocks on the right. The result is not a measurement of useful
+model output.
 
 ## Export-control-constrained technology scenario
 
@@ -49,8 +52,8 @@ The relevant chart adjustment is therefore **2.5 times more electricity per
 dense-BF16 FLOP**:
 
 ```text
-constrained China FLOPs per electricity dollar
-  = same-location GB200 FLOPs per electricity dollar / 2.5
+constrained China electricity cost per fixed compute
+  = same-location GB200 electricity cost per fixed compute x 2.5
 
 2.5 approximately equals
   4.1 x total system power / (300 / 180 dense-BF16 compute)
