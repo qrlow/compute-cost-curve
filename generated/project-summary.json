@@ -1,7 +1,7 @@
 {
   "metadata": {
     "schemaVersion": "1.1.0",
-    "inputSha256": "e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca",
+    "inputSha256": "e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9",
     "observationCutoff": "2025-12-31",
     "researchPublicationCutoff": "2026-08-24",
     "verificationDate": "2026-09-02",
@@ -10,11 +10,11 @@
   "capacityMetric": "commissioned_design_it_power_mw",
   "provinceCount": 31,
   "nationalCapacityMw": 26075,
-  "registeredCapacityMw": 34599.3,
-  "registeredRegionCount": 51,
-  "indicativeGlobalCapacityCoveragePct": 55.81,
+  "registeredCapacityMw": 57077.4,
+  "registeredRegionCount": 58,
+  "indicativeGlobalCapacityCoveragePct": 92.06,
   "sourceCounts": {
-    "verified": 32,
+    "verified": 34,
     "verified_derived": 1,
     "not_verified": 1,
     "partial": 2
@@ -37,15 +37,15 @@
     },
     {
       "id": "comparable_proxy__same_technology",
-      "blocks": 22,
-      "totalCapacityMw": 22209.0939,
+      "blocks": 28,
+      "totalCapacityMw": 39189.1939,
       "lowestCostLocation": "Quebec — Montreal market subtotal",
       "highestCostLocation": "Yorkshire and the Humber"
     },
     {
       "id": "comparable_proxy__export_constrained",
-      "blocks": 22,
-      "totalCapacityMw": 22209.0939,
+      "blocks": 28,
+      "totalCapacityMw": 39189.1939,
       "lowestCostLocation": "Quebec — Montreal market subtotal",
       "highestCostLocation": "Yorkshire and the Humber"
     }
@@ -54,22 +54,17 @@
     {
       "evidenceId": "data_center_tariff_evidence",
       "priceCoveredMw": 672.0025,
-      "registeredCapacityCoveragePct": 1.94,
+      "registeredCapacityCoveragePct": 1.18,
       "globalCapacityCoveragePct": 1.08
     },
     {
       "evidenceId": "comparable_proxy",
-      "priceCoveredMw": 22209.0939,
-      "registeredCapacityCoveragePct": 64.19,
-      "globalCapacityCoveragePct": 35.82
+      "priceCoveredMw": 39189.1939,
+      "registeredCapacityCoveragePct": 68.66,
+      "globalCapacityCoveragePct": 63.21
     }
   ],
   "largestCountryGaps": [
-    {
-      "country": "United States",
-      "missingCapacityMw": 9063.1,
-      "benchmarkScope": "named_market_forecast_minimum"
-    },
     {
       "country": "Japan",
       "missingCapacityMw": 1720,
@@ -113,6 +108,11 @@
     {
       "country": "Hong Kong",
       "missingCapacityMw": 618,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Netherlands",
+      "missingCapacityMw": 592,
       "benchmarkScope": "named_market_forecast_minimum"
     }
   ]

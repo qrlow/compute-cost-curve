@@ -1,6 +1,6 @@
 # Source-verification report
 
-Input SHA-256: `e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca`
+Input SHA-256: `e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9`
 
 Observation cutoff: **2025-12-31**
 
@@ -14,22 +14,25 @@ Independent human review: **pending**
 
 ## Material corrections in this audit pass
 
-- Capacity is now registered independently of price availability. The additive register contains **34,599.3 MW** across **51** country-region keys.
-- Price coverage is explicit: the comparable proxy covers **64.2%** of registered capacity, while data-center tariff evidence covers **1.9%**.
+- Capacity is now registered independently of price availability. The additive register contains **57,077.4 MW** across **58** country-region keys.
+- Price coverage is explicit: the combined observed-price-or-tariff category covers **68.7%** of registered capacity, while the strict data-center-specific audit subset covers **1.2%**.
+- Ten non-overlapping JLL US market records add **27,585 MW** of year-end 2025 leased plus hyperscaler-owned capacity. The earlier CBRE Virginia and Dallas wholesale records remain as non-additive source comparisons.
 - Official regional capacity for Great Britain and end-2025 live market capacity for India are in the register even where a qualifying regional price is absent.
 - The country-gap queue is generated from observed country totals where available and otherwise from named-market forecast minima; it is not presented as a complete country census.
 - The CAICT treemap is paired with the **10.43 million racks at 2025-03-31** denominator. The separately published June 2025 total is not mixed into the derivation.
 - Hohhot / Helinger is **442.5 MW of commissioned design IT capacity**, derived from 11 × 16,091 standard racks × 2.5 kW. The reported 326 MW is an occupied facility-load cross-check, not the chart width.
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.
-- Reported observations and constructed tariff proxies are displayed as different evidence scenarios.
+- Applicable tariffs and official industrial averages are combined in the public curves, while every block retains its evidence class and the strict data-center-specific subset remains separately quantified. Hohhot's delivered-price observation is retained only in that subset because its capacity is nested inside Inner Mongolia's provincial width.
 
-## Included source checks (30)
+## Included source checks (32)
 
 | ID | Publisher | Status | Exact locator | Verification |
 |---|---|---|---|---|
 | `caict_treemap_2025` | China Academy of Information and Communications Technology | verified | PDF page 22 / report page 16, Figure 6; Appendix 1 states unspecified data are through 2025-03-31; Appendix 3 defines in-use racks. | Downloaded PDF, extracted text, rendered Figure 6, recorded SHA-256 and independently reconciled all 31 rectangles. |
 | `scio_racks_2025_03` | State Council Information Office of China | verified | Briefing answer by Xie Cun, paragraph beginning 'Network capabilities have been enhanced.' | Exact figure and observation date checked against the official briefing text. |
 | `nda_standard_rack` | National Data Administration | verified | Section 6.2.3, Table 3: rack total formula = rack power / 2.5 kW × rack count. | Formula checked in the official technical document. |
+| `jll_na_active_capacity_2025` | JLL | verified | Paragraph beginning 'The report marks a significant evolution'. | The active-versus-under-construction boundary, 39 GW total and leased/hyperscaler scope were checked on JLL's official release. |
+| `dominion_jll_markets_2025` | Dominion Energy, citing JLL | verified | Slide 49, 'Top North American markets (MW capacity)'. | All ten labels and values were checked in Dominion's published table, which explicitly attributes the data to JLL's Year-End 2025 North America Data Center Report. |
 | `cbre_inventory_h2_2025` | CBRE | verified | Top 10 Largest North American Data Center Markets by Inventory table. | All three values checked in CBRE's published table. |
 | `cbre_capacity_glossary` | CBRE Research | verified | PDF page 17, Market Definitions. | CBRE glossary language checked in a university-hosted copy of the report. |
 | `hohhot_capacity_2023` | Guojin Securities, citing Tsinghua IGI | verified_derived | PDF report page 10, Figure 18. | Downloaded PDF and checked every input. Recomputed 442.5 MW design IT capacity and separately reconciled the reported 326 MW occupied facility load. |
@@ -44,7 +47,7 @@ Independent human review: **pending**
 | `shandong_tariff_2025_03` | State Grid Shandong / Yantai municipal government | verified | Tariff table, 35–110 kV two-part row. | Exact values and effective period checked in the government page. |
 | `hydroquebec_rate_lg_2025` | Hydro-Québec | verified | Articles 5.14–5.15 and high-voltage credit table in Chapter 12. | Rate applicability and each price component checked in Hydro-Québec's rate book. |
 | `hydroquebec_datacenter_classes_2026` | Régie de l'énergie du Québec | verified | One-page member table listing current tariffs for Cologix, Compass, Equinix, eStruxture, QScale and Vantage. | Data-center tariff classes checked in the regulator filing. |
-| `eia_industrial_prices_2025` | U.S. Energy Information Administration | verified | Table 5.6.B, year-to-date through December 2025. | Both state values and the preliminary monthly-series boundary checked in Table 5.6.B. |
+| `eia_industrial_prices_2025` | U.S. Energy Information Administration | verified | Table 5.6.B, year-to-date through December 2025. | All seven state values and the calendar-2025 boundary were checked in EIA's annual retail-sales API and reconciled to Electric Power Monthly Table 5.6.B. |
 | `federal_reserve_fx_2025` | Federal Reserve Board | verified | Annual exchange-rate table, Canada, China and United Kingdom rows, 2025 column. | All annual-average rates and the asterisked USD-per-GBP convention were checked in the Federal Reserve release; the GBP inverse is explicit in the model. |
 | `nvidia_gb200_spec` | NVIDIA | verified | GB200 NVL72 Specs table and footnote 2. | Specification and dense/sparse footnote checked on the vendor page during the research window. |
 | `nvidia_gb200_power` | NVIDIA | verified | Example 1: Configuring a PD for a GB200 NVL72 rack. | Power boundary and value checked in NVIDIA documentation. |

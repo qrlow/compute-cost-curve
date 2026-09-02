@@ -99,6 +99,16 @@
       "benchmarkScope": "great_britain_colocation_max_rated_it_capacity",
       "sourceIds": ["uk_dsit_regional_capacity_2024"],
       "note": "Official GB regional estimate; Northern Ireland and enterprise data centres are outside its scope."
+    },
+    {
+      "country": "United States",
+      "iso3": "USA",
+      "capacityMw": 27585,
+      "observationDate": "2025-12-31",
+      "datePrecision": "year-end",
+      "benchmarkScope": "ten_leading_markets_leased_plus_hyperscaler_capacity",
+      "sourceIds": ["jll_na_active_capacity_2025", "dominion_jll_markets_2025"],
+      "note": "Observed minimum across ten leading US markets. It replaces the earlier Knight Frank named-market forecast subtotal for gap ranking; it is not represented as a complete national census."
     }
   ]
 }

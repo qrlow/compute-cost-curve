@@ -316,13 +316,14 @@ Independent human review: **pending**
 ## Material corrections in this audit pass
 
 - Capacity is now registered independently of price availability. The additive register contains **${round(coverage.capacityRegister.registeredCapacityMw, 1).toLocaleString()} MW** across **${coverage.capacityRegister.registeredRegionCount}** country-region keys.
-- Price coverage is explicit: the comparable proxy covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "comparable_proxy").registeredCapacityCoveragePct, 1)}%** of registered capacity, while data-center tariff evidence covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence").registeredCapacityCoveragePct, 1)}%**.
+- Price coverage is explicit: the combined observed-price-or-tariff category covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "comparable_proxy").registeredCapacityCoveragePct, 1)}%** of registered capacity, while the strict data-center-specific audit subset covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence").registeredCapacityCoveragePct, 1)}%**.
+- Ten non-overlapping JLL US market records add **27,585 MW** of year-end 2025 leased plus hyperscaler-owned capacity. The earlier CBRE Virginia and Dallas wholesale records remain as non-additive source comparisons.
 - Official regional capacity for Great Britain and end-2025 live market capacity for India are in the register even where a qualifying regional price is absent.
 - The country-gap queue is generated from observed country totals where available and otherwise from named-market forecast minima; it is not presented as a complete country census.
 - The CAICT treemap is paired with the **10.43 million racks at 2025-03-31** denominator. The separately published June 2025 total is not mixed into the derivation.
 - Hohhot / Helinger is **442.5 MW of commissioned design IT capacity**, derived from 11 × 16,091 standard racks × 2.5 kW. The reported 326 MW is an occupied facility-load cross-check, not the chart width.
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.
-- Reported observations and constructed tariff proxies are displayed as different evidence scenarios.
+- Applicable tariffs and official industrial averages are combined in the public curves, while every block retains its evidence class and the strict data-center-specific subset remains separately quantified. Hohhot's delivered-price observation is retained only in that subset because its capacity is nested inside Inner Mongolia's provincial width.
 
 ## Included source checks (${includedSources.length})
 
