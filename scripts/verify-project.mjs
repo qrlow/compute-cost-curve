@@ -169,6 +169,16 @@ if (existsSync(generatedPath)) {
   check(generated.includes(`Input SHA-256: ${inputHash}`), "generated chart data matches the current canonical inputs");
 }
 
+const indexPath = resolve(ROOT, "index.html");
+check(existsSync(indexPath), "public page exists");
+if (existsSync(indexPath)) {
+  const indexHtml = readFileSync(indexPath, "utf8");
+  check(
+    indexHtml.includes(`generated/chart-data.js?v=${inputHash.slice(0, 12)}`),
+    "public page cache-buster matches the current canonical inputs"
+  );
+}
+
 const requiredOutputs = [
   "generated/project-summary.json",
   "electricity-capacity-data.csv",
