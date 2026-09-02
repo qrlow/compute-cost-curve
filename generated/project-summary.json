@@ -1,0 +1,50 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0.0",
+    "inputSha256": "89e6dd1b32d23cfdfa86adc5146997642ed6f7ffd2fb53f12729638cca6b0410",
+    "observationCutoff": "2025-12-31",
+    "researchPublicationCutoff": "2026-08-24",
+    "verificationDate": "2026-09-02",
+    "generationCommand": "npm run build"
+  },
+  "capacityMetric": "commissioned_design_it_power_mw",
+  "provinceCount": 31,
+  "nationalCapacityMw": 26075,
+  "sourceCounts": {
+    "verified": 26,
+    "verified_derived": 1,
+    "not_verified": 1,
+    "partial": 2
+  },
+  "independentHumanReview": "pending",
+  "scenarios": [
+    {
+      "id": "reported_prices__same_technology",
+      "blocks": 3,
+      "totalCapacityMw": 5549.4025,
+      "lowestCostLocation": "Hohhot / Helinger",
+      "highestCostLocation": "Northern Virginia"
+    },
+    {
+      "id": "reported_prices__export_constrained",
+      "blocks": 3,
+      "totalCapacityMw": 5549.4025,
+      "lowestCostLocation": "Dallas–Fort Worth",
+      "highestCostLocation": "Hohhot / Helinger"
+    },
+    {
+      "id": "public_price_proxies__same_technology",
+      "blocks": 11,
+      "totalCapacityMw": 20643.0939,
+      "lowestCostLocation": "Montreal, Quebec",
+      "highestCostLocation": "Shandong"
+    },
+    {
+      "id": "public_price_proxies__export_constrained",
+      "blocks": 11,
+      "totalCapacityMw": 20643.0939,
+      "lowestCostLocation": "Montreal, Quebec",
+      "highestCostLocation": "Shandong"
+    }
+  ]
+}

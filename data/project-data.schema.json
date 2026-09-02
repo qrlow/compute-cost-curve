@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qrlow.github.io/compute-cost-curve/data/project-data.schema.json",
+  "title": "Compute cost curve canonical dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "metadata",
+    "capacityStandard",
+    "assumptions",
+    "treemap",
+    "capacityRecords",
+    "priceRecords",
+    "technologyScenarios",
+    "evidenceScenarios",
+    "ledgerBlocks",
+    "sources"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "metadata": {
+      "type": "object",
+      "required": ["title", "observationCutoff", "researchPublicationCutoff", "verificationDate", "currencyBase"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "observationCutoff": {"type": "string", "format": "date"},
+        "researchPublicationCutoff": {"type": "string", "format": "date"},
+        "verificationDate": {"type": "string", "format": "date"},
+        "currencyBase": {"const": "USD"},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "capacityStandard": {
+      "type": "object",
+      "required": ["metricId", "label", "unit", "definition", "chinaBoundary", "globalBoundary", "coverageCaveat"],
+      "properties": {
+        "metricId": {"const": "commissioned_design_it_power_mw"},
+        "label": {"type": "string"},
+        "unit": {"const": "MW"},
+        "definition": {"type": "string"},
+        "chinaBoundary": {"type": "string"},
+        "globalBoundary": {"type": "string"},
+        "coverageCaveat": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "assumptions": {
+      "type": "object",
+      "required": ["standardRackKw", "hoursPerMonth", "tariffLoadFactor", "commonPue", "gb200RackPowerKw", "gb200DenseBf16Pflops", "chinaEfficiencyPenalty", "fxCurrencyPerUsd"],
+      "properties": {
+        "standardRackKw": {"type": "number", "exclusiveMinimum": 0},
+        "hoursPerMonth": {"type": "number", "exclusiveMinimum": 0},
+        "tariffLoadFactor": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "commonPue": {"type": "number", "minimum": 1},
+        "gb200RackPowerKw": {"type": "number", "exclusiveMinimum": 0},
+        "gb200DenseBf16Pflops": {"type": "number", "exclusiveMinimum": 0},
+        "chinaEfficiencyPenalty": {"type": "number", "minimum": 1},
+        "fxCurrencyPerUsd": {
+          "type": "object",
+          "required": ["CNY", "CAD", "USD"],
+          "additionalProperties": {"type": "number", "exclusiveMinimum": 0}
+        }
+      },
+      "additionalProperties": false
+    },
+    "treemap": {"$ref": "#/$defs/treemap"},
+    "capacityRecords": {"type": "array", "items": {"$ref": "#/$defs/capacityRecord"}},
+    "priceRecords": {"type": "array", "items": {"$ref": "#/$defs/priceRecord"}},
+    "technologyScenarios": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/technologyScenario"}},
+    "evidenceScenarios": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/evidenceScenario"}},
+    "ledgerBlocks": {"type": "array", "items": {"$ref": "#/$defs/block"}},
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}}
+  },
+  "$defs": {
+    "treemap": {
+      "type": "object",
+      "required": ["geometryFile", "sourceId", "observationDate", "nationalStandardRacks", "nationalTotalSourceId", "outerBoundsPx", "pdfPage", "reportPage", "renderDpi", "sourcePdfSha256", "renderedPageSha256", "measurementMethod", "publishedTopTenOrder"],
+      "properties": {
+        "geometryFile": {"type": "string"},
+        "sourceId": {"type": "string"},
+        "observationDate": {"type": "string", "format": "date"},
+        "nationalStandardRacks": {"type": "integer", "exclusiveMinimum": 0},
+        "nationalTotalSourceId": {"type": "string"},
+        "outerBoundsPx": {
+          "type": "object",
+          "required": ["x0", "y0", "x1", "y1"],
+          "properties": {"x0": {"type": "integer"}, "y0": {"type": "integer"}, "x1": {"type": "integer"}, "y1": {"type": "integer"}},
+          "additionalProperties": false
+        },
+        "pdfPage": {"type": "integer", "minimum": 1},
+        "reportPage": {"type": "integer", "minimum": 1},
+        "renderDpi": {"type": "integer", "exclusiveMinimum": 0},
+        "sourcePdfSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "renderedPageSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "measurementMethod": {"type": "string"},
+        "publishedTopTenOrder": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "capacityRecord": {
+      "type": "object",
+      "required": ["id", "location", "country", "metricId", "observationDate", "datePrecision", "sourceIds", "harmonizationGrade", "note"],
+      "properties": {
+        "id": {"type": "string"},
+        "location": {"type": "string"},
+        "country": {"type": "string"},
+        "metricId": {"type": "string"},
+        "valueMw": {"type": "number", "exclusiveMinimum": 0},
+        "formula": {"type": "object"},
+        "observationDate": {"type": "string", "format": "date"},
+        "datePrecision": {"type": "string"},
+        "sourceIds": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "harmonizationGrade": {"type": "string"},
+        "note": {"type": "string"}
+      },
+      "oneOf": [{"required": ["valueMw"]}, {"required": ["formula"]}],
+      "additionalProperties": false
+    },
+    "priceRecord": {
+      "type": "object",
+      "required": ["id", "location", "country", "evidenceClass", "formula", "effectiveDate", "datePrecision", "sourceIds", "eligibility"],
+      "properties": {
+        "id": {"type": "string"},
+        "location": {"type": "string"},
+        "country": {"type": "string"},
+        "evidenceClass": {"type": "string"},
+        "formula": {"type": "object"},
+        "effectiveDate": {"type": ["string", "null"]},
+        "datePrecision": {"type": "string"},
+        "sourceIds": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "eligibility": {"type": "string"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "technologyScenario": {
+      "type": "object",
+      "required": ["id", "title", "chinaTechnology", "globalTechnology", "chinaEfficiencyMultiplier", "globalEfficiencyMultiplier", "sourceIds"],
+      "properties": {
+        "id": {"type": "string"},
+        "title": {"type": "string"},
+        "chinaTechnology": {"type": "string"},
+        "globalTechnology": {"type": "string"},
+        "chinaEfficiencyMultiplier": {"type": "number", "minimum": 1},
+        "globalEfficiencyMultiplier": {"type": "number", "minimum": 1},
+        "sourceIds": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "evidenceScenario": {
+      "type": "object",
+      "required": ["id", "title", "subtitle", "note", "blocks"],
+      "properties": {
+        "id": {"type": "string"},
+        "title": {"type": "string"},
+        "subtitle": {"type": "string"},
+        "note": {"type": "string"},
+        "blocks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/block"}}
+      },
+      "additionalProperties": false
+    },
+    "block": {
+      "type": "object",
+      "required": ["id", "location", "country", "capacityRef", "priceRef"],
+      "properties": {
+        "id": {"type": "string"},
+        "location": {"type": "string"},
+        "country": {"type": "string"},
+        "capacityRef": {"type": "string"},
+        "priceRef": {"type": "string"},
+        "status": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["id", "publisher", "title", "url", "tier", "publicationDate", "publicationDatePrecision", "claim", "locator", "verificationStatus", "verificationMethod", "verifiedOn", "independentHumanReview"],
+      "properties": {
+        "id": {"type": "string"},
+        "publisher": {"type": "string"},
+        "title": {"type": "string"},
+        "url": {"type": "string", "format": "uri"},
+        "tier": {"type": "string"},
+        "publicationDate": {"type": ["string", "null"]},
+        "publicationDatePrecision": {"type": "string"},
+        "claim": {"type": "string"},
+        "locator": {"type": "string"},
+        "verificationStatus": {"enum": ["verified", "verified_derived", "partial", "not_verified"]},
+        "verificationMethod": {"type": "string"},
+        "verifiedOn": {"type": "string", "format": "date"},
+        "independentHumanReview": {"enum": ["pending", "complete"]}
+      },
+      "additionalProperties": false
+    }
+  }
+}

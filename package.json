@@ -1,0 +1,12 @@
+{
+  "name": "compute-cost-curve",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:data": "node scripts/build-data.mjs",
+    "verify": "node scripts/verify-project.mjs",
+    "build": "npm run build:data && npm run verify"
+  }
+}
+
