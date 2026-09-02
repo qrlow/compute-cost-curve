@@ -4,20 +4,20 @@
 
 The project asks how much China’s electricity-price advantage can lower the operating electricity cost of raw AI compute, and whether that advantage survives a technology-access penalty. It does not estimate the full cost of training or inference and does not claim that peak dense-BF16 FLOPs equal useful model output.
 
-## Four separate scenarios
+## Two public curves and one audit subset
 
-Two price-evidence cases are crossed with two technology cases.
+The public page combines usable regional price evidence and crosses that category with two technology cases.
 
 ### Price evidence
 
-**Data-center tariff evidence** contains only:
+The **strict data-center-specific subset** contains only:
 
 - Hohhot / Helinger’s reported delivered green-power transaction price of about CNY 0.35/kWh;
 - Hydro-Québec Rate LG applied to the documented Montreal market subtotal, because the regulator filing identifies large named data-center operators on that tariff.
 
-State and national industrial averages are excluded from this tier. It therefore measures applicable data-center price evidence rather than all reported regional averages.
+State and national industrial averages are excluded from this subset. It measures applicable data-center price evidence rather than all reported regional averages, but it is now a coverage diagnostic rather than a separate pair of sparse public charts.
 
-**Comparable electricity-price proxies** contain constructed high-voltage tariff bills for eight China provinces and Quebec, EIA industrial averages for Texas and Virginia, and the provisional 2025 UK non-domestic average for all 11 Great Britain regions. This mixture is stated on the chart and recorded per row; none of these values is silently represented as a disclosed hyperscaler contract.
+The **combined public price category** contains constructed high-voltage tariff bills for eight China provinces and Quebec, EIA calendar-2025 industrial averages for seven US states covering eight JLL markets, and the provisional 2025 UK non-domestic average for all 11 Great Britain regions. This mixture is stated on the chart and recorded per row; none of these values is silently represented as a disclosed hyperscaler contract.
 
 The tariff convention is:
 
@@ -70,17 +70,42 @@ Every row is classified as:
 - `subset_not_additive`: useful evidence nested inside an additive regional total; or
 - `excluded`: retained for audit but outside the harmonized metric.
 
-The additive register contains 31 Chinese provincial aggregates, three North American market subtotals assigned to their state or province, 11 official Great Britain regions and seven Indian live-IT markets. Mumbai and Pune remain separate source records but share the Maharashtra region key; any future regional chart must aggregate them before plotting.
+The additive register contains 31 Chinese provincial aggregates, ten non-overlapping US market aggregates, one Canadian market subtotal, 11 official Great Britain regions and seven Indian live-IT markets. Mumbai and Pune remain separate source records but share the Maharashtra region key; any future regional chart must aggregate them before plotting.
+
+The US rows use JLL's year-end 2025 definition: existing leased plus hyperscaler-owned capacity. Dominion Energy's reproduction of JLL's ten leading markets supplies the exact market values, which total 27,585 MW. CBRE's narrower wholesale-colocation inventories for Northern Virginia and Dallas–Fort Worth remain in the source ledger as `subset_not_additive` comparisons and are not added again.
 
 ## Capacity coverage versus price coverage
 
 Capacity is never removed merely because its regional electricity price is missing. The pipeline computes three distinct layers:
 
-1. **Registered capacity:** 34,599.3 MW across 51 country-region keys.
-2. **Comparable proxy price coverage:** 22,209.1 MW, or 64.2% of registered capacity.
-3. **Data-center tariff evidence coverage:** 672.0 MW, or 1.9% of registered capacity.
+1. **Registered capacity:** 57,077.4 MW across 58 country-region keys.
+2. **Combined observed-price or applicable-tariff coverage:** 39,189.2 MW, or 68.7% of registered capacity.
+3. **Strict data-center-specific audit subset:** 672.0 MW, or 1.2% of registered capacity.
 
-The global denominator is Knight Frank’s retrospective 62 GW headline for 2025. Dividing the register by that total gives indicative global capacity coverage of 55.8%. It is not described as audit-grade global coverage because the source does not publish a country table with the same boundary as each register row.
+The global denominator is Knight Frank’s retrospective 62 GW headline for 2025. Dividing the register by that total gives indicative global capacity coverage of 92.1%. It is not described as audit-grade global coverage because the source does not publish a country table with the same boundary as each register row.
+
+The two public curves use the combined price category. Each block still exposes whether its price is an applicable public tariff, an official regional industrial average or an official national industrial average. The strict 672 MW subset is retained as an audit statistic rather than rendered as two sparse additional curves. Hohhot's delivered-price observation stays in that audit subset because its capacity is nested inside Inner Mongolia's provincial width; plotting both as additive blocks would double count capacity.
+
+### US register and price coverage
+
+The earlier 9.063 GW apparent US gap was not a factual estimate of missing facilities. It came from comparing Knight Frank's broad forecast—which included colocation, self-build and build-to-suit capacity—with two narrower CBRE wholesale-colocation observations. That comparison mixed capacity boundaries.
+
+The replacement register uses one retrospective source boundary across ten JLL markets:
+
+- Virginia 8,315 MW;
+- Pacific Northwest 4,120 MW;
+- Columbus 3,541 MW;
+- Dallas–Fort Worth 2,423 MW;
+- Atlanta 2,070 MW;
+- Austin–San Antonio 1,700 MW;
+- Phoenix 1,653 MW;
+- Omaha 1,378 MW;
+- Chicago 1,223 MW; and
+- Northern Indiana 1,162 MW.
+
+Eight markets join to 2025 EIA state industrial-average prices. Pacific Northwest and Omaha stay in registered capacity but not the cost curves because their published market definitions cross state boundaries. Assigning either market a single state price would create unsupported precision.
+
+This 27.585 GW total is a ten-leading-market observed minimum, not a claim to be a complete national census. It clears the old gap only because the US benchmark now uses the same JLL scope as the register. It should not be read as proof that untracked US capacity is zero.
 
 The ranked research queue in [`country-capacity-gaps.csv`](country-capacity-gaps.csv) uses observed country totals where available. Otherwise it sums named markets from Knight Frank’s 2025 forecast map. Those rows are explicit minimum gaps, not complete country censuses.
 
@@ -111,14 +136,14 @@ The observation cutoff is 31 December 2025. The project does not describe the in
 
 - China’s provincial treemap and national denominator are 31 March 2025.
 - Hohhot / Helinger’s design-capacity inputs are reported for 2023.
-- CBRE benchmark inventories are H2 2025.
+- JLL's ten leading US market capacities are year-end 2025; CBRE's H2 2025 wholesale inventories are retained only as non-additive comparisons.
 - Great Britain’s official regional estimate is autumn 2024.
 - India’s seven live-IT market estimates are end-2025.
 - Electricity-price effective dates are stored separately from capacity dates.
 
 Moving these values to an identical date would require an unsupported growth estimate. The site therefore displays both dates for every block and exposes the mismatch as a limitation.
 
-The research-publication cutoff is 24 August 2026. A publication may appear after the observation it reports, provided it was available by this research cutoff. This is why, for example, CBRE’s March 2026 release can support H2 2025 inventory.
+The research-publication cutoff is 24 August 2026. A publication may appear after the observation it reports, provided it was available by this research cutoff. This is why JLL's and Dominion Energy's February 2026 publications can support year-end 2025 capacity, and CBRE's March 2026 release can support H2 2025 comparison values.
 
 ## Hohhot boundary correction
 
@@ -167,7 +192,7 @@ CAD 0.04165/kWh
   = USD 0.043921/kWh
 ```
 
-This makes Quebec’s documented Montreal subtotal the cheapest block in the comparable-proxy same-technology scenario. That result is conditional on the stated 90% load factor, voltage credit and regulated tariff. It also appears in the data-center tariff evidence tier because the regulator filing establishes applicability to named large data-center operators; it is still not a disclosed contract price.
+This makes Quebec’s documented Montreal subtotal the cheapest block in the combined-price same-technology curve. That result is conditional on the stated 90% load factor, voltage credit and regulated tariff. It also qualifies for the strict data-center-specific audit subset because the regulator filing establishes applicability to named large data-center operators; it is still not a disclosed contract price.
 
 ## Source verification standard
 
@@ -191,7 +216,7 @@ The build independently reconstructs every displayed number from canonical input
 1. read the canonical project JSON, global benchmark JSON and treemap geometry;
 2. hash all three inputs;
 3. derive provincial capacity, named capacity formulas and tariff bills;
-4. generate every price-evidence × technology scenario;
+4. generate the combined-price public curves and the strict data-center-specific audit subset under both technology cases;
 5. sort every curve from lowest to highest cost;
 6. write the browser dataset, facility register, coverage table, country-gap queue and audit registers; and
 7. run definition, date, geometry, reference, source-status and arithmetic checks.
@@ -207,6 +232,6 @@ Every generated row carries the input SHA-256. The page reads only [`generated/c
 - Provincial treemap widths are image-derived estimates, even though the derivation is now exact and reproducible from the recorded geometry.
 - The public-proxy scenario does not model direct-market contracts, taxes, hourly time-of-use schedules, subsidies or facility-specific voltage and load factor.
 - Great Britain capacity is an official 2024 colocation estimate and excludes enterprise data centres; its 2025 national price proxy spans all non-domestic size bands.
-- India has capacity coverage in the register but no qualifying regional price in either current curve.
+- India has capacity coverage in the register but no qualifying regional price in the combined public curves.
 - Country gaps based on the Knight Frank map are forecast named-market minima; they prioritize research but do not prove complete national missing capacity.
 - The curves exclude hardware acquisition, construction, finance, networking, labor, water, maintenance, utilization and model quality.

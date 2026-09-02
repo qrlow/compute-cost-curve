@@ -257,7 +257,7 @@
           <p class="eyebrow">China versus global benchmarks</p>
           <h1>How far can cheap power carry China in the AI race?</h1>
         </div>
-        <p class="dek">Four cost curves keep capacity, electricity-price evidence and hardware access separate: a global regional register, two price scenarios and two technology scenarios.</p>
+        <p class="dek">Two cost curves compare technology access using one combined regional price-evidence category. Every block still identifies whether its price is an applicable public tariff or an official industrial average.</p>
       </div>
       <div class="audit-strip" aria-label="Project controls">
         <div><small>Capacity registered</small><strong id="registered-capacity">—</strong></div>
@@ -285,10 +285,10 @@
       <section aria-labelledby="curves-title">
         <div class="matrix-head">
           <div>
-            <p class="kicker">The four curves</p>
-            <h2 id="curves-title">Price evidence × technology access</h2>
+            <p class="kicker">The two curves</p>
+            <h2 id="curves-title">Combined price evidence × technology access</h2>
           </div>
-          <p>The y-axis is fixed across all four charts. Capacity is registered independently first; each curve then shows only the share for which that price scenario has qualifying evidence.</p>
+          <p>The y-axis is fixed across both charts. Applicable public tariffs and official industrial averages share one category, while their evidence classes remain visible and independently auditable.</p>
         </div>
         <div class="coverage-layout" aria-labelledby="coverage-title">
           <div class="coverage-copy">
@@ -320,7 +320,7 @@
           </div>
         </div>
         <div id="scenario-matrix" class="matrix"></div>
-        <div class="reading-note"><strong>Important:</strong> Registered capacity does not disappear when its price is missing. Great Britain and India are retained in the capacity register; Great Britain enters the comparable proxy curve, while India remains visibly counted as capacity awaiting qualifying regional price evidence.</div>
+        <div class="reading-note"><strong>Important:</strong> The US register now contains 27.585 GW across ten leading JLL markets. Pacific Northwest and Omaha remain in the capacity register but outside the curves because their published market boundaries cross states and cannot be assigned one factual state electricity price. Microsoft's Wisconsin Fairwater facility is excluded because its first phase came online after 2025. India likewise remains registered while awaiting qualifying regional price evidence.</div>
       </section>
 
       <section class="section" aria-labelledby="method-title">
@@ -340,7 +340,7 @@
           <article class="method-card">
             <small>Global regional register</small>
             <h3>Capacity exists before a price joins it</h3>
-            <p>The register now retains 31 Chinese provinces, selected North American state/province market subtotals, 11 official Great Britain regions and seven Indian live-IT markets. Additive, subset and excluded rows are explicit.</p>
+            <p>The register retains 31 Chinese provinces, ten leading US markets covering leased and hyperscaler-owned capacity, selected Canadian capacity, 11 official Great Britain regions and seven Indian live-IT markets. Additive, subset and excluded rows are explicit.</p>
           </article>
           <article class="method-card">
             <small>Cost calculation</small>
@@ -379,7 +379,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
           <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
-          <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, comparable-price and tariff-evidence coverage</span></a>
+          <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, combined-price and strict data-center-specific coverage</span></a>
           <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
           <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Claim, exact locator, status and check method</span></a>
         </div>
@@ -393,7 +393,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           </div>
         </details>
         <div class="caveat">
-          <p><strong>Observation dates are explicit, but not identical across all sources.</strong> Capacity must be operational by 31 December 2025. China’s provincial distribution is dated 31 March 2025, Great Britain’s official regional estimate is autumn 2024, India is end-2025 and CBRE inventories are H2 2025. The register exposes these vintages instead of silently treating them as a same-day census.</p>
+          <p><strong>Observation dates are explicit, but not identical across all sources.</strong> Capacity must be operational by 31 December 2025. The expanded US and India market records are year-end 2025, China’s provincial distribution is dated 31 March 2025, and Great Britain’s official regional estimate is autumn 2024. The register exposes these vintages instead of silently treating them as a same-day census.</p>
           <p><strong>Research publication cutoff:</strong> 24 August 2026. This is only the date by which supporting publications had to be available; it does not alter their observation dates.</p>
         </div>
       </section>
@@ -405,15 +405,16 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
     </footer>
   </div>
 
-  <script src="generated/chart-data.js?v=e59b671b8f38"></script>
+  <script src="generated/chart-data.js?v=e858e3777749"></script>
   <script>
     (() => {
       "use strict";
       const data = window.COMPUTE_COST_DATA;
       if (!data) throw new Error("Generated chart data failed to load.");
 
+      const displayedScenarios = data.scenarios.filter((scenario) => scenario.evidenceId === "comparable_proxy");
       const byEvidence = new Map();
-      for (const scenario of data.scenarios) {
+      for (const scenario of displayedScenarios) {
         if (!byEvidence.has(scenario.evidenceId)) byEvidence.set(scenario.evidenceId, []);
         byEvidence.get(scenario.evidenceId).push(scenario);
       }
@@ -424,7 +425,13 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const megawatts = (value) => `${value.toLocaleString(undefined, {maximumFractionDigits: 1})} MW`;
       const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
       const percentage = (value) => `${value.toFixed(1)}%`;
-      const maximumObservedCost = Math.max(...data.scenarios.flatMap((scenario) => scenario.blocks.map((block) => block.costUsdPer1e19Flops)));
+      const evidenceLabel = (evidenceClass) => ({
+        reported_delivered_price: "Delivered price observation",
+        constructed_public_tariff_proxy: "Applicable public tariff",
+        reported_regional_average: "Official regional industrial average",
+        reported_national_average_proxy: "Official national non-domestic average"
+      })[evidenceClass] || evidenceClass.replaceAll("_", " ");
+      const maximumObservedCost = Math.max(...displayedScenarios.flatMap((scenario) => scenario.blocks.map((block) => block.costUsdPer1e19Flops)));
       const maximumCost = Math.max(0.6, Math.ceil(maximumObservedCost / 0.1) * 0.1);
 
       function renderCurve(scenario) {
@@ -466,7 +473,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         const key = scenario.blocks.map((block, index) => `
           <div class="block-key-item">
             <span class="key-number" style="--country:${countryColor(block.country)}">${index + 1}</span>
-            <div><strong>${block.location}</strong><span>${megawatts(block.capacityMw)} · ${money(block.costUsdPer1e19Flops)} / 10¹⁹ FLOPs · ${(block.denseBf16FlopsPerUsdE19).toFixed(2)} × 10¹⁹ FLOPs/$</span><span>${block.capacityObservationDate} capacity · ${block.priceEffectiveDate} price</span></div>
+            <div><strong>${block.location}</strong><span>${megawatts(block.capacityMw)} · ${money(block.costUsdPer1e19Flops)} / 10¹⁹ FLOPs · ${(block.denseBf16FlopsPerUsdE19).toFixed(2)} × 10¹⁹ FLOPs/$</span><span>${block.capacityObservationDate} capacity · ${block.priceEffectiveDate} price</span><span>Evidence: ${evidenceLabel(block.priceEvidenceClass)}</span></div>
           </div>`).join("");
 
         return `<article class="chart-card">
@@ -516,7 +523,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           globalPct: capacityCoverage.globalCapacityCoveragePct,
           regions: capacityCoverage.registeredRegionCount
         },
-        ...data.coverage.priceScenarios.map((scenario) => ({
+        ...[...data.coverage.priceScenarios].sort((a, b) => a.evidenceId === "comparable_proxy" ? -1 : b.evidenceId === "comparable_proxy" ? 1 : 0).map((scenario) => ({
           label: scenario.label,
           capacityMw: scenario.priceCoveredMw,
           registerPct: scenario.registeredCapacityCoveragePct,
@@ -533,6 +540,8 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
 
       const scopeLabel = (scope) => scope === "country_live_it_capacity"
         ? "Country live-IT total"
+        : scope === "ten_leading_markets_leased_plus_hyperscaler_capacity"
+          ? "Ten observed markets"
         : scope === "named_market_forecast_minimum"
           ? "Named-market minimum"
           : "Observed regional total";

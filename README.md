@@ -1,6 +1,6 @@
 # AI compute electricity cost curves
 
-This project is an auditable, static cost-curve visualization for AI-compute electricity. Capacity is registered independently of electricity-price availability, then joined to two price-evidence scenarios under equal-technology and export-constrained technology assumptions.
+This project is an auditable, static cost-curve visualization for AI-compute electricity. Capacity is registered independently of electricity-price availability, then joined to one combined regional price-evidence category under equal-technology and export-constrained technology assumptions. A stricter data-center-specific subset remains separately quantified in the audit outputs.
 
 [View the published curves](https://qrlow.github.io/compute-cost-curve/)
 
@@ -11,12 +11,12 @@ This project is an auditable, static cost-curve visualization for AI-compute ele
 - **Order:** every curve runs from the lowest cost on the left to the highest on the right.
 - **Inverse metric:** the downloadable data also report 10¹⁹ dense-BF16 FLOPs per electricity dollar.
 
-The page shows four curves because it keeps two questions separate:
+The page shows two curves because it keeps the technology question separate while combining usable regional price evidence:
 
-1. **Price evidence:** comparable public-price proxies versus data-center tariff evidence.
+1. **Price evidence:** demonstrably applicable tariffs and official industrial averages share one public category, with the exact evidence class retained on every block. Hohhot's delivered-price observation remains in the strict audit subset because its capacity is nested inside the Inner Mongolia provincial width.
 2. **Technology access:** NVIDIA GB200 NVL72 everywhere versus Huawei CloudMatrix384 in China and GB200 elsewhere.
 
-The additive capacity register currently contains **34,599.3 MW across 51 country-region keys**, equal to an indicative **55.8%** of Knight Frank’s 62 GW global 2025 headline. The comparable proxy covers 64.2% of registered capacity; data-center tariff evidence covers 1.9%. These percentages are generated rather than hand-maintained.
+The additive capacity register currently contains **57,077.4 MW across 58 country-region keys**, equal to an indicative **92.1%** of Knight Frank’s 62 GW global 2025 headline. The combined price category covers **39,189.2 MW**, or **68.7%** of registered capacity; the strict data-center-specific subset covers **672.0 MW**, or **1.2%**. These percentages are generated rather than hand-maintained.
 
 ## Capacity standard
 
@@ -24,7 +24,9 @@ The canonical metric is **commissioned design IT power**: the non-redundant IT o
 
 - China’s provincial widths are derived from all 31 rectangles in CAICT’s rack-distribution treemap. Pixel geometry is scaled to 10.43 million standard racks at 31 March 2025 and converted at 2.5 kW per standard rack. The rectangles exactly tile the treemap and sum to 26,075 MW.
 - Hohhot / Helinger’s documented subset is 442.5025 MW: 11 centers × 16,091 standard racks × 2.5 kW. The source’s 326 MW figure reconciles as occupied facility load after utilization and PUE, so it is not used as design capacity.
-- Quebec, Texas and Virginia currently use CBRE market subtotals as transparent regional lower bounds.
+- The United States contributes **27,585 MW across ten non-overlapping JLL year-end 2025 markets**, covering leased and hyperscaler-owned capacity. Earlier CBRE Virginia and Dallas wholesale values remain as non-additive source comparisons.
+- Pacific Northwest and Omaha remain registered but unpriced because the published market definitions cross states and cannot be assigned one factual state electricity-price average.
+- Microsoft's Wisconsin Fairwater site is not counted in the 2025 operational curve: Microsoft described the first facility as on track to come online in early 2026 and announced completion in June 2026.
 - Great Britain contributes 11 official ITL1 regional estimates totaling 1,566 MW.
 - India contributes seven end-2025 live-IT market observations totaling 1,621.9 MW.
 
@@ -36,11 +38,13 @@ The observation cutoff is **31 December 2025**. Inputs use the latest qualifying
 
 The research-publication cutoff is **24 August 2026**. It is a provenance freeze only; it does not change any observation date.
 
-The project distinguishes:
+The project preserves these distinctions on every price row:
 
 - reported delivered or regional-average prices;
 - constructed public-tariff bills at a common 90% load factor; and
 - excluded targets, post-cutoff records, undated records, boundary mismatches and unverified claims.
+
+The public curves combine applicable tariffs and official industrial averages. The strict data-center-specific subset is retained as an audit coverage measure rather than a separate sparse pair of charts; a nested capacity observation is not added to its parent regional width a second time.
 
 ## Reproduce the project
 
@@ -61,11 +65,11 @@ The main audit outputs are:
 
 - [`audit/capacity-derivation.csv`](audit/capacity-derivation.csv): every rectangle, area share, rack estimate and MW result;
 - [`global-facility-register.csv`](global-facility-register.csv): all sourced or derived facility, campus, market and regional records with additive roles;
-- [`coverage-summary.csv`](coverage-summary.csv): capacity coverage separated from the two price-evidence layers;
+- [`coverage-summary.csv`](coverage-summary.csv): capacity coverage separated from the combined chart layer and strict data-center-specific subset;
 - [`country-capacity-gaps.csv`](country-capacity-gaps.csv): the ranked country research queue, with benchmark scope and status;
 - [`audit/source-verification.csv`](audit/source-verification.csv): every source, exact locator, verification method and status;
 - [`audit/verification-report.md`](audit/verification-report.md): material corrections and included-source audit;
-- [`electricity-capacity-data.csv`](electricity-capacity-data.csv): all four generated scenario datasets.
+- [`electricity-capacity-data.csv`](electricity-capacity-data.csv): the generated combined and strict-subset scenario datasets; the public page displays the two combined-price technology curves.
 
 Source-by-source reproduction is complete. The register intentionally records **independent human review as pending**; automated reconstruction is not represented as a second auditor’s sign-off.
 
