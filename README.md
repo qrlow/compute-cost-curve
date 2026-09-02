@@ -43,6 +43,14 @@ total. Reported Hohhot and Gui'an data-center prices are applied only to matched
 capacity. Other blocks use clearly labelled high-voltage tariff proxies rather
 than claiming undisclosed hyperscaler contract prices.
 
+Montreal uses Hydro-Québec's 2025 **Rate LG**, the large-power rate applicable
+to non-industrial customers such as data centers—not the cheaper industrial
+Rate L. At 120 kV and the same 90% load-factor convention used for the Chinese
+two-part tariff proxies, the calculation is CAD 0.04165/kWh plus the net demand
+charge of (CAD 15.963 − CAD 3.0063)/(730 hours × 90%), or CAD 0.0613711/kWh.
+Converted at the Federal Reserve's 2025 average of CAD 1.3973 per USD, this is
+USD 0.0439211/kWh.
+
 The first curve uses an NVIDIA GB200 NVL72 rack at 180 dense-BF16 PFLOP/s,
 approximately 120 kW, and a common PUE of 1.20 everywhere. It isolates
 electricity price.

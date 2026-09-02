@@ -159,6 +159,33 @@ time-of-use schedules, voltage, taxes, subsidies, and load factor can change an
 actual bill. A future edition should replace the monthly snapshots with a full
 12-month hourly tariff calculation and a direct-market price scenario.
 
+### Montreal tariff correction
+
+Montreal uses Hydro-Québec's **Rate LG**, not Rate L. Rate L is principally for
+industrial activity; Rate LG applies to non-industrial annual contracts with a
+minimum billing demand of 5 MW. Hydro-Québec's 2026 rate filing confirms that
+the data centers covered in its 2025 customer table were billed on Rates M and
+LG. The large Montreal block therefore uses Rate LG.
+
+The 2025 Rate LG components effective 1 April 2025 are CAD 15.963/kW-month plus
+CAD 0.04165/kWh. A customer supplied at 120 kV receives the CAD
+3.0063/kW-month credit for the 80–170 kV band. Applying the same 90% load-factor
+convention as the Chinese tariff proxies gives:
+
+```text
+Montreal Rate LG proxy
+  = CAD 0.04165/kWh
+    + (CAD 15.963 - CAD 3.0063) / (730 hours x 90%)
+  = CAD 0.0613711/kWh
+  = USD 0.0439211/kWh at CAD 1.3973 per USD
+```
+
+This remains a transparent regulated-tariff proxy, not a disclosed contract
+price for any particular Montreal data center. It leaves Montreal slightly
+cheaper than the reported Hohhot / Helinger price in the same-technology curve,
+rather than giving Montreal the much larger advantage implied by industrial
+Rate L.
+
 Shanxi's available tariff observation is April 2026 because a machine-readable
 2025 table was not obtained. It is therefore excluded from the headline curve.
 
@@ -178,7 +205,9 @@ observations, not a complete or boundary-harmonized global census.
 ## Currency conversion
 
 CNY values use the US Federal Reserve's 2025 annual average of CNY 7.1875 per US
-dollar. The benchmark values retain the earlier source-specific conversions.
+dollar. Montreal uses the same release's 2025 annual average of CAD 1.3973 per
+US dollar. The other benchmark values retain their documented source-specific
+conversions.
 
 Texas and Virginia now use EIA Electric Power Monthly table 5.6.B preliminary
 calendar-2025 industrial averages: 6.55 and 9.45 cents/kWh respectively. This
@@ -195,6 +224,8 @@ replaces the earlier 2024 annual values so the US price observation matches the
 - [Gui'an powered-on capacity](https://www.guiyang.gov.cn/zwgk/zwgkzdlyxxgkjyta/zwgkzdlyxxgkjytazxtawfws/zwgkzdlyxxgkjytazxtawfwsqs/202506/t20250603_87956837.html)
 - [Gui'an 2025 price target](https://nyj.guizhou.gov.cn/zwgk/xxgkml/zdlyxx/czzj/202503/P020250307503578350701.pdf)
 - [Federal Reserve exchange rates](https://www.federalreserve.gov/releases/g5a/current/default.htm)
+- [Hydro-Québec electricity rates effective 1 April 2025](https://www.hydroquebec.com/data/documents-donnees/pdf/electricity-rates.pdf?v=HT-2025-v3)
+- [Hydro-Québec filing identifying 2025 data-center customers on Rates M and LG](https://www.regie-energie.qc.ca/fr/participants/dossiers/R-4333-2026/doc/R-4333-2026-B-0004-Dem-Piece-2026_02_19.pdf)
 - [NVIDIA GB200 NVL72 specifications](https://www.nvidia.com/en-us/data-center/gb200-nvl72/)
 - [NVIDIA GB200 NVL72 rack-power estimate](https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html)
 - [Huawei CloudMatrix384 performance and deployment](https://www.huawei.com/en/news/2025/9/hc-xu-keynote-speech)
