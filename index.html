@@ -17,6 +17,7 @@
       --china-soft: #d98676;
       --us: #356d9b;
       --canada: #cb9222;
+      --uk: #6f5d91;
       --accent: #264f42;
       --verified: #267150;
       --excluded: #9d4034;
@@ -120,6 +121,19 @@
     .matrix-head { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 28px; }
     .matrix-head p { max-width: 570px; margin: 0; color: var(--muted); font-size: 13px; }
     .matrix { display: grid; gap: 52px; }
+    .coverage-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 28px; margin: 0 0 54px; align-items: start; }
+    .coverage-copy { padding: 24px; border-top: 4px solid var(--accent); background: var(--surface); }
+    .coverage-copy strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 29px; font-weight: 500; line-height: 1.05; }
+    .coverage-copy p { margin: 0; color: var(--muted); font-size: 12px; }
+    .coverage-tables { display: grid; gap: 18px; }
+    .coverage-box { border: 1px solid var(--line); background: rgb(255 253 248 / .76); }
+    .coverage-box h3 { margin: 0; padding: 14px 16px 10px; font-size: 13px; }
+    .coverage-box p { margin: 0; padding: 0 16px 14px; color: var(--muted); font-size: 10px; }
+    .coverage-table { min-width: 0; font-size: 10px; }
+    .coverage-table th, .coverage-table td { padding: 9px 10px; }
+    .coverage-table td:nth-child(n + 2) { white-space: nowrap; }
+    .coverage-table td strong { font-size: 12px; }
+    .gap-table td:first-child { width: 31px; color: var(--muted); font-weight: 700; }
     .evidence-row { padding-top: 28px; border-top: 1px solid var(--ink); }
     .evidence-head { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; margin-bottom: 20px; align-items: end; }
     .evidence-head h3 { margin: 0; font-size: 19px; }
@@ -141,6 +155,7 @@
     .bar.china { fill: var(--china); }
     .bar.us { fill: var(--us); }
     .bar.canada { fill: var(--canada); }
+    .bar.uk { fill: var(--uk); }
     .bar-label { fill: var(--white); font-size: 9px; font-weight: 850; text-anchor: middle; }
     .bar-label.outside { fill: var(--ink); }
     .chart-note { padding: 12px 17px 15px; color: var(--muted); font-size: 11px; }
@@ -176,7 +191,7 @@
     .correction strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
     .correction p { margin: 0; color: #45504b; font-size: 13px; }
 
-    .downloads { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--ink); background: var(--surface); }
+    .downloads { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--ink); background: var(--surface); }
     .download { padding: 18px; border-right: 1px solid var(--ink); }
     .download:last-child { border-right: 0; }
     .download strong { display: block; margin-bottom: 6px; font-size: 12px; }
@@ -202,7 +217,7 @@
     code.hash { overflow-wrap: anywhere; }
 
     @media (max-width: 900px) {
-      .hero, .intro-grid, .section-head { grid-template-columns: 1fr; gap: 28px; }
+      .hero, .intro-grid, .section-head, .coverage-layout { grid-template-columns: 1fr; gap: 28px; }
       .audit-strip { grid-template-columns: 1fr 1fr; }
       .audit-strip div:nth-child(2) { border-right: 0; }
       .audit-strip div:nth-child(-n + 2) { border-bottom: 1px solid var(--ink); }
@@ -210,8 +225,9 @@
       .evidence-head { grid-template-columns: 1fr; gap: 8px; }
       .method-grid, .correction-grid { grid-template-columns: 1fr; }
       .downloads { grid-template-columns: 1fr 1fr; }
-      .download:nth-child(2) { border-right: 0; }
-      .download:nth-child(-n + 2) { border-bottom: 1px solid var(--ink); }
+      .download:nth-child(even) { border-right: 0; }
+      .download { border-bottom: 1px solid var(--ink); }
+      .download:last-child { border-bottom: 0; }
     }
     @media (max-width: 560px) {
       .page { width: min(100% - 24px, 1220px); }
@@ -241,11 +257,11 @@
           <p class="eyebrow">China versus global benchmarks</p>
           <h1>How far can cheap power carry China in the AI race?</h1>
         </div>
-        <p class="dek">Four cost curves separate the evidence question—reported prices versus public-tariff proxies—from the technology question—equal hardware versus export-constrained hardware.</p>
+        <p class="dek">Four cost curves keep capacity, electricity-price evidence and hardware access separate: a global regional register, two price scenarios and two technology scenarios.</p>
       </div>
       <div class="audit-strip" aria-label="Project controls">
-        <div><small>Capacity metric</small><strong>Commissioned design IT power</strong></div>
-        <div><small>China derivation</small><strong>31 rectangles, exactly tiled</strong></div>
+        <div><small>Capacity registered</small><strong id="registered-capacity">—</strong></div>
+        <div><small>Indicative global coverage</small><strong id="global-coverage">—</strong></div>
         <div><small>Observation cutoff</small><strong id="observation-cutoff">31 December 2025</strong></div>
         <div><small>Rebuild</small><strong>One command: npm run build</strong></div>
       </div>
@@ -272,10 +288,39 @@
             <p class="kicker">The four curves</p>
             <h2 id="curves-title">Price evidence × technology access</h2>
           </div>
-          <p>The y-axis is fixed at $0–$0.60 across all four charts. Widths are comparable only within the same price-evidence row because the reported-price scenario contains fewer qualifying locations.</p>
+          <p>The y-axis is fixed across all four charts. Capacity is registered independently first; each curve then shows only the share for which that price scenario has qualifying evidence.</p>
+        </div>
+        <div class="coverage-layout" aria-labelledby="coverage-title">
+          <div class="coverage-copy">
+            <p class="kicker">Coverage, not hidden omissions</p>
+            <strong id="coverage-title"><span id="registered-regions">—</span> regional markets registered</strong>
+            <p>The global percentage uses Knight Frank’s retrospective 62 GW headline for 2025. It is explicitly indicative because the denominator is not published with the same regional boundary as every register row.</p>
+          </div>
+          <div class="coverage-tables">
+            <div class="coverage-box">
+              <h3>Capacity coverage versus price coverage</h3>
+              <div class="table-scroll">
+                <table class="coverage-table">
+                  <thead><tr><th>Layer</th><th>Capacity</th><th>Of register</th><th>Of global benchmark</th><th>Regions priced</th></tr></thead>
+                  <tbody id="coverage-summary"></tbody>
+                </table>
+              </div>
+              <p>“Of register” answers how much documented capacity has a price. “Of global” answers how much of the indicative 62 GW benchmark reaches that evidential layer.</p>
+            </div>
+            <div class="coverage-box">
+              <h3>Largest country-capacity research gaps</h3>
+              <div class="table-scroll">
+                <table class="coverage-table gap-table">
+                  <thead><tr><th>#</th><th>Country</th><th>Missing GW</th><th>Benchmark scope</th></tr></thead>
+                  <tbody id="country-gaps"></tbody>
+                </table>
+              </div>
+              <p>Except where an observed country total is available, these are minimum gaps based on named markets in Knight Frank’s 2025 forecast map; true country gaps may be larger.</p>
+            </div>
+          </div>
         </div>
         <div id="scenario-matrix" class="matrix"></div>
-        <div class="reading-note"><strong>Important:</strong> Montreal appears only in the public-price-proxy row. Its Rate LG bill is a transparent tariff construction, not a reported data-center electricity transaction. The reported-price row therefore omits it.</div>
+        <div class="reading-note"><strong>Important:</strong> Registered capacity does not disappear when its price is missing. Great Britain and India are retained in the capacity register; Great Britain enters the comparable proxy curve, while India remains visibly counted as capacity awaiting qualifying regional price evidence.</div>
       </section>
 
       <section class="section" aria-labelledby="method-title">
@@ -293,9 +338,9 @@
             <p>Every rectangle boundary from CAICT Figure 6 is stored in pixels. The 31 areas exactly tile the full treemap and are scaled to the matched 10.43 million-rack total at 31 March 2025.</p>
           </article>
           <article class="method-card">
-            <small>Global benchmarks</small>
-            <h3>Commissioned wholesale IT power</h3>
-            <p>CBRE H2 2025 inventory is treated as commissioned critical IT power delivered to the PDU. It is definitionally close to China’s design IT power, but covers selected wholesale colocation markets rather than a national universe.</p>
+            <small>Global regional register</small>
+            <h3>Capacity exists before a price joins it</h3>
+            <p>The register now retains 31 Chinese provinces, selected North American state/province market subtotals, 11 official Great Britain regions and seven Indian live-IT markets. Additive, subset and excluded rows are explicit.</p>
           </article>
           <article class="method-card">
             <small>Cost calculation</small>
@@ -329,13 +374,14 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
             <p class="kicker">Reproduce and inspect</p>
             <h2 id="audit-title">Every displayed number has a route back to evidence</h2>
           </div>
-          <p>The build hashes both canonical inputs, derives every output, and then runs definition, date, geometry, reference, ordering and arithmetic checks. Source-by-source reproduction is complete; a second human auditor’s review remains pending.</p>
+          <p>The build hashes the canonical project data, the global benchmark register and the CAICT geometry, then derives every chart, coverage percentage and research gap. Source-by-source reproduction is complete; a second human auditor’s review remains pending.</p>
         </div>
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
-          <a class="download" href="audit/capacity-derivation.csv"><strong>Provincial derivation</strong><span>31 rectangles, pixel areas, rack estimates and MW</span></a>
+          <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
+          <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, comparable-price and tariff-evidence coverage</span></a>
+          <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
           <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Claim, exact locator, status and check method</span></a>
-          <a class="download" href="audit/verification-report.md"><strong>Verification report</strong><span>Material corrections and included-source audit</span></a>
         </div>
         <details>
           <summary>Open the complete source-by-source verification register</summary>
@@ -347,7 +393,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           </div>
         </details>
         <div class="caveat">
-          <p><strong>Observation dates are explicit, but not identical across all sources.</strong> The common rule is the latest qualifying observation at or before 31 December 2025: China’s provincial distribution is dated 31 March 2025, Hohhot’s design-capacity inputs are 2023, and CBRE benchmark inventories are H2 2025. Advancing any one of these to a common exact day would require an unsupported estimate, so the project exposes the mismatch instead.</p>
+          <p><strong>Observation dates are explicit, but not identical across all sources.</strong> Capacity must be operational by 31 December 2025. China’s provincial distribution is dated 31 March 2025, Great Britain’s official regional estimate is autumn 2024, India is end-2025 and CBRE inventories are H2 2025. The register exposes these vintages instead of silently treating them as a same-day census.</p>
           <p><strong>Research publication cutoff:</strong> 24 August 2026. This is only the date by which supporting publications had to be available; it does not alter their observation dates.</p>
         </div>
       </section>
@@ -372,15 +418,14 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         byEvidence.get(scenario.evidenceId).push(scenario);
       }
 
-      const countryClass = (country) => country === "China" ? "china" : country === "Canada" ? "canada" : "us";
-      const countryColor = (country) => country === "China" ? "#b43e32" : country === "Canada" ? "#cb9222" : "#356d9b";
+      const countryClass = (country) => country === "China" ? "china" : country === "Canada" ? "canada" : country === "United Kingdom" ? "uk" : "us";
+      const countryColor = (country) => country === "China" ? "#b43e32" : country === "Canada" ? "#cb9222" : country === "United Kingdom" ? "#6f5d91" : "#356d9b";
       const money = (value, digits = 3) => `$${value.toFixed(digits)}`;
       const megawatts = (value) => `${value.toLocaleString(undefined, {maximumFractionDigits: 1})} MW`;
-      const shortName = (location) => location
-        .replace("Hohhot / Helinger", "Hohhot")
-        .replace("Dallas–Fort Worth", "Dallas")
-        .replace("Northern Virginia", "N. Virginia")
-        .replace("Montreal, Quebec", "Montreal");
+      const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
+      const percentage = (value) => `${value.toFixed(1)}%`;
+      const maximumObservedCost = Math.max(...data.scenarios.flatMap((scenario) => scenario.blocks.map((block) => block.costUsdPer1e19Flops)));
+      const maximumCost = Math.max(0.6, Math.ceil(maximumObservedCost / 0.1) * 0.1);
 
       function renderCurve(scenario) {
         const width = 620;
@@ -391,7 +436,6 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         const baseline = 292;
         const plotWidth = width - left - right;
         const plotHeight = baseline - top;
-        const maximumCost = 0.60;
         const x = (capacity) => left + capacity / scenario.totalCapacityMw * plotWidth;
         const y = (cost) => baseline - cost / maximumCost * plotHeight;
         let cumulative = 0;
@@ -410,7 +454,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           labels.push(`<text class="bar-label${outside}" x="${(x0 + barWidth / 2).toFixed(2)}" y="${labelY.toFixed(2)}">${index + 1}</text>`);
         });
 
-        const yTicks = [0, .1, .2, .3, .4, .5, .6].map((tick) => {
+        const yTicks = Array.from({length: Math.round(maximumCost / 0.1) + 1}, (_, index) => index / 10).map((tick) => {
           const tickY = y(tick);
           return `<line class="gridline" x1="${left}" y1="${tickY}" x2="${width - right}" y2="${tickY}"></line><text class="tick" x="${left - 7}" y="${tickY + 3}" text-anchor="end">${tick.toFixed(1)}</text>`;
         }).join("");
@@ -428,7 +472,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         return `<article class="chart-card">
           <div class="chart-card-head">
             <div><h4 class="scenario-title">${scenario.technologyTitle}</h4><p class="scenario-tech">China: ${scenario.chinaTechnology}<br>Elsewhere: ${scenario.globalTechnology}</p></div>
-            <span class="scenario-total">${megawatts(scenario.totalCapacityMw)} shown</span>
+            <span class="scenario-total">${megawatts(scenario.totalCapacityMw)} price-covered</span>
           </div>
           <div class="chart-scroll">
             <svg class="cost-curve" viewBox="0 0 ${width} ${height}" role="img" aria-label="${scenario.evidenceTitle}, ${scenario.technologyTitle}, sorted from lowest to highest electricity cost">
@@ -459,6 +503,48 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
             <div class="chart-grid">${ordered.map(renderCurve).join("")}</div>
           </section>`);
       }
+
+      const capacityCoverage = data.coverage.capacityRegister;
+      document.getElementById("registered-capacity").textContent = gigawatts(capacityCoverage.registeredCapacityMw);
+      document.getElementById("global-coverage").textContent = `${percentage(capacityCoverage.globalCapacityCoveragePct)} indicative`;
+      document.getElementById("registered-regions").textContent = capacityCoverage.registeredRegionCount;
+      document.getElementById("coverage-summary").innerHTML = [
+        {
+          label: "Capacity register",
+          capacityMw: capacityCoverage.registeredCapacityMw,
+          registerPct: 100,
+          globalPct: capacityCoverage.globalCapacityCoveragePct,
+          regions: capacityCoverage.registeredRegionCount
+        },
+        ...data.coverage.priceScenarios.map((scenario) => ({
+          label: scenario.label,
+          capacityMw: scenario.priceCoveredMw,
+          registerPct: scenario.registeredCapacityCoveragePct,
+          globalPct: scenario.globalCapacityCoveragePct,
+          regions: scenario.regionsWithPrice
+        }))
+      ].map((row) => `<tr>
+        <td><strong>${row.label}</strong></td>
+        <td>${gigawatts(row.capacityMw)}</td>
+        <td>${percentage(row.registerPct)}</td>
+        <td>${percentage(row.globalPct)}</td>
+        <td>${row.regions}</td>
+      </tr>`).join("");
+
+      const scopeLabel = (scope) => scope === "country_live_it_capacity"
+        ? "Country live-IT total"
+        : scope === "named_market_forecast_minimum"
+          ? "Named-market minimum"
+          : "Observed regional total";
+      document.getElementById("country-gaps").innerHTML = data.coverage.countryGaps
+        .filter((row) => row.missingCapacityMw > 0)
+        .slice(0, 10)
+        .map((row, index) => `<tr>
+          <td>${index + 1}</td>
+          <td><strong>${row.country}</strong></td>
+          <td>${(row.missingCapacityMw / 1000).toFixed(2)}</td>
+          <td>${scopeLabel(row.benchmarkScope)}</td>
+        </tr>`).join("");
 
       const sources = [...data.sources].sort((a, b) => {
         const rank = {verified_derived: 0, verified: 1, partial: 2, not_verified: 3};
