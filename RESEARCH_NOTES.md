@@ -19,26 +19,22 @@ raw FLOPs per electricity dollar
 Electricity price alone determines vertical ordering. The result is not a
 measurement of useful model output.
 
-## Cutoff policy
+## Observation-date policy
 
-The project uses two separate cutoffs:
+The headline reference date is **31 December 2025**. Each plotted block uses
+the latest capacity observation and electricity-price period ending on or
+before that date. Exact source dates are displayed alongside the values so the
+age of each input remains visible. This is not described as an exact same-day
+census because the public series have different reporting schedules.
 
-- **Observation/effective-date cutoff: 31 December 2025.** Capacity must
-  describe operating or commissioned stock by this date; an electricity price
-  must be effective by this date.
-- **Research publication cutoff: 24 August 2026.** A source may be published
-  after 2025 if it reports retrospectively on a 2025-or-earlier observation.
+Month-, half-year-, and year-only observations are normalized to the relevant
+period end and labelled with their precision. Targets, post-2025 values, prices
+with no effective date, and unsupported price-source matches remain in the
+ledger but are excluded from the headline curve.
 
-Month-, half-year-, and year-only dates are normalized to the relevant period
-end and labelled with their precision. Targets and planned capacity stay in the
-source register but do not count as observed values. An unknown publication or
-effective date stays unknown; it is not silently assigned a date.
-
-The current chart audit finds 14 of 16 blocks aligned on observation dates.
-Shanxi uses an April 2026 electricity tariff and therefore falls after the
-standardized observation cutoff. Saudi Arabia's tariff page does not state an
-effective date, so that block remains unknown on this test. The full dated
-record is in
+The **24 August 2026 research publication cutoff is only a provenance note**.
+It records when the research was frozen; it does not determine the observation
+vintage or whether a value is plotted. The full dated record is in
 [`capacity-source-register.xlsx`](outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx).
 
 ## National and provincial capacity boundary
@@ -70,12 +66,14 @@ province exceeds 600,000 standard racks, and that the top six together exceed
 
 ## Hub-capacity splits
 
-Two low-cost hub prices can be matched to capacity without assigning the hub
-price to an entire province:
+Two low-cost hub price records can be matched to capacity without assigning a
+hub price to an entire province:
 
 - Hohhot / Helinger: 269.4 MW for a documented 11-center subset. The figure is
   derived from 326 MW facility power divided by reported PUE 1.21.
-- Gui'an: 137,400 powered-on standard racks, converted to 343.5 MW.
+- Gui'an: 137,400 powered-on standard racks, converted to 343.5 MW. This block
+  is kept in the ledger but excluded from the headline because the CNY
+  0.35/kWh input is a policy target rather than an observed price.
 
 These blocks are deducted from their respective provincial estimates. The
 remainder of Inner Mongolia and Guizhou uses the relevant grid-tariff proxy.
@@ -107,24 +105,31 @@ time-of-use schedules, voltage, taxes, subsidies, and load factor can change an
 actual bill. A future edition should replace the monthly snapshots with a full
 12-month hourly tariff calculation and a direct-market price scenario.
 
-Shanxi's tariff observation is April 2026 because a machine-readable 2025 table
-was not obtained. Its later price vintage is labelled in both the page and CSV.
+Shanxi's available tariff observation is April 2026 because a machine-readable
+2025 table was not obtained. It is therefore excluded from the headline curve.
 
 ## Comparison boundary
 
-China and the four global benchmarks appear on one proportional-width curve,
-covering 23.9794 GW in total. The China observations contribute 18.203 GW. The
-global observations contribute 5.7764 GW: Montreal 229.5 MW, Saudi Arabia 440
-MW, Dallas-Fort Worth 1,067.3 MW, and Northern Virginia 4,039.6 MW. The chart
-retains the measurement caveat: Montreal, Dallas, and Northern Virginia are
-wholesale-market inventory; Saudi Arabia is a national operational total; and
-China is commissioned design IT capacity. The combined curve is a comparison
-of sourced observations, not a complete or boundary-harmonized global census.
+After applying the observation rule, the proportional-width curve covers
+20.2909 GW. Included China observations contribute 14.9545 GW. Included global
+observations contribute 5.3364 GW: Montreal 229.5 MW, Dallas-Fort Worth 1,067.3
+MW, and Northern Virginia 4,039.6 MW. Saudi Arabia remains in the ledger but is
+excluded because the tariff page does not state an effective date. Shanghai is
+also excluded because the linked document does not establish the claimed June
+2025 tariff proxy. The chart retains the measurement caveat: Montreal, Dallas,
+and Northern Virginia are wholesale-market inventory, while China is
+commissioned design IT capacity. The combined curve is a comparison of sourced
+observations, not a complete or boundary-harmonized global census.
 
 ## Currency conversion
 
 CNY values use the US Federal Reserve's 2025 annual average of CNY 7.1875 per US
 dollar. The benchmark values retain the earlier source-specific conversions.
+
+Texas and Virginia now use EIA Electric Power Monthly table 5.6.B preliminary
+calendar-2025 industrial averages: 6.55 and 9.45 cents/kWh respectively. This
+replaces the earlier 2024 annual values so the US price observation matches the
+2025 reference year.
 
 ## Main sources
 

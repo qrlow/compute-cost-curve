@@ -181,7 +181,7 @@
     .scope-note { margin: 70px 0 26px; max-width: 880px; }
     .scope-note p:last-child { margin: 15px 0 0; color: #46514c; }
     .table-scroll { overflow-x: auto; border-top: 1px solid var(--ink); }
-    table { width: 100%; min-width: 1040px; border-collapse: collapse; background: rgb(255 250 242 / .55); font-size: 11px; }
+    table { width: 100%; min-width: 1360px; border-collapse: collapse; background: rgb(255 250 242 / .55); font-size: 11px; }
     th, td { padding: 12px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
     th { color: var(--muted); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
     td:first-child { font-weight: 750; }
@@ -191,6 +191,28 @@
     .method-note { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-top: 42px; color: #46514c; font-size: 13px; }
     .method-note h3 { margin: 0 0 9px; color: var(--ink); font-size: 14px; }
     .method-note p { margin: 0; }
+
+    .date-standard {
+      margin: 0 0 26px;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: var(--paper-2);
+      color: #3f4a45;
+      font-size: 13px;
+    }
+    .date-standard strong { color: var(--ink); }
+    .status {
+      display: inline-block;
+      padding: 2px 7px;
+      border: 1px solid var(--line);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .status.included { color: var(--accent); border-color: var(--accent); }
+    .status.excluded { color: var(--china-dark); border-color: var(--china-dark); }
 
     footer { display: flex; justify-content: space-between; gap: 30px; padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
     footer p { margin: 0; max-width: 730px; }
@@ -233,17 +255,17 @@
   <header class="page">
     <div class="topbar">
       <strong>China + global benchmark cost curve</strong>
-      <span>Capacity revision · August 2026</span>
+      <span>Observation reference date · 31 December 2025</span>
     </div>
     <div class="hero">
       <div>
         <p class="eyebrow">Electricity only · equal technology</p>
         <h1>How much of China’s data-center capacity sits on cheap power?</h1>
       </div>
-      <p class="dek">A single capacity-weighted curve places China beside Montreal, Saudi Arabia, Dallas–Fort Worth and Northern Virginia. Every location runs the same hardware and model; only electricity cost changes.</p>
+      <p class="dek">A single capacity-weighted curve places China beside global benchmarks. Every location runs the same hardware and model; only electricity cost changes. Observation timing—not publication timing—governs the headline data.</p>
     </div>
     <div class="premise" aria-label="Core assumptions">
-      <div><small>Capacity basis</small><strong>China rack conversion; source-reported MW elsewhere</strong></div>
+      <div><small>Reference date</small><strong>Latest observed value on or before 31 December 2025</strong></div>
       <div><small>Same technology</small><strong>GB200 NVL72 and PUE 1.20 everywhere</strong></div>
       <div><small>Costs included</small><strong>Electricity after the facility is built</strong></div>
     </div>
@@ -252,21 +274,22 @@
   <main class="page">
     <section aria-labelledby="curve-title">
       <div class="chart-head">
-        <div><p class="section-kicker">Figure 1</p><h2 id="curve-title">China and global benchmarks on one compute yield curve</h2></div>
+        <div><p class="section-kicker">Figure 1</p><h2 id="curve-title">Observation-standardized compute yield curve</h2></div>
         <div class="legend" aria-label="Evidence legend">
           <span><i class="reported"></i>China: reported price</span>
           <span><i class="proxy"></i>China: tariff proxy</span>
           <span><i class="canada"></i>Canada</span>
-          <span><i class="saudi"></i>Saudi Arabia</span>
           <span><i class="us"></i>United States</span>
         </div>
       </div>
+
+      <p class="date-standard"><strong>Common reference date: 31 December 2025.</strong> Each block uses the latest capacity observation and electricity-price period ending on or before that date. Source dates—or normalized period ends where a source reports only a month, half-year or year—are displayed below. Targets, post-2025 values, prices with no effective date and unsupported price-source matches are excluded from the headline curve.</p>
 
       <figure>
         <div class="chart-wrap">
           <svg id="curve" class="curve" viewBox="0 0 1200 620" role="img" aria-labelledby="svg-title svg-desc">
             <title id="svg-title">China and global benchmarks on one data-center compute yield curve</title>
-            <desc id="svg-desc">A single step chart combining about 18.2 gigawatts of Chinese commissioned design IT capacity with 5.8 gigawatts covered by four global benchmark observations. Width is proportional to capacity and height is standardized dense BF16 compute per electricity dollar.</desc>
+            <desc id="svg-desc">A single step chart combining about 15.0 gigawatts of Chinese commissioned design IT capacity with 5.3 gigawatts covered by three global benchmark observations that pass the observation-date rule. Width is proportional to capacity and height is standardized dense BF16 compute per electricity dollar.</desc>
             <defs>
               <pattern id="proxy-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <rect width="8" height="8" fill="#e6a493"></rect>
@@ -275,7 +298,7 @@
             </defs>
           </svg>
         </div>
-        <figcaption><strong>Higher is cheaper compute; wider is more capacity.</strong><span>Blocks are ordered globally by electricity-only compute yield.</span></figcaption>
+        <figcaption><strong>Higher is cheaper compute; wider is more capacity.</strong><span>Only observation-eligible blocks are plotted; exact dates and exclusions appear in the ledger.</span></figcaption>
       </figure>
 
       <div id="curve-key" class="curve-key" aria-label="Chart key"></div>
@@ -283,15 +306,15 @@
 
     <section class="findings" aria-label="Main findings">
       <article class="finding"><strong>26.1 GW</strong><p>National commissioned design IT capacity implied by 10.43 million in-use standard racks in March 2025.</p></article>
-      <article class="finding"><strong>18.2 GW</strong><p>Capacity represented here: the ten largest provinces, including separately matched Hohhot and Gui’an blocks.</p></article>
-      <article class="finding"><strong>5.78 GW</strong><p>Capacity covered by the four non-China benchmark observations shown on the same curve.</p></article>
+      <article class="finding"><strong>15.0 GW</strong><p>Chinese capacity retained after removing a target-priced block, a post-reference tariff and an unsupported price-source match.</p></article>
+      <article class="finding"><strong>5.34 GW</strong><p>Capacity covered by Montreal, Dallas–Fort Worth and Northern Virginia after the undated Saudi tariff is excluded.</p></article>
     </section>
 
     <section class="explanation" aria-labelledby="reading-title">
       <div><p class="section-kicker">How to read it</p><h2 id="reading-title">One curve, with different capacity boundaries made explicit.</h2></div>
       <div>
-        <p>Hohhot and Gui’an use reported or policy-backed data-center prices only for capacity that can be matched to those hubs. The remaining provincial blocks use published high-voltage grid tariffs plus a transparent demand-charge calculation.</p>
-        <p>The non-China blocks now carry width on the same axis. Montreal, Dallas–Fort Worth and Northern Virginia are wholesale-market inventories; Saudi Arabia is a national operational total; the China blocks are commissioned design IT capacity. The combined ordering is useful for comparison, but it is not a complete global capacity census.</p>
+        <p>Hohhot uses a reported data-center price only for capacity that can be matched to that hub. The remaining included provincial blocks use published high-voltage grid tariffs plus a transparent demand-charge calculation. Gui’an is retained in the evidence ledger but removed from the curve because its CNY 0.35/kWh figure is a target rather than an observed price.</p>
+        <p>Montreal, Dallas–Fort Worth and Northern Virginia carry width on the same axis. Saudi Arabia remains in the ledger but is excluded because the tariff page does not state an effective date. The chart is standardized to one reference date using the latest eligible observation; it is not presented as an exact same-day global census.</p>
         <div class="formula">FLOPs per $ = 180 PFLOP/s × 3,600<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ (120 kW × 1.20 PUE × electricity $/kWh)<br><br>Tariff proxy = non-TOU energy charge<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ demand charge / (730 h × 90%)</div>
         <p>Construction, financing, hardware purchases, labor and model quality are excluded. The result isolates the geographic value of electricity under identical technology.</p>
       </div>
@@ -301,55 +324,56 @@
       <div class="scope-note">
         <p class="section-kicker">Evidence ledger</p>
         <h2 id="evidence-title">Reported facts, conversions and estimates are kept separate.</h2>
-        <p>CAICT publishes provincial capacity as a treemap rather than a numerical table. Chinese provincial widths below are rounded estimates derived from rectangle area and rescaled to the official national total. “In-use standard racks” means design rack capacity in commissioned computing centers; it is not measured server load. Global benchmark rows retain their separately sourced capacity boundaries.</p>
+        <p>Observation dates are the primary inclusion rule. CAICT publishes provincial capacity as a treemap rather than a numerical table, so Chinese provincial widths below are rounded estimates derived from rectangle area and rescaled to the official national total. “In-use standard racks” means design rack capacity in commissioned computing centers; it is not measured server load. Excluded rows remain visible for auditability.</p>
       </div>
       <div class="table-scroll">
         <table>
-          <thead><tr><th>Block</th><th>Capacity basis</th><th>Capacity MW</th><th>Electricity</th><th>Price evidence</th><th>Sources</th></tr></thead>
+          <thead><tr><th>Block</th><th>Capacity basis</th><th>Capacity MW</th><th>Capacity observed</th><th>Electricity</th><th>Price effective</th><th>Price evidence</th><th>Headline status</th><th>Sources</th></tr></thead>
           <tbody id="evidence-rows"></tbody>
         </table>
       </div>
       <div class="method-note">
-        <div><h3>Capacity denominator</h3><p>10.43 million standard racks × 2.5 kW = 26.075 GW. Only the ten largest provincial estimates—18.203 GW—are priced in this edition.</p></div>
+        <div><h3>Observation rule</h3><p>The reference date is 31 December 2025. A displayed value must describe a period ending on or before that date; its source timing or normalized period end remains visible.</p></div>
         <div><h3>Cost denominator</h3><p>Tariff blocks are transparent counterfactual bills for a large, steady high-voltage load. They are not claimed hyperscaler contracts.</p></div>
-        <div><h3>Remaining uncertainty</h3><p>The other 21 Chinese provinces and most global markets are omitted. The four benchmarks provide context, not a comprehensive world denominator.</p></div>
+        <div><h3>Remaining uncertainty</h3><p>The other 21 Chinese provinces and most global markets are omitted. Publication dates are retained only as provenance and do not change the observation vintage.</p></div>
       </div>
     </section>
   </main>
 
   <footer class="page">
     <p>Data and calculations: <a href="electricity-capacity-data.csv">China CSV</a> · <a href="global-benchmark-capacity-data.csv">global benchmark CSV</a> · <a href="outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx">dated source register</a> · <a href="RESEARCH_NOTES.md">read evidence notes</a> · <a href="https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf">CAICT capacity source</a></p>
-    <p>Last checked 27 August 2026.</p>
+    <p>Research publication cutoff: 24 August 2026. This is a provenance note, not the observation date.</p>
   </footer>
 
   <script>
     const curveData = [
-      {n:1, name:"Hohhot / Helinger", province:"Inner Mongolia", mw:269.4, cny:.35, usd:.0486957, flops:9.2411, type:"reported", cap:"11-center subset; derived", price:"Reported delivered hub price", capUrl:"https://pdf.dfcfw.com/pdf/H3_AP202503031643671670_1.pdf", priceUrl:"https://www.nea.gov.cn/20250718/410e42d872e4417687cb5b0ab357d088/c.html"},
-      {n:2, name:"Gui’an powered-on racks", province:"Guizhou", mw:343.5, cny:.35, usd:.0486957, flops:9.2411, type:"reported", cap:"137,400 standard racks", price:"2025 subsidized data-center target", capUrl:"https://www.guiyang.gov.cn/zwgk/zwgkzdlyxxgkjyta/zwgkzdlyxxgkjytazxtawfws/zwgkzdlyxxgkjytazxtawfwsqs/202506/t20250603_87956837.html", priceUrl:"https://nyj.guizhou.gov.cn/zwgk/xxgkml/zdlyxx/czzj/202503/P020250307503578350701.pdf"},
-      {n:3, name:"Inner Mongolia residual", province:"Inner Mongolia", mw:1358.6, cny:.49, usd:.0681739, flops:6.6008, type:"proxy", cap:"Province estimate less block 1", price:"June 2025 Mongxi 110 kV tariff proxy", priceUrl:"https://www.xlgl.gov.cn/xlgl/zw/zwgk/tzgg/2025090509233740836/index.html"},
-      {n:4, name:"Shanxi", province:"Shanxi", mw:1298, cny:.58365, usd:.0812035, flops:5.5416, type:"proxy", cap:"Province estimate", price:"April 2026 110 kV tariff proxy", priceUrl:"https://energydc.cn/policy/sx/2026-04/cbe2e026-2c0e-11f1-9e60-f679c2336431"},
-      {n:5, name:"Zhejiang", province:"Zhejiang", mw:1336, cny:.63052, usd:.0877245, flops:5.1297, type:"proxy", cap:"Province estimate", price:"June 2025 110 kV tariff proxy", priceUrl:"https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web2241/site/attach/0/d94d1693bc7042f0a4349368bbb18419.pdf"},
-      {n:6, name:"Guizhou residual", province:"Guizhou", mw:1307.5, cny:.63093, usd:.0877816, flops:5.1264, type:"proxy", cap:"Province estimate less block 2", price:"June 2025 110 kV tariff proxy", priceUrl:"https://www.lp.gov.cn/newsite/xwdt/gsgg_5768869/202505/P020250530625753057568.pdf"},
-      {n:7, name:"Hebei", province:"Hebei", mw:3904, cny:.63463, usd:.0882963, flops:5.0965, type:"proxy", cap:"Province estimate", price:"April 2025 Jibei 110 kV tariff proxy", priceUrl:"https://ele.aiit.org.cn/static/elefile/99303281758074622710101893155890.pdf"},
-      {n:8, name:"Jiangsu", province:"Jiangsu", mw:1908, cny:.66809, usd:.0929517, flops:4.8412, type:"proxy", cap:"Province estimate", price:"June 2025 110 kV tariff proxy", priceUrl:"https://www.jintan.gov.cn/html/czjt/2025/JFKEQAOD_0624/281022.html"},
-      {n:9, name:"Beijing", province:"Beijing", mw:1295, cny:.69277, usd:.0963854, flops:4.6688, type:"proxy", cap:"Province estimate", price:"April 2025 35–110 kV tariff proxy", priceUrl:"https://ele.aiit.org.cn/static/elefile/99303281924019507384201247156397.pdf"},
-      {n:10, name:"Guangdong", province:"Guangdong", mw:2532, cny:.70818, usd:.0985294, flops:4.5672, type:"proxy", cap:"Province estimate", price:"Weighted Yuebei / Pearl River tariff proxy", priceUrl:"https://www.gdsx.gov.cn/sgsxgdj/attachment/0/272/272080/2734391.pdf"},
-      {n:11, name:"Shandong", province:"Shandong", mw:1044, cny:.72845, usd:.1013496, flops:4.4401, type:"proxy", cap:"Province estimate", price:"March 2025 35–110 kV tariff proxy", priceUrl:"https://www.yantai.gov.cn/art/2025/3/20/art_70253_3244147.html"},
-      {n:12, name:"Shanghai", province:"Shanghai", mw:1607, cny:.7484, usd:.1041252, flops:4.3217, type:"proxy", cap:"Province estimate", price:"June 2025 35 kV tariff proxy", priceUrl:"https://www.shanghai.gov.cn/cmsres/8d/8dbc9d8c392e43b791295f493f1d247e/5b1658885ab19ab927050e05dfbb83f9.pdf"}
+      {n:1, name:"Hohhot / Helinger", province:"Inner Mongolia", mw:269.4, cny:.35, usd:.0486957, flops:9.2411, type:"reported", cap:"11-center subset; derived", capacityDate:"2023-12-31", priceDate:"2025-07-18", include:true, status:"Included", price:"Reported delivered hub price", capUrl:"https://pdf.dfcfw.com/pdf/H3_AP202503031643671670_1.pdf", priceUrl:"https://www.nea.gov.cn/20250718/410e42d872e4417687cb5b0ab357d088/c.html"},
+      {n:2, name:"Gui’an powered-on racks", province:"Guizhou", mw:343.5, cny:.35, usd:.0486957, flops:9.2411, type:"reported", cap:"137,400 standard racks", capacityDate:"2025-02-28", priceDate:"2025 target", include:false, status:"Excluded: target", price:"2025 subsidized data-center target", capUrl:"https://www.guiyang.gov.cn/zwgk/zwgkzdlyxxgkjyta/zwgkzdlyxxgkjytazxtawfws/zwgkzdlyxxgkjytazxtawfwsqs/202506/t20250603_87956837.html", priceUrl:"https://nyj.guizhou.gov.cn/zwgk/xxgkml/zdlyxx/czzj/202503/P020250307503578350701.pdf"},
+      {n:3, name:"Inner Mongolia residual", province:"Inner Mongolia", mw:1358.6, cny:.49, usd:.0681739, flops:6.6008, type:"proxy", cap:"Province estimate less block 1", capacityDate:"2025-03-31", priceDate:"2025-06-30", include:true, status:"Included", price:"June 2025 Mongxi 110 kV tariff proxy", priceUrl:"https://www.xlgl.gov.cn/xlgl/zw/zwgk/tzgg/2025090509233740836/index.html"},
+      {n:4, name:"Shanxi", province:"Shanxi", mw:1298, cny:.58365, usd:.0812035, flops:5.5416, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2026-04-30", include:false, status:"Excluded: post-2025", price:"April 2026 110 kV tariff proxy", priceUrl:"https://energydc.cn/policy/sx/2026-04/cbe2e026-2c0e-11f1-9e60-f679c2336431"},
+      {n:5, name:"Zhejiang", province:"Zhejiang", mw:1336, cny:.63052, usd:.0877245, flops:5.1297, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-06-30", include:true, status:"Included", price:"June 2025 110 kV tariff proxy", priceUrl:"https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web2241/site/attach/0/d94d1693bc7042f0a4349368bbb18419.pdf"},
+      {n:6, name:"Guizhou residual", province:"Guizhou", mw:1307.5, cny:.63093, usd:.0877816, flops:5.1264, type:"proxy", cap:"Province estimate less block 2", capacityDate:"2025-03-31", priceDate:"2025-06-30", include:true, status:"Included", price:"June 2025 110 kV tariff proxy", priceUrl:"https://www.lp.gov.cn/newsite/xwdt/gsgg_5768869/202505/P020250530625753057568.pdf"},
+      {n:7, name:"Hebei", province:"Hebei", mw:3904, cny:.63463, usd:.0882963, flops:5.0965, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-04-30", include:true, status:"Included", price:"April 2025 Jibei 110 kV tariff proxy", priceUrl:"https://ele.aiit.org.cn/static/elefile/99303281758074622710101893155890.pdf"},
+      {n:8, name:"Jiangsu", province:"Jiangsu", mw:1908, cny:.66809, usd:.0929517, flops:4.8412, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-06-30", include:true, status:"Included", price:"June 2025 110 kV tariff proxy", priceUrl:"https://www.jintan.gov.cn/html/czjt/2025/JFKEQAOD_0624/281022.html"},
+      {n:9, name:"Beijing", province:"Beijing", mw:1295, cny:.69277, usd:.0963854, flops:4.6688, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-04-30", include:true, status:"Included", price:"April 2025 35–110 kV tariff proxy", priceUrl:"https://ele.aiit.org.cn/static/elefile/99303281924019507384201247156397.pdf"},
+      {n:10, name:"Guangdong", province:"Guangdong", mw:2532, cny:.70818, usd:.0985294, flops:4.5672, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-04-30", include:true, status:"Included", price:"Weighted Yuebei / Pearl River tariff proxy", priceUrl:"https://www.gdsx.gov.cn/sgsxgdj/attachment/0/272/272080/2734391.pdf"},
+      {n:11, name:"Shandong", province:"Shandong", mw:1044, cny:.72845, usd:.1013496, flops:4.4401, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-03-31", include:true, status:"Included", price:"March 2025 35–110 kV tariff proxy", priceUrl:"https://www.yantai.gov.cn/art/2025/3/20/art_70253_3244147.html"},
+      {n:12, name:"Shanghai", province:"Shanghai", mw:1607, cny:.7484, usd:.1041252, flops:4.3217, type:"proxy", cap:"Province estimate", capacityDate:"2025-03-31", priceDate:"2025-06-30 claimed", include:false, status:"Excluded: source mismatch", price:"June 2025 35 kV tariff proxy", priceUrl:"https://www.shanghai.gov.cn/cmsres/8d/8dbc9d8c392e43b791295f493f1d247e/5b1658885ab19ab927050e05dfbb83f9.pdf"}
     ];
 
     const globalData = [
-      {n:1, name:"Montreal, Quebec", mw:229.5, usd:.0375438, flops:11.9860, type:"canada", boundary:"Wholesale-market inventory, H2 2025", price:"Hydro-Québec Rate L effective price", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.hydroquebec.com/data/documents-donnees/pdf/rates-chart-2025.pdf"},
-      {n:2, name:"Saudi Arabia", mw:440, usd:.048, flops:9.3750, type:"saudi", boundary:"National operational capacity, 2025", price:"Regulated cloud-computing tariff", capacityUrl:"https://www.spa.gov.sa/ar/w2575816", priceUrl:"https://sera.gov.sa/en/consumer/electric-tariff/electric-tariff-categories/consumption-tariff"},
-      {n:3, name:"Dallas–Fort Worth", mw:1067.3, usd:.0612, flops:7.3529, type:"us", boundary:"Wholesale-market inventory, H2 2025", price:"Texas 2024 industrial average", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/annual/table.php?t=epa_02_10.html"},
-      {n:4, name:"Northern Virginia", mw:4039.6, usd:.0899, flops:5.0056, type:"us", boundary:"Wholesale-market inventory, H2 2025", price:"Virginia 2024 industrial average", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/annual/table.php?t=epa_02_10.html"}
+      {n:1, name:"Montreal, Quebec", mw:229.5, usd:.0375438, flops:11.9860, type:"canada", boundary:"Wholesale-market inventory, H2 2025", capacityDate:"2025-12-31", priceDate:"2025 rate year", include:true, status:"Included", price:"Hydro-Québec Rate L effective price", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.hydroquebec.com/data/documents-donnees/pdf/rates-chart-2025.pdf"},
+      {n:2, name:"Saudi Arabia", mw:440, usd:.048, flops:9.3750, type:"saudi", boundary:"National operational capacity, 2025", capacityDate:"2025-12-31", priceDate:"Unknown", include:false, status:"Excluded: date unknown", price:"Regulated cloud-computing tariff", capacityUrl:"https://www.spa.gov.sa/ar/w2575816", priceUrl:"https://sera.gov.sa/en/consumer/electric-tariff/electric-tariff-categories/consumption-tariff"},
+      {n:3, name:"Dallas–Fort Worth", mw:1067.3, usd:.0655, flops:6.8702, type:"us", boundary:"Wholesale-market inventory, H2 2025", capacityDate:"2025-12-31", priceDate:"2025 calendar year", include:true, status:"Included", price:"Texas 2025 industrial average (preliminary)", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/monthly/current_month/february2026.pdf"},
+      {n:4, name:"Northern Virginia", mw:4039.6, usd:.0945, flops:4.7619, type:"us", boundary:"Wholesale-market inventory, H2 2025", capacityDate:"2025-12-31", priceDate:"2025 calendar year", include:true, status:"Included", price:"Virginia 2025 industrial average (preliminary)", capacityUrl:"https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025", priceUrl:"https://www.eia.gov/electricity/monthly/current_month/february2026.pdf"}
     ];
 
     const capacityUrl = "https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf";
-    const combinedData = [
+    const allData = [
       ...curveData.map(d => ({...d, geography:"china"})),
       ...globalData.map(d => ({...d, geography:"global"}))
-    ].sort((a, b) => b.flops - a.flops);
+    ];
+    const combinedData = allData.filter(d => d.include).sort((a, b) => b.flops - a.flops);
     combinedData.forEach((d, index) => { d.chartN = index + 1; });
 
     const svg = document.getElementById("curve");
@@ -405,8 +429,8 @@
       article.className = `key-item ${d.geography === "global" ? "global" : d.type}`;
       if (d.geography === "global") article.style.setProperty("--item-color", itemColors[d.type]);
       const detail = d.geography === "china"
-        ? `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ¥${d.cny.toFixed(3)}/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$`
-        : `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${(d.usd * 100).toFixed(2)}¢/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.boundary} · <a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a>`;
+        ? `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ¥${d.cny.toFixed(3)}/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>Capacity: ${d.capacityDate} · Price: ${d.priceDate}`
+        : `${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})} MW · ${(d.usd * 100).toFixed(2)}¢/kWh · ${d.flops.toFixed(2)} ×10¹⁹ FLOPs/$<br>${d.boundary} · Capacity: ${d.capacityDate} · Price: ${d.priceDate} · <a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a>`;
       article.innerHTML = `<span class="key-number">${d.chartN}</span><div><h3>${d.name}</h3><p>${detail}</p></div>`;
       key.appendChild(article);
     });
@@ -415,12 +439,12 @@
     curveData.forEach(d => {
       const row = document.createElement("tr");
       const capacityLink = d.capUrl ? `<a href="${d.capUrl}">Capacity</a>` : `<a href="${capacityUrl}">Capacity method</a>`;
-      row.innerHTML = `<td>${d.name}</td><td>${d.cap}</td><td class="num">${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})}</td><td class="num">¥${d.cny.toFixed(3)}/kWh<br>${(d.usd * 100).toFixed(2)}¢/kWh</td><td>${d.price}</td><td>${capacityLink} · <a href="${d.priceUrl}">Price</a></td>`;
+      row.innerHTML = `<td>${d.name}</td><td>${d.cap}</td><td class="num">${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})}</td><td>${d.capacityDate}</td><td class="num">¥${d.cny.toFixed(3)}/kWh<br>${(d.usd * 100).toFixed(2)}¢/kWh</td><td>${d.priceDate}</td><td>${d.price}</td><td><span class="status ${d.include ? "included" : "excluded"}">${d.status}</span></td><td>${capacityLink} · <a href="${d.priceUrl}">Price</a></td>`;
       rows.appendChild(row);
     });
     globalData.forEach(d => {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${d.name}</td><td>${d.boundary}</td><td class="num">${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})}</td><td class="num">${(d.usd * 100).toFixed(2)}¢/kWh</td><td>${d.price}</td><td><a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a></td>`;
+      row.innerHTML = `<td>${d.name}</td><td>${d.boundary}</td><td class="num">${d.mw.toLocaleString(undefined, {maximumFractionDigits:1})}</td><td>${d.capacityDate}</td><td class="num">${(d.usd * 100).toFixed(2)}¢/kWh</td><td>${d.priceDate}</td><td>${d.price}</td><td><span class="status ${d.include ? "included" : "excluded"}">${d.status}</span></td><td><a href="${d.capacityUrl}">Capacity</a> · <a href="${d.priceUrl}">Price</a></td>`;
       rows.appendChild(row);
     });
   </script>
