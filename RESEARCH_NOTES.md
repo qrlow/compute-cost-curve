@@ -19,6 +19,28 @@ raw FLOPs per electricity dollar
 Electricity price alone determines vertical ordering. The result is not a
 measurement of useful model output.
 
+## Cutoff policy
+
+The project uses two separate cutoffs:
+
+- **Observation/effective-date cutoff: 31 December 2025.** Capacity must
+  describe operating or commissioned stock by this date; an electricity price
+  must be effective by this date.
+- **Research publication cutoff: 24 August 2026.** A source may be published
+  after 2025 if it reports retrospectively on a 2025-or-earlier observation.
+
+Month-, half-year-, and year-only dates are normalized to the relevant period
+end and labelled with their precision. Targets and planned capacity stay in the
+source register but do not count as observed values. An unknown publication or
+effective date stays unknown; it is not silently assigned a date.
+
+The current chart audit finds 14 of 16 blocks aligned on observation dates.
+Shanxi uses an April 2026 electricity tariff and therefore falls after the
+standardized observation cutoff. Saudi Arabia's tariff page does not state an
+effective date, so that block remains unknown on this test. The full dated
+record is in
+[`capacity-source-register.xlsx`](outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx).
+
 ## National and provincial capacity boundary
 
 China reported 10.43 million in-use standard racks at the end of March 2025.

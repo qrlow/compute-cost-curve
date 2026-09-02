@@ -7,6 +7,21 @@ hardware, workload, and facility efficiency.
 
 [View the published curve](https://qrlow.github.io/compute-cost-curve/)
 
+## Data cutoffs
+
+The standardized observation/effective-date cutoff is **31 December 2025**.
+The research publication cutoff is **24 August 2026**. A source published by
+the research cutoff may be used when it reports retrospectively on conditions
+at or before the observation cutoff. Targets, planned capacity, and figures
+describing dates after 2025 are not treated as observed baseline data.
+
+The dated audit is in
+[`capacity-source-register.xlsx`](outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx).
+It records the observation or effective date, publication date, date precision,
+source boundary, and cutoff status for every current chart input and the direct
+provincial capacity cross-checks found so far. Unknown publication dates remain
+explicitly blank rather than being inferred from an undated webpage.
+
 The height of each block is dense-BF16 FLOPs per electricity dollar. Its width
 is the capacity covered by that observation. The combined curve covers 23.9794
 GW: 18.203 GW across the Chinese sample and 5.7764 GW across Montreal, Saudi
