@@ -1,84 +1,71 @@
-# China + global benchmark electricity-only AI compute cost curve
+# AI compute electricity cost curves
 
-This project is a static, source-backed visualization of the electricity cost
-of a fixed amount of raw AI compute across China's largest data-center
-provinces and global benchmark locations under two technology scenarios.
+This project is an auditable, static cost-curve visualization for AI-compute electricity. It compares capacity-weighted electricity costs in China with selected North American benchmark markets under equal-technology and export-constrained technology assumptions.
 
-[View the published curve](https://qrlow.github.io/compute-cost-curve/)
+[View the published curves](https://qrlow.github.io/compute-cost-curve/)
 
-## Observation standard
+## How to read the curves
 
-The headline curve has one reference date: **31 December 2025**. Each displayed
-block uses the latest capacity observation and electricity-price period ending
-on or before that date. The evidence ledger shows source timing and, where a
-source reports only a month, half-year, or year, the normalized period end.
-Targets, post-2025 values, prices with no effective date, and unsupported
-price-source matches are excluded from the plotted curve.
+- **Width:** commissioned design IT power in MW.
+- **Height:** electricity cost in USD per 10¹⁹ dense-BF16 FLOPs.
+- **Order:** every curve runs from the lowest cost on the left to the highest on the right.
+- **Inverse metric:** the downloadable data also report 10¹⁹ dense-BF16 FLOPs per electricity dollar.
 
-This is a reference-date convention rather than a claim that every public
-dataset was measured on the same day. The research publication cutoff—**24
-August 2026**—is retained only as a provenance note; it does not determine the
-data vintage.
+The page shows four curves because it keeps two questions separate:
 
-The dated audit is in
-[`capacity-source-register.xlsx`](outputs/019fdb9f-161f-7b22-9a01-b1a28036fbf3/capacity-source-register.xlsx).
-It records the observation or effective date, publication date, date precision,
-source boundary, and observation eligibility for every current chart input and the direct
-provincial capacity cross-checks found so far. Unknown publication dates remain
-explicitly blank rather than being inferred from an undated webpage.
+1. **Price evidence:** reported price observations versus constructed public-tariff proxies.
+2. **Technology access:** NVIDIA GB200 NVL72 everywhere versus Huawei CloudMatrix384 in China and GB200 elsewhere.
 
-The height of each block is electricity cost in US dollars per 10¹⁹ peak
-dense-BF16 FLOPs. Its width is the capacity covered by that observation. Both
-curves are independently ordered from the lowest cost on the left to the
-highest on the right, producing a conventional ascending cost staircase. After
-applying the observation rule, each curve covers
-20.2909 GW: 14.9545 GW across the Chinese sample
-and 5.3364 GW across Montreal, Dallas-Fort Worth, and Northern Virginia. China's March 2025 national
-denominator is 10.43 million in-use standard racks, or 26.075 GW at the official
-2.5 kW standard-rack conversion.
+Widths are comparable between the two technology curves in the same price-evidence row. Do not compare the total width of the reported-price row with the public-proxy row: the reported row omits locations without a qualifying reported price.
 
-Provincial widths are estimates derived from the rectangle areas in CAICT's
-2025 provincial rack-distribution treemap and rescaled to the official national
-total. Reported Hohhot and Gui'an data-center prices are applied only to matched
-capacity. Other blocks use clearly labelled high-voltage tariff proxies rather
-than claiming undisclosed hyperscaler contract prices.
+## Capacity standard
 
-Montreal uses Hydro-Québec's 2025 **Rate LG**, the large-power rate applicable
-to non-industrial customers such as data centers—not the cheaper industrial
-Rate L. At 120 kV and the same 90% load-factor convention used for the Chinese
-two-part tariff proxies, the calculation is CAD 0.04165/kWh plus the net demand
-charge of (CAD 15.963 − CAD 3.0063)/(730 hours × 90%), or CAD 0.0613711/kWh.
-Converted at the Federal Reserve's 2025 average of CAD 1.3973 per USD, this is
-USD 0.0439211/kWh.
+The canonical metric is **commissioned design IT power**: the non-redundant IT or critical-load power that commissioned data-center space is designed to support, excluding cooling and other facility overhead.
 
-The first curve uses an NVIDIA GB200 NVL72 rack at 180 dense-BF16 PFLOP/s,
-approximately 120 kW, and a common PUE of 1.20 everywhere. It isolates
-electricity price.
+- China’s provincial widths are derived from all 31 rectangles in CAICT’s rack-distribution treemap. Pixel geometry is scaled to 10.43 million standard racks at 31 March 2025 and converted at 2.5 kW per standard rack. The rectangles exactly tile the treemap and sum to 26,075 MW.
+- Hohhot / Helinger’s documented subset is 442.5025 MW: 11 centers × 16,091 standard racks × 2.5 kW. The source’s 326 MW figure reconciles as occupied facility load after utilization and PUE, so it is not used as design capacity.
+- Montreal, Dallas–Fort Worth and Northern Virginia use CBRE H2 2025 commissioned wholesale inventory, treated as critical IT power delivered to the PDU.
 
-The second curve is an export-control-constrained technology counterfactual.
-Non-China blocks retain GB200 NVL72. China blocks use Huawei CloudMatrix384.
-Huawei reports up to 300 PFLOP/s from 384 Ascend 910C chips. SemiAnalysis
-estimates that the system uses 4.1 times the total power of GB200 NVL72 and 2.5
-times as much electricity per dense-BF16 FLOP. The curve therefore multiplies
-each China block's same-technology compute cost by 2.5. The power adjustment is a
-third-party engineering estimate, not a primary metered full-system result.
+The power definition is harmonized, but the coverage universe is not. China covers commissioned computing centers captured by CAICT; CBRE covers selected wholesale colocation markets.
 
-The technology scenario does not claim that all Chinese capacity currently
-uses CloudMatrix384. It also does not model approved H200 imports, legacy
-accelerators, special export licences, or illicit access. Construction,
-financing, hardware purchases, labor, utilization, and model quality are
-excluded from both curves.
+## Evidence and dates
 
-The underlying China observations are in
-[`electricity-capacity-data.csv`](electricity-capacity-data.csv). The sourced
-capacity behind the Montreal, Saudi Arabia, Dallas-Fort Worth, and Northern
-Virginia benchmarks is in
-[`global-benchmark-capacity-data.csv`](global-benchmark-capacity-data.csv). All
-technology assumptions are recorded in
-[`technology-scenario-data.csv`](technology-scenario-data.csv). All eligible
-observations appear as proportional-width blocks on both curves. Excluded records remain visible in
-the evidence ledger. The chart labels the included records' different boundaries:
-the North American figures are wholesale-market inventory and China is
-commissioned design IT capacity.
-Source choices, derivations, and exclusions are explained in
-[`RESEARCH_NOTES.md`](RESEARCH_NOTES.md).
+The observation cutoff is **31 December 2025**. Inputs use the latest qualifying observation available on or before that date, but they are not an exact same-day census. The page shows the capacity and price date for every block rather than silently advancing older data.
+
+The research-publication cutoff is **24 August 2026**. It is a provenance freeze only; it does not change any observation date.
+
+The project distinguishes:
+
+- reported delivered or regional-average prices;
+- constructed public-tariff bills at a common 90% load factor; and
+- excluded targets, post-cutoff records, undated records, boundary mismatches and unverified claims.
+
+## Reproduce the project
+
+Requires Node.js 22 or later. No package installation is required.
+
+```sh
+npm run build
+```
+
+That one command:
+
+1. reads [`data/project-data.json`](data/project-data.json) and [`data/caict-treemap-geometry.csv`](data/caict-treemap-geometry.csv);
+2. derives capacities, tariff bills, technology adjustments and cost ordering;
+3. regenerates the chart dataset, CSVs and audit outputs; and
+4. runs geometry, definition, date, reference, source-status and arithmetic checks.
+
+The main audit outputs are:
+
+- [`audit/capacity-derivation.csv`](audit/capacity-derivation.csv): every rectangle, area share, rack estimate and MW result;
+- [`audit/source-verification.csv`](audit/source-verification.csv): every source, exact locator, verification method and status;
+- [`audit/verification-report.md`](audit/verification-report.md): material corrections and included-source audit;
+- [`electricity-capacity-data.csv`](electricity-capacity-data.csv): all four generated scenario datasets.
+
+Source-by-source reproduction is complete. The register intentionally records **independent human review as pending**; automated reconstruction is not represented as a second auditor’s sign-off.
+
+## Scope
+
+This is an electricity-only operating comparison. It excludes hardware acquisition, construction, financing, networking, labor, water, maintenance, utilization and model quality. The 2.5× China technology adjustment is a third-party engineering estimate of electricity per dense-BF16 FLOP, not a metered CloudMatrix384 full-system benchmark.
+
+Detailed methodological decisions are in [`RESEARCH_NOTES.md`](RESEARCH_NOTES.md).
