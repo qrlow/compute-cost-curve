@@ -18,7 +18,7 @@
     "sources"
   ],
   "properties": {
-    "schemaVersion": {"const": "1.0.0"},
+    "schemaVersion": {"const": "1.1.0"},
     "metadata": {
       "type": "object",
       "required": ["title", "observationCutoff", "researchPublicationCutoff", "verificationDate", "currencyBase"],
@@ -59,7 +59,7 @@
         "chinaEfficiencyPenalty": {"type": "number", "minimum": 1},
         "fxCurrencyPerUsd": {
           "type": "object",
-          "required": ["CNY", "CAD", "USD"],
+          "required": ["CNY", "CAD", "GBP", "USD"],
           "additionalProperties": {"type": "number", "exclusiveMinimum": 0}
         }
       },
@@ -101,11 +101,17 @@
     },
     "capacityRecord": {
       "type": "object",
-      "required": ["id", "location", "country", "metricId", "observationDate", "datePrecision", "sourceIds", "harmonizationGrade", "note"],
+      "required": ["id", "location", "region", "regionType", "country", "iso3", "recordType", "coverageRole", "status", "metricId", "observationDate", "datePrecision", "sourceIds", "harmonizationGrade", "note"],
       "properties": {
         "id": {"type": "string"},
         "location": {"type": "string"},
+        "region": {"type": "string"},
+        "regionType": {"type": "string"},
         "country": {"type": "string"},
+        "iso3": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "recordType": {"enum": ["facility", "campus", "cluster_aggregate", "market_aggregate", "regional_aggregate", "country_aggregate"]},
+        "coverageRole": {"enum": ["additive", "subset_not_additive", "excluded"]},
+        "status": {"type": "string"},
         "metricId": {"type": "string"},
         "valueMw": {"type": "number", "exclusiveMinimum": 0},
         "formula": {"type": "object"},

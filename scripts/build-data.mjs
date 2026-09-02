@@ -2,6 +2,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   ROOT,
+  buildCoverage,
+  buildFacilityRegister,
   buildModel,
   deriveProvinceCapacities,
   loadInputs,
@@ -9,9 +11,11 @@ import {
   toCsv
 } from "./lib/project.mjs";
 
-const {project, geometry, inputHash} = loadInputs();
+const {project, benchmarks, geometry, inputHash} = loadInputs();
 const provinces = deriveProvinceCapacities(project, geometry);
 const {scenarios, resolveCapacity} = buildModel(project, provinces);
+const facilityRegister = buildFacilityRegister(project, provinces);
+const coverage = buildCoverage(project, benchmarks, facilityRegister, scenarios);
 const generatedDir = resolve(ROOT, "generated");
 const auditDir = resolve(ROOT, "audit");
 mkdirSync(generatedDir, {recursive: true});
@@ -31,6 +35,7 @@ const chartData = {
   title: project.metadata.title,
   capacityStandard: project.capacityStandard,
   assumptions: project.assumptions,
+  coverage,
   scenarios,
   sources: project.sources,
   exclusions: project.ledgerBlocks.map((block) => ({
@@ -50,6 +55,9 @@ const summary = {
   capacityMetric: project.capacityStandard.metricId,
   provinceCount: provinces.length,
   nationalCapacityMw: round(provinces.reduce((sum, row) => sum + row.capacityMw, 0), 4),
+  registeredCapacityMw: round(coverage.capacityRegister.registeredCapacityMw, 4),
+  registeredRegionCount: coverage.capacityRegister.registeredRegionCount,
+  indicativeGlobalCapacityCoveragePct: round(coverage.capacityRegister.globalCapacityCoveragePct, 2),
   sourceCounts: Object.fromEntries(
     [...new Set(project.sources.map((source) => source.verificationStatus))]
       .map((status) => [status, project.sources.filter((source) => source.verificationStatus === status).length])
@@ -61,6 +69,17 @@ const summary = {
     totalCapacityMw: round(scenario.totalCapacityMw, 4),
     lowestCostLocation: scenario.blocks.at(0).location,
     highestCostLocation: scenario.blocks.at(-1).location
+  })),
+  priceCoverage: coverage.priceScenarios.map((scenario) => ({
+    evidenceId: scenario.evidenceId,
+    priceCoveredMw: round(scenario.priceCoveredMw, 4),
+    registeredCapacityCoveragePct: round(scenario.registeredCapacityCoveragePct, 2),
+    globalCapacityCoveragePct: round(scenario.globalCapacityCoveragePct, 2)
+  })),
+  largestCountryGaps: coverage.countryGaps.slice(0, 10).map((row) => ({
+    country: row.country,
+    missingCapacityMw: round(row.missingCapacityMw, 1),
+    benchmarkScope: row.benchmarkScope
   }))
 };
 writeFileSync(resolve(generatedDir, "project-summary.json"), `${JSON.stringify(summary, null, 2)}\n`);
@@ -122,23 +141,107 @@ writeFileSync(resolve(ROOT, "electricity-capacity-data.csv"), toCsv(scenarioHead
 ));
 
 const benchmarkHeaders = [
-  "input_sha256", "record_id", "location", "country", "commissioned_design_it_power_mw",
-  "observation_date", "harmonization_grade", "coverage_note", "source_ids"
+  "input_sha256", "record_id", "location", "region", "region_type", "country", "iso3",
+  "record_type", "coverage_role", "status", "capacity_metric", "capacity_mw",
+  "observation_date", "date_precision", "harmonization_grade", "coverage_note", "source_ids"
 ];
-const harmonizedCapacityRecords = project.capacityRecords
-  .filter((record) => record.metricId === project.capacityStandard.metricId)
-  .map((record) => ({record, resolved: resolveCapacity(record.id)}));
 writeFileSync(resolve(ROOT, "global-benchmark-capacity-data.csv"), toCsv(benchmarkHeaders,
-  harmonizedCapacityRecords.map(({record, resolved}) => ({
+  facilityRegister.filter((record) => record.metricId === project.capacityStandard.metricId).map((record) => ({
     input_sha256: inputHash,
     record_id: record.id,
     location: record.location,
+    region: record.region,
+    region_type: record.regionType,
     country: record.country,
-    commissioned_design_it_power_mw: round(resolved.valueMw, 4),
+    iso3: record.iso3,
+    record_type: record.recordType,
+    coverage_role: record.coverageRole,
+    status: record.status,
+    capacity_metric: record.metricId,
+    capacity_mw: round(record.capacityMw, 4),
     observation_date: record.observationDate,
+    date_precision: record.datePrecision,
     harmonization_grade: record.harmonizationGrade,
     coverage_note: record.note,
     source_ids: record.sourceIds.join(";")
+  }))
+));
+
+const facilityHeaders = [
+  "input_sha256", "record_id", "location", "region", "region_type", "country", "iso3",
+  "record_type", "coverage_role", "status", "capacity_metric", "capacity_mw",
+  "observation_date", "date_precision", "harmonization_grade", "source_ids", "note"
+];
+writeFileSync(resolve(ROOT, "global-facility-register.csv"), toCsv(facilityHeaders,
+  facilityRegister.map((record) => ({
+    input_sha256: inputHash,
+    record_id: record.id,
+    location: record.location,
+    region: record.region,
+    region_type: record.regionType,
+    country: record.country,
+    iso3: record.iso3,
+    record_type: record.recordType,
+    coverage_role: record.coverageRole,
+    status: record.status,
+    capacity_metric: record.metricId,
+    capacity_mw: round(record.capacityMw, 4),
+    observation_date: record.observationDate,
+    date_precision: record.datePrecision,
+    harmonization_grade: record.harmonizationGrade,
+    source_ids: record.sourceIds.join(";"),
+    note: record.note
+  }))
+));
+
+const coverageHeaders = [
+  "input_sha256", "layer", "label", "capacity_mw", "registered_capacity_coverage_pct",
+  "indicative_global_capacity_coverage_pct", "regions", "missing_price_capacity_mw", "denominator_note"
+];
+writeFileSync(resolve(ROOT, "coverage-summary.csv"), toCsv(coverageHeaders, [
+  {
+    input_sha256: inputHash,
+    layer: "capacity_register",
+    label: "Capacity registered independently of price availability",
+    capacity_mw: round(coverage.capacityRegister.registeredCapacityMw, 4),
+    registered_capacity_coverage_pct: 100,
+    indicative_global_capacity_coverage_pct: round(coverage.capacityRegister.globalCapacityCoveragePct, 4),
+    regions: coverage.capacityRegister.registeredRegionCount,
+    missing_price_capacity_mw: "",
+    denominator_note: `${benchmarks.globalBenchmark.capacityMw} MW indicative 2025 global benchmark`
+  },
+  ...coverage.priceScenarios.map((scenario) => ({
+    input_sha256: inputHash,
+    layer: scenario.evidenceId,
+    label: scenario.label,
+    capacity_mw: round(scenario.priceCoveredMw, 4),
+    registered_capacity_coverage_pct: round(scenario.registeredCapacityCoveragePct, 4),
+    indicative_global_capacity_coverage_pct: round(scenario.globalCapacityCoveragePct, 4),
+    regions: scenario.regionsWithPrice,
+    missing_price_capacity_mw: round(scenario.priceMissingMw, 4),
+    denominator_note: "Price coverage uses registered capacity as its main denominator"
+  }))
+]));
+
+const countryGapHeaders = [
+  "input_sha256", "rank", "country", "iso3", "benchmark_capacity_mw",
+  "registered_capacity_mw", "missing_capacity_mw", "benchmark_scope",
+  "benchmark_status", "observation_date", "source_ids", "note"
+];
+writeFileSync(resolve(ROOT, "country-capacity-gaps.csv"), toCsv(countryGapHeaders,
+  coverage.countryGaps.map((row, index) => ({
+    input_sha256: inputHash,
+    rank: index + 1,
+    country: row.country,
+    iso3: row.iso3,
+    benchmark_capacity_mw: round(row.benchmarkCapacityMw, 4),
+    registered_capacity_mw: round(row.registeredCapacityMw, 4),
+    missing_capacity_mw: round(row.missingCapacityMw, 4),
+    benchmark_scope: row.benchmarkScope,
+    benchmark_status: row.benchmarkStatus,
+    observation_date: row.observationDate,
+    source_ids: row.sourceIds.join(";"),
+    note: row.note
   }))
 ));
 
@@ -180,20 +283,34 @@ writeFileSync(resolve(auditDir, "source-verification.csv"), toCsv(sourceHeaders,
   url: source.url
 }))));
 
-const includedSourceIds = new Set(scenarios.flatMap((scenario) => scenario.blocks.flatMap((block) => block.sourceIds)));
+const includedSourceIds = new Set([
+  ...scenarios.flatMap((scenario) => scenario.blocks.flatMap((block) => block.sourceIds)),
+  ...facilityRegister.filter((record) => record.coverageRole === "additive").flatMap((record) => record.sourceIds),
+  ...benchmarks.globalBenchmark.sourceIds,
+  ...benchmarks.marketForecast.sourceIds,
+  ...benchmarks.countryOverrides.flatMap((record) => record.sourceIds)
+]);
 const includedSources = project.sources.filter((source) => includedSourceIds.has(source.id));
 const report = `# Source-verification report
 
-Input SHA-256: \`${inputHash}\`  
-Observation cutoff: **${project.metadata.observationCutoff}**  
-Research-publication cutoff: **${project.metadata.researchPublicationCutoff}**  
-Reproduction check: **complete**  
+Input SHA-256: \`${inputHash}\`
+
+Observation cutoff: **${project.metadata.observationCutoff}**
+
+Research-publication cutoff: **${project.metadata.researchPublicationCutoff}**
+
+Reproduction check: **complete**
+
 Independent human review: **pending**
 
 “Independent” here means the build reconstructs each displayed value from canonical inputs and checks it against a source-specific locator. It does **not** mean a second human auditor has signed off.
 
 ## Material corrections in this audit pass
 
+- Capacity is now registered independently of price availability. The additive register contains **${round(coverage.capacityRegister.registeredCapacityMw, 1).toLocaleString()} MW** across **${coverage.capacityRegister.registeredRegionCount}** country-region keys.
+- Price coverage is explicit: the comparable proxy covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "comparable_proxy").registeredCapacityCoveragePct, 1)}%** of registered capacity, while data-center tariff evidence covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence").registeredCapacityCoveragePct, 1)}%**.
+- Official regional capacity for Great Britain and end-2025 live market capacity for India are in the register even where a qualifying regional price is absent.
+- The country-gap queue is generated from observed country totals where available and otherwise from named-market forecast minima; it is not presented as a complete country census.
 - The CAICT treemap is paired with the **10.43 million racks at 2025-03-31** denominator. The separately published June 2025 total is not mixed into the derivation.
 - Hohhot / Helinger is **442.5 MW of commissioned design IT capacity**, derived from 11 × 16,091 standard racks × 2.5 kW. The reported 326 MW is an occupied facility-load cross-check, not the chart width.
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.

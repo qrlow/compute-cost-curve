@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "schemaVersion": "1.0.0",
-    "inputSha256": "89e6dd1b32d23cfdfa86adc5146997642ed6f7ffd2fb53f12729638cca6b0410",
+    "schemaVersion": "1.1.0",
+    "inputSha256": "e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca",
     "observationCutoff": "2025-12-31",
     "researchPublicationCutoff": "2026-08-24",
     "verificationDate": "2026-09-02",
@@ -10,8 +10,11 @@
   "capacityMetric": "commissioned_design_it_power_mw",
   "provinceCount": 31,
   "nationalCapacityMw": 26075,
+  "registeredCapacityMw": 34599.3,
+  "registeredRegionCount": 51,
+  "indicativeGlobalCapacityCoveragePct": 55.81,
   "sourceCounts": {
-    "verified": 26,
+    "verified": 32,
     "verified_derived": 1,
     "not_verified": 1,
     "partial": 2
@@ -19,32 +22,98 @@
   "independentHumanReview": "pending",
   "scenarios": [
     {
-      "id": "reported_prices__same_technology",
-      "blocks": 3,
-      "totalCapacityMw": 5549.4025,
-      "lowestCostLocation": "Hohhot / Helinger",
-      "highestCostLocation": "Northern Virginia"
+      "id": "data_center_tariff_evidence__same_technology",
+      "blocks": 2,
+      "totalCapacityMw": 672.0025,
+      "lowestCostLocation": "Quebec — Montreal market subtotal",
+      "highestCostLocation": "Inner Mongolia — Hohhot/Helinger subset"
     },
     {
-      "id": "reported_prices__export_constrained",
-      "blocks": 3,
-      "totalCapacityMw": 5549.4025,
-      "lowestCostLocation": "Dallas–Fort Worth",
-      "highestCostLocation": "Hohhot / Helinger"
+      "id": "data_center_tariff_evidence__export_constrained",
+      "blocks": 2,
+      "totalCapacityMw": 672.0025,
+      "lowestCostLocation": "Quebec — Montreal market subtotal",
+      "highestCostLocation": "Inner Mongolia — Hohhot/Helinger subset"
     },
     {
-      "id": "public_price_proxies__same_technology",
-      "blocks": 11,
-      "totalCapacityMw": 20643.0939,
-      "lowestCostLocation": "Montreal, Quebec",
-      "highestCostLocation": "Shandong"
+      "id": "comparable_proxy__same_technology",
+      "blocks": 22,
+      "totalCapacityMw": 22209.0939,
+      "lowestCostLocation": "Quebec — Montreal market subtotal",
+      "highestCostLocation": "Yorkshire and the Humber"
     },
     {
-      "id": "public_price_proxies__export_constrained",
-      "blocks": 11,
-      "totalCapacityMw": 20643.0939,
-      "lowestCostLocation": "Montreal, Quebec",
-      "highestCostLocation": "Shandong"
+      "id": "comparable_proxy__export_constrained",
+      "blocks": 22,
+      "totalCapacityMw": 22209.0939,
+      "lowestCostLocation": "Quebec — Montreal market subtotal",
+      "highestCostLocation": "Yorkshire and the Humber"
+    }
+  ],
+  "priceCoverage": [
+    {
+      "evidenceId": "data_center_tariff_evidence",
+      "priceCoveredMw": 672.0025,
+      "registeredCapacityCoveragePct": 1.94,
+      "globalCapacityCoveragePct": 1.08
+    },
+    {
+      "evidenceId": "comparable_proxy",
+      "priceCoveredMw": 22209.0939,
+      "registeredCapacityCoveragePct": 64.19,
+      "globalCapacityCoveragePct": 35.82
+    }
+  ],
+  "largestCountryGaps": [
+    {
+      "country": "United States",
+      "missingCapacityMw": 9063.1,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Japan",
+      "missingCapacityMw": 1720,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Ireland",
+      "missingCapacityMw": 1328,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Australia",
+      "missingCapacityMw": 1268,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Canada",
+      "missingCapacityMw": 1170.5,
+      "benchmarkScope": "country_live_it_capacity"
+    },
+    {
+      "country": "Singapore",
+      "missingCapacityMw": 1081,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Germany",
+      "missingCapacityMw": 868,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "France",
+      "missingCapacityMw": 729,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "South Korea",
+      "missingCapacityMw": 635,
+      "benchmarkScope": "named_market_forecast_minimum"
+    },
+    {
+      "country": "Hong Kong",
+      "missingCapacityMw": 618,
+      "benchmarkScope": "named_market_forecast_minimum"
     }
   ]
 }

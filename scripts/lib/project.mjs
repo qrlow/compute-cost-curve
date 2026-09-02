@@ -13,6 +13,9 @@ export function loadInputs() {
   const projectPath = resolve(ROOT, "data/project-data.json");
   const projectRaw = readFileSync(projectPath, "utf8");
   const project = JSON.parse(projectRaw);
+  const benchmarkPath = resolve(ROOT, "data/global-market-benchmarks.json");
+  const benchmarkRaw = readFileSync(benchmarkPath, "utf8");
+  const benchmarks = JSON.parse(benchmarkRaw);
   const geometryPath = resolve(ROOT, project.treemap.geometryFile);
   const geometryRaw = readFileSync(geometryPath, "utf8");
   const geometry = parseSimpleCsv(geometryRaw).map((row) => ({
@@ -27,9 +30,11 @@ export function loadInputs() {
   return {
     project,
     projectRaw,
+    benchmarks,
+    benchmarkRaw,
     geometryRaw,
     geometry,
-    inputHash: sha256(`${projectRaw}\n${geometryRaw}`)
+    inputHash: sha256(`${projectRaw}\n${benchmarkRaw}\n${geometryRaw}`)
   };
 }
 
@@ -52,7 +57,16 @@ export function deriveProvinceCapacities(project, geometry) {
     const standardRacks = areaShare * project.treemap.nationalStandardRacks;
     const capacityMw = standardRacks * project.assumptions.standardRackKw / 1000;
     return {
+      id: `province:${rectangle.province}`,
       ...rectangle,
+      location: rectangle.province,
+      region: rectangle.province,
+      regionType: "province",
+      country: "China",
+      iso3: "CHN",
+      recordType: "regional_aggregate",
+      coverageRole: "additive",
+      status: "operational",
       widthPx,
       heightPx,
       areaPx2,
@@ -123,6 +137,14 @@ export function buildModel(project, provinceCapacities) {
       if (!record) throw new Error(`Unknown province capacity reference: ${reference}`);
       return {
         id: reference,
+        location: record.location,
+        region: record.region,
+        regionType: record.regionType,
+        country: record.country,
+        iso3: record.iso3,
+        recordType: record.recordType,
+        coverageRole: record.coverageRole,
+        status: record.status,
         valueMw: record.capacityMw,
         metricId: record.metricId,
         observationDate: record.observationDate,
@@ -157,6 +179,10 @@ export function buildModel(project, provinceCapacities) {
         return {
           ...block,
           capacityMw: capacity.valueMw,
+          capacityRegion: capacity.region,
+          capacityRegionType: capacity.regionType,
+          capacityRecordType: capacity.recordType,
+          capacityCoverageRole: capacity.coverageRole,
           capacityMetricId: capacity.metricId,
           capacityObservationDate: capacity.observationDate,
           capacityHarmonizationGrade: capacity.harmonizationGrade,
@@ -192,6 +218,113 @@ export function buildModel(project, provinceCapacities) {
   }
 
   return {scenarios, sourceById, resolveCapacity, priceById};
+}
+
+export function buildFacilityRegister(project, provinceCapacities) {
+  const derivedProvinceRows = provinceCapacities.map((record) => ({
+    id: record.id,
+    location: record.location,
+    region: record.region,
+    regionType: record.regionType,
+    country: record.country,
+    iso3: record.iso3,
+    recordType: record.recordType,
+    coverageRole: record.coverageRole,
+    status: record.status,
+    metricId: record.metricId,
+    capacityMw: record.capacityMw,
+    observationDate: record.observationDate,
+    datePrecision: "day",
+    harmonizationGrade: "A-derived",
+    sourceIds: record.sourceIds,
+    note: "Derived provincial aggregate from the reproducible CAICT treemap geometry."
+  }));
+  const sourcedRows = project.capacityRecords.map((record) => ({
+    ...record,
+    capacityMw: calculateCapacity(record, project.assumptions)
+  }));
+  return [...derivedProvinceRows, ...sourcedRows];
+}
+
+function groupCapacityByCountry(rows) {
+  const totals = new Map();
+  for (const row of rows) totals.set(row.country, (totals.get(row.country) || 0) + row.capacityMw);
+  return totals;
+}
+
+export function buildCoverage(project, benchmarks, facilityRegister, scenarios) {
+  const additiveRows = facilityRegister.filter((row) =>
+    row.coverageRole === "additive" && row.metricId === project.capacityStandard.metricId
+  );
+  const registeredCapacityMw = additiveRows.reduce((sum, row) => sum + row.capacityMw, 0);
+  const globalBenchmarkMw = benchmarks.globalBenchmark.capacityMw;
+  const registeredRegionCount = new Set(additiveRows.map((row) => `${row.country}|${row.region}`)).size;
+  const registeredCountryCapacity = groupCapacityByCountry(additiveRows);
+
+  const priceScenarios = project.evidenceScenarios.map((evidence) => {
+    const scenario = scenarios.find((candidate) =>
+      candidate.evidenceId === evidence.id && candidate.technologyId === "same_technology"
+    );
+    const priceCoveredMw = scenario.totalCapacityMw;
+    return {
+      evidenceId: evidence.id,
+      label: evidence.title,
+      regionsWithPrice: scenario.blocks.length,
+      priceCoveredMw,
+      priceMissingMw: Math.max(0, registeredCapacityMw - priceCoveredMw),
+      registeredCapacityCoveragePct: priceCoveredMw / registeredCapacityMw * 100,
+      globalCapacityCoveragePct: priceCoveredMw / globalBenchmarkMw * 100
+    };
+  });
+
+  const marketCountryTotals = new Map();
+  const isoByCountry = new Map();
+  for (const market of benchmarks.markets) {
+    marketCountryTotals.set(market.country, (marketCountryTotals.get(market.country) || 0) + market.capacityMw);
+    isoByCountry.set(market.country, market.iso3);
+  }
+  const overrideByCountry = new Map(benchmarks.countryOverrides.map((record) => [record.country, record]));
+  for (const record of benchmarks.countryOverrides) isoByCountry.set(record.country, record.iso3);
+  for (const row of additiveRows) isoByCountry.set(row.country, row.iso3);
+
+  const countries = new Set([
+    ...marketCountryTotals.keys(),
+    ...overrideByCountry.keys(),
+    ...registeredCountryCapacity.keys()
+  ]);
+  const countryGaps = [...countries].map((country) => {
+    const override = overrideByCountry.get(country);
+    const marketSubtotalMw = marketCountryTotals.get(country) || 0;
+    const benchmarkCapacityMw = override?.capacityMw ?? marketSubtotalMw;
+    const registeredMw = registeredCountryCapacity.get(country) || 0;
+    const benchmarkScope = override?.benchmarkScope ?? "named_market_forecast_minimum";
+    return {
+      country,
+      iso3: isoByCountry.get(country) || "",
+      benchmarkCapacityMw,
+      registeredCapacityMw: registeredMw,
+      missingCapacityMw: Math.max(0, benchmarkCapacityMw - registeredMw),
+      benchmarkScope,
+      observationDate: override?.observationDate ?? benchmarks.marketForecast.observationDate,
+      benchmarkStatus: override ? "observed_or_retrospective" : benchmarks.marketForecast.status,
+      sourceIds: override?.sourceIds ?? benchmarks.marketForecast.sourceIds,
+      note: override?.note ?? "Minimum formed by summing the named markets in Knight Frank's 2025 forecast map; the true country gap may be larger."
+    };
+  }).sort((a, b) => b.missingCapacityMw - a.missingCapacityMw || a.country.localeCompare(b.country));
+
+  return {
+    globalBenchmark: benchmarks.globalBenchmark,
+    marketForecast: benchmarks.marketForecast,
+    capacityRegister: {
+      registeredCapacityMw,
+      registeredRegionCount,
+      registeredCountryCount: registeredCountryCapacity.size,
+      globalCapacityCoveragePct: registeredCapacityMw / globalBenchmarkMw * 100,
+      compatibility: benchmarks.globalBenchmark.compatibility
+    },
+    priceScenarios,
+    countryGaps
+  };
 }
 
 export function csvCell(value) {

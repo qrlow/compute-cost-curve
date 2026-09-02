@@ -2,6 +2,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   ROOT,
+  buildCoverage,
+  buildFacilityRegister,
   buildModel,
   calculateCapacity,
   calculateCost,
@@ -10,7 +12,7 @@ import {
   loadInputs
 } from "./lib/project.mjs";
 
-const {project, geometry, inputHash} = loadInputs();
+const {project, benchmarks, geometry, inputHash} = loadInputs();
 const failures = [];
 const passes = [];
 const warnings = [];
@@ -28,17 +30,28 @@ function unique(items) {
   return new Set(items).size === items.length;
 }
 
-check(project.schemaVersion === "1.0.0", "canonical schema version is supported");
+check(project.schemaVersion === "1.1.0", "canonical schema version is supported");
 check(project.capacityStandard.metricId === "commissioned_design_it_power_mw", "one harmonized capacity metric is declared");
 check(unique(project.sources.map((source) => source.id)), "source IDs are unique");
 check(unique(project.capacityRecords.map((record) => record.id)), "capacity-record IDs are unique");
 check(unique(project.priceRecords.map((record) => record.id)), "price-record IDs are unique");
 check(unique(project.technologyScenarios.map((scenario) => scenario.id)), "technology-scenario IDs are unique");
 check(unique(project.evidenceScenarios.map((scenario) => scenario.id)), "price-evidence scenario IDs are unique");
+check(unique(benchmarks.markets.map((market) => market.id)), "global market benchmark IDs are unique");
 
 const sourceIds = new Set(project.sources.map((source) => source.id));
 for (const record of [...project.capacityRecords, ...project.priceRecords, ...project.technologyScenarios]) {
   for (const sourceId of record.sourceIds) check(sourceIds.has(sourceId), `${record.id} references source ${sourceId}`);
+}
+for (const sourceId of [
+  ...benchmarks.globalBenchmark.sourceIds,
+  ...benchmarks.marketForecast.sourceIds,
+  ...benchmarks.countryOverrides.flatMap((record) => record.sourceIds)
+]) check(sourceIds.has(sourceId), `coverage benchmark references source ${sourceId}`);
+
+for (const record of project.capacityRecords) {
+  check(["additive", "subset_not_additive", "excluded"].includes(record.coverageRole), `${record.id} has a valid coverage role`);
+  check(/^[A-Z]{3}$/.test(record.iso3), `${record.id} has an ISO3 country code`);
 }
 
 const provinceNames = new Set(geometry.map((row) => row.province));
@@ -132,6 +145,23 @@ for (const scenario of scenarios) {
   }
 }
 
+const facilityRegister = buildFacilityRegister(project, provinces);
+const coverage = buildCoverage(project, benchmarks, facilityRegister, scenarios);
+const additiveRows = facilityRegister.filter((row) => row.coverageRole === "additive" && row.metricId === project.capacityStandard.metricId);
+check(facilityRegister.length === 55, "global facility register contains 55 sourced or derived records");
+check(additiveRows.length === 52, "52 non-overlapping source units contribute to registered capacity");
+check(close(coverage.capacityRegister.registeredCapacityMw, 34599.3, 1e-6), "registered capacity sums to 34,599.3 MW without additive double counting");
+check(coverage.capacityRegister.registeredRegionCount === 51, "registered source units aggregate to 51 country-region keys");
+check(close(coverage.capacityRegister.globalCapacityCoveragePct, 34599.3 / 62000 * 100, 1e-10), "indicative global capacity coverage uses the declared 62 GW denominator");
+const comparableCoverage = coverage.priceScenarios.find((row) => row.evidenceId === "comparable_proxy");
+const tariffCoverage = coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence");
+check(close(comparableCoverage.priceCoveredMw, 22209.09387322451, 1e-6), "comparable proxy price coverage sums independently of the capacity register");
+check(close(tariffCoverage.priceCoveredMw, 672.0025, 1e-6), "data-center tariff evidence coverage sums independently of the capacity register");
+check(coverage.countryGaps[0].country === "United States", "United States is the largest benchmarked country-capacity gap");
+check(close(coverage.countryGaps[0].missingCapacityMw, 9063.1, 1e-6), "United States minimum named-market gap is 9,063.1 MW");
+check(benchmarks.markets.length === 38, "38 global market benchmarks are registered for research prioritisation");
+check(benchmarks.markets.reduce((sum, row) => sum + row.capacityMw, 0) < benchmarks.marketForecast.globalCapacityMw, "named market benchmarks are explicitly a subset of the global forecast");
+
 const generatedPath = resolve(ROOT, "generated/chart-data.js");
 check(existsSync(generatedPath), "generated chart data exists");
 if (existsSync(generatedPath)) {
@@ -143,6 +173,9 @@ const requiredOutputs = [
   "generated/project-summary.json",
   "electricity-capacity-data.csv",
   "global-benchmark-capacity-data.csv",
+  "global-facility-register.csv",
+  "coverage-summary.csv",
+  "country-capacity-gaps.csv",
   "technology-scenario-data.csv",
   "audit/capacity-derivation.csv",
   "audit/source-verification.csv",

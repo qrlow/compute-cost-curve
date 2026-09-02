@@ -1,0 +1,4 @@
+input_sha256,layer,label,capacity_mw,registered_capacity_coverage_pct,indicative_global_capacity_coverage_pct,regions,missing_price_capacity_mw,denominator_note
+e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca,capacity_register,Capacity registered independently of price availability,34599.3,100,55.8053,51,,62000 MW indicative 2025 global benchmark
+e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca,data_center_tariff_evidence,Data-center tariff evidence,672.0025,1.9422,1.0839,2,33927.2975,Price coverage uses registered capacity as its main denominator
+e59b671b8f38e08a20a810e9db06dc8d3be51ac395b8a45c2daaf463c346c5ca,comparable_proxy,Comparable electricity-price proxy,22209.0939,64.1894,35.8211,22,12390.2061,Price coverage uses registered capacity as its main denominator
