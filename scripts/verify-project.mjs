@@ -37,10 +37,14 @@ check(unique(project.capacityRecords.map((record) => record.id)), "capacity-reco
 check(unique(project.priceRecords.map((record) => record.id)), "price-record IDs are unique");
 check(unique(project.technologyScenarios.map((scenario) => scenario.id)), "technology-scenario IDs are unique");
 check(unique(project.evidenceScenarios.map((scenario) => scenario.id)), "price-evidence scenario IDs are unique");
+check(unique(project.chinaCapacityCrosschecks.map((record) => record.id)), "China-capacity cross-check IDs are unique");
 check(unique(benchmarks.markets.map((market) => market.id)), "global market benchmark IDs are unique");
 
 const sourceIds = new Set(project.sources.map((source) => source.id));
 for (const record of [...project.capacityRecords, ...project.priceRecords, ...project.technologyScenarios]) {
+  for (const sourceId of record.sourceIds) check(sourceIds.has(sourceId), `${record.id} references source ${sourceId}`);
+}
+for (const record of project.chinaCapacityCrosschecks) {
   for (const sourceId of record.sourceIds) check(sourceIds.has(sourceId), `${record.id} references source ${sourceId}`);
 }
 for (const sourceId of [
@@ -116,6 +120,22 @@ check(ranked.slice(0, 10).map((row) => row.province).join("|") === project.treem
 check(ranked.slice(0, 6).every((row) => row.capacityMw > 1500), "each published top-six province exceeds 1,500 MW");
 check(ranked.slice(0, 6).reduce((sum, row) => sum + row.capacityMw, 0) / provinces.reduce((sum, row) => sum + row.capacityMw, 0) > 0.5, "top six provinces exceed half the national total");
 check(close(provinces.reduce((sum, row) => sum + row.capacityMw, 0), 26075, 1e-6), "provincial capacity sums to 26,075 MW");
+
+check(project.chinaCapacityCrosschecks.length === 17, "17 direct Chinese capacity observations are registered as cross-checks");
+const fullProvinceCrosschecks = project.chinaCapacityCrosschecks.filter((row) => row.geographicScope === "province");
+const subregionalCrosschecks = project.chinaCapacityCrosschecks.filter((row) => row.geographicScope === "subprovince");
+check(fullProvinceCrosschecks.length === 12, "12 full-province observation rows are registered");
+check(new Set(fullProvinceCrosschecks.map((row) => row.province)).size === 11, "full-province observations cover 11 unique provinces");
+check(subregionalCrosschecks.length === 5, "five subregional observations are registered separately");
+for (const record of project.chinaCapacityCrosschecks) {
+  check(provinceNames.has(record.province), `${record.id} maps to a CAICT province`);
+  check(record.observationDate <= cutoff, `${record.id} is at or before the observation cutoff`);
+  check(record.observedStandardRacks > 0, `${record.id} has a positive rack observation`);
+}
+check(project.sources.find((source) => source.id === "caict_treemap_2025")?.verificationStatus === "verified_derived", "CAICT provincial values are labelled as derived rather than raw observations");
+check(project.chinaCapacityCrosschecks.find((row) => row.id === "jiangsu_direct_2025_03")?.observedStandardRacks === 473000, "closest-date Jiangsu direct observation is 473,000 racks");
+check(project.chinaCapacityCrosschecks.find((row) => row.id === "shanxi_direct_2025_06")?.observedStandardRacks === 514000, "Shanxi direct observation is 514,000 racks");
+check(project.chinaCapacityCrosschecks.find((row) => row.id === "guangxi_direct_2024_12")?.observedStandardRacks === 164000, "Guangxi direct observation is 164,000 racks");
 
 const hohhot = project.capacityRecords.find((record) => record.id === "hohhot_design_2023");
 const hohhotDesignMw = calculateCapacity(hohhot, project.assumptions);
@@ -207,6 +227,7 @@ const requiredOutputs = [
   "country-capacity-gaps.csv",
   "technology-scenario-data.csv",
   "audit/capacity-derivation.csv",
+  "audit/china-provincial-capacity-crosschecks.csv",
   "audit/source-verification.csv",
   "audit/verification-report.md"
 ];

@@ -198,6 +198,16 @@
     .method-card p { margin: 0; color: var(--muted); font-size: 12px; }
     .formula { margin-top: 20px; padding: 18px 20px; background: #18231f; color: #f4efe5; font: 12px/1.8 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; }
 
+    .crosscheck-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 22px; border: 1px solid var(--ink); background: var(--surface); }
+    .crosscheck-stats div { padding: 18px 20px; border-right: 1px solid var(--ink); }
+    .crosscheck-stats div:last-child { border-right: 0; }
+    .crosscheck-stats small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .crosscheck-stats strong { display: block; font-family: Georgia, serif; font-size: 24px; font-weight: 500; }
+    .crosscheck-table { min-width: 980px; }
+    .crosscheck-table td:nth-child(3), .crosscheck-table td:nth-child(4) { white-space: nowrap; }
+    .crosscheck-table td span { color: var(--muted); }
+    .comparison-tag { display: inline-block; margin-bottom: 4px; padding: 2px 6px; border: 1px solid var(--line); color: var(--ink) !important; font-size: 8px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+
     .correction-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .correction { padding: 24px; border-top: 4px solid var(--china); background: var(--surface); }
     .correction strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
@@ -236,7 +246,9 @@
       .chart-grid { grid-template-columns: 1fr; }
       .evidence-head { grid-template-columns: 1fr; gap: 8px; }
       .region-country-grid { grid-template-columns: 1fr; }
-      .method-grid, .correction-grid { grid-template-columns: 1fr; }
+      .method-grid, .correction-grid, .crosscheck-stats { grid-template-columns: 1fr; }
+      .crosscheck-stats div { border-right: 0; border-bottom: 1px solid var(--ink); }
+      .crosscheck-stats div:last-child { border-bottom: 0; }
       .downloads { grid-template-columns: 1fr 1fr; }
       .download:nth-child(even) { border-right: 0; }
       .download { border-bottom: 1px solid var(--ink); }
@@ -348,8 +360,8 @@
         <div class="method-grid">
           <article class="method-card">
             <small>China provinces</small>
-            <h3>Reproducible image-to-capacity derivation</h3>
-            <p>Every rectangle boundary from CAICT Figure 6 is stored in pixels. The 31 areas exactly tile the full treemap and are scaled to the matched 10.43 million-rack total at 31 March 2025.</p>
+            <h3>Reproducible image-to-capacity estimate</h3>
+            <p>Every rectangle boundary from CAICT Figure 6 is stored in pixels. The 31 areas exactly tile the treemap and are scaled to the matched 10.43 million-rack total at 31 March 2025. CAICT does not publish the 31 numeric inputs, so proportionality between rectangle area and rack count is an explicit assumption.</p>
           </article>
           <article class="method-card">
             <small>Global regional register</small>
@@ -365,6 +377,31 @@
         <div class="formula">Provincial MW = rectangle area ÷ full treemap area × 10,430,000 racks × 2.5 kW ÷ 1,000
 Tariff $/kWh = [energy charge + demand charge ÷ (730 × 90%)] ÷ annual FX
 Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10¹⁹ × technology multiplier</div>
+      </section>
+
+      <section class="section" aria-labelledby="china-crosscheck-title">
+        <div class="section-head">
+          <div>
+            <p class="kicker">China capacity evidence</p>
+            <h2 id="china-crosscheck-title">Direct observations now test the treemap estimate</h2>
+          </div>
+          <p>No public 31-province numeric table was found behind CAICT Figure 6. Official province and subregional observations are therefore kept as a separate dated evidence layer. They are not silently substituted into the March 2025 distribution when the date, geography or capacity boundary differs.</p>
+        </div>
+        <div class="crosscheck-stats" aria-label="Chinese capacity cross-check coverage">
+          <div><small>Direct observations</small><strong id="china-crosscheck-count">—</strong></div>
+          <div><small>Full provinces covered</small><strong id="china-crosscheck-provinces">—</strong></div>
+          <div><small>Subregional checks</small><strong id="china-crosscheck-subregions">—</strong></div>
+        </div>
+        <div class="table-scroll">
+          <table class="crosscheck-table">
+            <thead><tr><th>Province / scope</th><th>Direct observation</th><th>Direct racks</th><th>CAICT-implied racks</th><th>Comparison</th><th>Treatment</th></tr></thead>
+            <tbody id="china-capacity-crosschecks"></tbody>
+          </table>
+        </div>
+        <div class="caveat">
+          <p><strong>Most direct observations are corroboration, not replacements.</strong> The comparison file preserves the observation date, geographic scope, rack definition and reason each row was or was not substituted. The closest-date Jiangsu source is an unresolved conflict and is shown as such.</p>
+          <p><a href="audit/china-provincial-capacity-crosschecks.csv">Download all Chinese provincial and subregional cross-checks</a>.</p>
+        </div>
       </section>
 
       <section class="section" aria-labelledby="corrections-title">
@@ -388,14 +425,14 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
             <p class="kicker">Reproduce and inspect</p>
             <h2 id="audit-title">Every displayed number has a route back to evidence</h2>
           </div>
-          <p>The build hashes the canonical project data, the global benchmark register and the CAICT geometry, then derives every chart, coverage percentage and research gap. Source-by-source reproduction is complete; a second human auditor’s review remains pending.</p>
+          <p>The build hashes the canonical project data, the global benchmark register and the CAICT geometry, then derives every chart, coverage percentage, capacity cross-check and research gap. Source-by-source reproduction is complete; a second human auditor’s review remains pending.</p>
         </div>
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
           <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
           <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, combined-price and strict data-center-specific coverage</span></a>
           <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
-          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Claim, exact locator, status and check method</span></a>
+          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Claims, direct China observations, exact locators and check methods</span></a>
         </div>
         <details>
           <summary>Open the complete source-by-source verification register</summary>
@@ -419,7 +456,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
     </footer>
   </div>
 
-  <script src="generated/chart-data.js?v=e858e3777749"></script>
+  <script src="generated/chart-data.js?v=d892c5f4789b"></script>
   <script>
     (() => {
       "use strict";
@@ -592,6 +629,51 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           <td>${(row.missingCapacityMw / 1000).toFixed(2)}</td>
           <td>${scopeLabel(row.benchmarkScope)}</td>
         </tr>`).join("");
+
+      const sourceById = new Map(data.sources.map((source) => [source.id, source]));
+      const chinaCrosschecks = [...data.chinaCapacityCrosschecks].sort((a, b) =>
+        (a.geographicScope === b.geographicScope ? 0 : a.geographicScope === "province" ? -1 : 1) ||
+        a.province.localeCompare(b.province) || a.observationDate.localeCompare(b.observationDate)
+      );
+      const fullProvinceNames = new Set(chinaCrosschecks
+        .filter((row) => row.geographicScope === "province")
+        .map((row) => row.province));
+      const subregionalRows = chinaCrosschecks.filter((row) => row.geographicScope === "subprovince");
+      document.getElementById("china-crosscheck-count").textContent = chinaCrosschecks.length;
+      document.getElementById("china-crosscheck-provinces").textContent = fullProvinceNames.size;
+      document.getElementById("china-crosscheck-subregions").textContent = subregionalRows.length;
+
+      const rackCount = (value, valueType = "point") => `${valueType === "lower_bound" ? "> " : ""}${Math.round(value).toLocaleString()}`;
+      const comparabilityLabel = (value) => ({
+        same_metric: "Same rack metric",
+        sector_subset: "Sector subset",
+        subregional_subset: "Subregional subtotal",
+        boundary_mismatch: "Different rack boundary",
+        boundary_mismatch_subset: "Different rack boundary"
+      })[value] || value.replaceAll("_", " ");
+      const treatmentLabel = (value) => ({
+        not_substituted_conflict: "Unresolved conflict—kept beside curve",
+        not_substituted_later_date: "Later date—not substituted",
+        not_substituted_earlier_date: "Earlier date—not substituted",
+        not_substituted_lower_bound: "Lower bound—not substituted",
+        not_substituted_scope_and_date: "Different scope and date—not substituted",
+        not_substituted_boundary_and_date: "Different boundary and date—not substituted",
+        not_substituted_subset: "Subset—not substituted"
+      })[value] || value.replaceAll("_", " ");
+      document.getElementById("china-capacity-crosschecks").innerHTML = chinaCrosschecks.map((row) => {
+        const source = sourceById.get(row.sourceIds[0]);
+        const difference = row.differencePct == null
+          ? row.valueType === "lower_bound" ? "Point difference not calculated for a lower bound" : "Not comparable as a provincial point estimate"
+          : `${row.differencePct >= 0 ? "+" : ""}${row.differencePct.toFixed(1)}% versus CAICT’s March estimate`;
+        return `<tr>
+          <td><strong>${row.province}</strong><br><span>${row.scopeLabel} · ${row.geographicScope === "province" ? "full province" : "subregional"}</span></td>
+          <td><a href="${source?.url || "#"}">${row.observationDate}</a><br><span>${source?.publisher || row.sourceIds[0]}</span></td>
+          <td>${rackCount(row.observedStandardRacks, row.valueType)}</td>
+          <td>${rackCount(row.caictImpliedStandardRacks)}<br><span>${row.caictObservationDate}</span></td>
+          <td><span class="comparison-tag">${comparabilityLabel(row.comparability)}</span><br>${difference}<br><span>${row.capacityBoundary}</span></td>
+          <td>${treatmentLabel(row.replacementStatus)}<br><span>${row.note}</span></td>
+        </tr>`;
+      }).join("");
 
       const sources = [...data.sources].sort((a, b) => {
         const rank = {verified_derived: 0, verified: 1, partial: 2, not_verified: 3};

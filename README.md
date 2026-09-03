@@ -22,7 +22,8 @@ The additive capacity register currently contains **57,077.4 MW across 58 countr
 
 The canonical metric is **commissioned design IT power**: the non-redundant IT or critical-load power that commissioned data-center space is designed to support, excluding cooling and other facility overhead.
 
-- China’s provincial widths are derived from all 31 rectangles in CAICT’s rack-distribution treemap. Pixel geometry is scaled to 10.43 million standard racks at 31 March 2025 and converted at 2.5 kW per standard rack. The rectangles exactly tile the treemap and sum to 26,075 MW.
+- China’s provincial widths are estimated from all 31 rectangles in CAICT’s rack-distribution treemap. Pixel geometry is scaled to 10.43 million standard racks at 31 March 2025 and converted at 2.5 kW per standard rack. The rectangles exactly tile the treemap and sum to 26,075 MW. CAICT does not publish the 31 numeric values, so the assumption that rectangle area is proportional to rack count is explicit rather than treated as raw data.
+- A separate register contains **17 direct observations covering 11 full provinces plus five subregional checks**. It preserves the observation date, geographic scope, metric boundary and substitution decision for every row. These observations are used to test the treemap estimate, not silently blended into its March national denominator. The closest-date Jiangsu observation—473,000 in-use standard racks on 20 March 2025—materially conflicts with the area-implied estimate and remains unresolved.
 - Hohhot / Helinger’s documented subset is 442.5025 MW: 11 centers × 16,091 standard racks × 2.5 kW. The source’s 326 MW figure reconciles as occupied facility load after utilization and PUE, so it is not used as design capacity.
 - The United States contributes **27,585 MW across ten non-overlapping JLL year-end 2025 markets**, covering leased and hyperscaler-owned capacity. Earlier CBRE Virginia and Dallas wholesale values remain as non-additive source comparisons.
 - Pacific Northwest and Omaha remain registered but unpriced because the published market definitions cross states and cannot be assigned one factual state electricity-price average.
@@ -64,6 +65,7 @@ That one command:
 The main audit outputs are:
 
 - [`audit/capacity-derivation.csv`](audit/capacity-derivation.csv): every rectangle, area share, rack estimate and MW result;
+- [`audit/china-provincial-capacity-crosschecks.csv`](audit/china-provincial-capacity-crosschecks.csv): official provincial and subregional rack observations compared with the CAICT-implied values, including dates and capacity boundaries;
 - [`global-facility-register.csv`](global-facility-register.csv): all sourced or derived facility, campus, market and regional records with additive roles;
 - [`coverage-summary.csv`](coverage-summary.csv): capacity coverage separated from the combined chart layer and strict data-center-specific subset;
 - [`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv): every country-region contribution beneath each coverage layer, including regional aggregation of multiple market records;

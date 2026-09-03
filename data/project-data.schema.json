@@ -15,6 +15,7 @@
     "technologyScenarios",
     "evidenceScenarios",
     "ledgerBlocks",
+    "chinaCapacityCrosschecks",
     "sources"
   ],
   "properties": {
@@ -71,6 +72,7 @@
     "technologyScenarios": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/technologyScenario"}},
     "evidenceScenarios": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/evidenceScenario"}},
     "ledgerBlocks": {"type": "array", "items": {"$ref": "#/$defs/block"}},
+    "chinaCapacityCrosschecks": {"type": "array", "items": {"$ref": "#/$defs/chinaCapacityCrosscheck"}},
     "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}}
   },
   "$defs": {
@@ -177,6 +179,40 @@
         "capacityRef": {"type": "string"},
         "priceRef": {"type": "string"},
         "status": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "chinaCapacityCrosscheck": {
+      "type": "object",
+      "required": [
+        "id",
+        "province",
+        "geographicScope",
+        "scopeLabel",
+        "valueType",
+        "observedStandardRacks",
+        "observationDate",
+        "datePrecision",
+        "capacityBoundary",
+        "comparability",
+        "replacementStatus",
+        "sourceIds",
+        "note"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "province": {"type": "string"},
+        "geographicScope": {"enum": ["province", "subprovince"]},
+        "scopeLabel": {"type": "string"},
+        "valueType": {"enum": ["point", "lower_bound"]},
+        "observedStandardRacks": {"type": "number", "exclusiveMinimum": 0},
+        "observationDate": {"type": "string", "format": "date"},
+        "datePrecision": {"type": "string"},
+        "capacityBoundary": {"type": "string"},
+        "comparability": {"enum": ["same_metric", "sector_subset", "subregional_subset", "boundary_mismatch", "boundary_mismatch_subset"]},
+        "replacementStatus": {"type": "string"},
+        "sourceIds": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "note": {"type": "string"}
       },
       "additionalProperties": false
     },

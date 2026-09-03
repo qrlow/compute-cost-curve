@@ -130,7 +130,23 @@ provincial commissioned design IT MW
 
 The result sums exactly to 26,075 MW before display rounding. The derived top-ten order matches CAICT’s published order, every top-six estimate exceeds 1,500 MW, and the top six exceed half of the national total.
 
-The earlier method captured only approximately 99.93% of the image and could not be independently reconstructed. The current geometry is the auditable replacement, not a claim that the source itself published numerical provincial MW values.
+The earlier method captured only approximately 99.93% of the image and could not be independently reconstructed. The current geometry is the auditable replacement, not a claim that the source itself published numerical provincial MW values. Area proportionality remains an inference: CAICT’s public report does not disclose the 31 values represented by the rectangles.
+
+### Direct provincial and subregional cross-checks
+
+CAICT’s appendix says the report draws on the China Computing Power Platform, MIIT, CAICT, local policy documents, literature and public data. The official platform description confirms that it registers and monitors computing resources, but the reviewed public materials do not link a downloadable 31-province rack table. Full automated monitoring coverage of all 31 provinces was still described by MIIT as a target for the end of 2026.
+
+The project therefore registers every stronger direct observation found in [`audit/china-provincial-capacity-crosschecks.csv`](audit/china-provincial-capacity-crosschecks.csv). The current 17 rows cover 11 full provinces and five subregional observations. Each row preserves:
+
+- the source’s own observation date;
+- whether it is a full province or a lower-level subtotal;
+- whether it is an exact value or a lower bound;
+- whether its rack definition matches CAICT’s in-use standard-rack definition; and
+- why it was not substituted into the March distribution.
+
+The direct evidence has mixed implications. Shanxi’s 514,000 in-use racks at end-June 2025 and Guangxi’s 164,000 design racks at end-2024 are close to the respective image-implied estimates. Shandong’s later lower bound is also consistent with its estimate. By contrast, Jiangsu’s official 473,000 in-use racks on 20 March 2025 are materially below the image-implied result at nearly the same date. That conflict is unresolved. Later 2025 figures for Hebei and Guangdong cannot isolate treemap error from genuine capacity growth, while Zhejiang’s sector boundary and the Shanghai, Inner Mongolia and Guizhou subtotals are not province-wide replacements.
+
+Substituting only the direct observations would create a hybrid distribution with mixed dates and definitions that no longer reconciles to CAICT’s 10.43 million-rack March total. The cost curves therefore retain a single internally consistent March estimate and expose the direct observations alongside it for audit.
 
 ## Observation-date treatment
 

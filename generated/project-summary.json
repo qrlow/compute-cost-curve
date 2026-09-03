@@ -1,21 +1,24 @@
 {
   "metadata": {
     "schemaVersion": "1.1.0",
-    "inputSha256": "e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9",
+    "inputSha256": "d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249",
     "observationCutoff": "2025-12-31",
     "researchPublicationCutoff": "2026-08-24",
-    "verificationDate": "2026-09-02",
+    "verificationDate": "2026-09-03",
     "generationCommand": "npm run build"
   },
   "capacityMetric": "commissioned_design_it_power_mw",
   "provinceCount": 31,
   "nationalCapacityMw": 26075,
+  "chinaCapacityCrosscheckCount": 17,
+  "chinaCapacityCrosscheckProvinceCount": 11,
+  "chinaCapacitySubregionalCrosscheckCount": 5,
   "registeredCapacityMw": 57077.4,
   "registeredRegionCount": 58,
   "indicativeGlobalCapacityCoveragePct": 92.06,
   "sourceCounts": {
-    "verified": 34,
-    "verified_derived": 1,
+    "verified_derived": 2,
+    "verified": 52,
     "not_verified": 1,
     "partial": 2
   },

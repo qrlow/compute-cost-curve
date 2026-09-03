@@ -1,4 +1,4 @@
 input_sha256,layer,label,capacity_mw,registered_capacity_coverage_pct,indicative_global_capacity_coverage_pct,regions,missing_price_capacity_mw,denominator_note
-e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9,capacity_register,Capacity registered independently of price availability,57077.4,100,92.0603,58,,62000 MW indicative 2025 global benchmark
-e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9,data_center_tariff_evidence,Strict data-center-specific subset,672.0025,1.1774,1.0839,2,56405.3975,Price coverage uses registered capacity as its main denominator
-e858e3777749e2c1adb418f3ed676069d51d6b82327b86212355fdbaac9cc4b9,comparable_proxy,Observed prices or applicable tariffs,39189.1939,68.6597,63.2084,27,17888.2061,Price coverage uses registered capacity as its main denominator
+d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249,capacity_register,Capacity registered independently of price availability,57077.4,100,92.0603,58,,62000 MW indicative 2025 global benchmark
+d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249,data_center_tariff_evidence,Strict data-center-specific subset,672.0025,1.1774,1.0839,2,56405.3975,Price coverage uses registered capacity as its main denominator
+d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249,comparable_proxy,Observed prices or applicable tariffs,39189.1939,68.6597,63.2084,27,17888.2061,Price coverage uses registered capacity as its main denominator

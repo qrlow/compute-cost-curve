@@ -13,6 +13,23 @@ import {
 
 const {project, benchmarks, geometry, inputHash} = loadInputs();
 const provinces = deriveProvinceCapacities(project, geometry);
+const provinceByName = new Map(provinces.map((row) => [row.province, row]));
+const chinaCapacityCrosschecks = project.chinaCapacityCrosschecks.map((crosscheck) => {
+  const province = provinceByName.get(crosscheck.province);
+  if (!province) throw new Error(`Unknown cross-check province: ${crosscheck.province}`);
+  const supportsNumericDifference = crosscheck.geographicScope === "province" &&
+    crosscheck.valueType === "point" && crosscheck.comparability === "same_metric";
+  const differenceRacks = supportsNumericDifference
+    ? crosscheck.observedStandardRacks - province.standardRacks
+    : null;
+  return {
+    ...crosscheck,
+    caictObservationDate: province.observationDate,
+    caictImpliedStandardRacks: province.standardRacks,
+    differenceRacks,
+    differencePct: differenceRacks == null ? null : differenceRacks / province.standardRacks * 100
+  };
+});
 const {scenarios, resolveCapacity} = buildModel(project, provinces);
 const facilityRegister = buildFacilityRegister(project, provinces);
 const coverage = buildCoverage(project, benchmarks, facilityRegister, scenarios);
@@ -36,6 +53,7 @@ const chartData = {
   capacityStandard: project.capacityStandard,
   assumptions: project.assumptions,
   coverage,
+  chinaCapacityCrosschecks,
   scenarios,
   sources: project.sources,
   exclusions: project.ledgerBlocks.map((block) => ({
@@ -63,6 +81,12 @@ const summary = {
   capacityMetric: project.capacityStandard.metricId,
   provinceCount: provinces.length,
   nationalCapacityMw: round(provinces.reduce((sum, row) => sum + row.capacityMw, 0), 4),
+  chinaCapacityCrosscheckCount: chinaCapacityCrosschecks.length,
+  chinaCapacityCrosscheckProvinceCount: new Set(chinaCapacityCrosschecks
+    .filter((row) => row.geographicScope === "province")
+    .map((row) => row.province)).size,
+  chinaCapacitySubregionalCrosscheckCount: chinaCapacityCrosschecks
+    .filter((row) => row.geographicScope === "subprovince").length,
   registeredCapacityMw: round(coverage.capacityRegister.registeredCapacityMw, 4),
   registeredRegionCount: coverage.capacityRegister.registeredRegionCount,
   indicativeGlobalCapacityCoveragePct: round(coverage.capacityRegister.globalCapacityCoveragePct, 2),
@@ -115,6 +139,37 @@ writeFileSync(resolve(auditDir, "capacity-derivation.csv"), toCsv(capacityHeader
   observation_date: row.observationDate,
   source_ids: row.sourceIds.join(";")
 }))));
+
+const chinaCrosscheckHeaders = [
+  "input_sha256", "crosscheck_id", "province", "geographic_scope", "scope_label",
+  "observation_date", "date_precision", "value_type", "observed_standard_racks",
+  "caict_observation_date", "caict_implied_standard_racks", "difference_racks",
+  "difference_pct", "capacity_boundary", "comparability", "replacement_status",
+  "source_ids", "note"
+];
+writeFileSync(resolve(auditDir, "china-provincial-capacity-crosschecks.csv"), toCsv(
+  chinaCrosscheckHeaders,
+  chinaCapacityCrosschecks.map((row) => ({
+    input_sha256: inputHash,
+    crosscheck_id: row.id,
+    province: row.province,
+    geographic_scope: row.geographicScope,
+    scope_label: row.scopeLabel,
+    observation_date: row.observationDate,
+    date_precision: row.datePrecision,
+    value_type: row.valueType,
+    observed_standard_racks: row.observedStandardRacks,
+    caict_observation_date: row.caictObservationDate,
+    caict_implied_standard_racks: round(row.caictImpliedStandardRacks, 2),
+    difference_racks: row.differenceRacks == null ? "" : round(row.differenceRacks, 2),
+    difference_pct: row.differencePct == null ? "" : round(row.differencePct, 4),
+    capacity_boundary: row.capacityBoundary,
+    comparability: row.comparability,
+    replacement_status: row.replacementStatus,
+    source_ids: row.sourceIds.join(";"),
+    note: row.note
+  }))
+));
 
 const scenarioHeaders = [
   "input_sha256", "evidence_scenario", "technology_scenario", "cost_order", "block_id",
@@ -312,6 +367,9 @@ writeFileSync(resolve(auditDir, "source-verification.csv"), toCsv(sourceHeaders,
 const includedSourceIds = new Set([
   ...scenarios.flatMap((scenario) => scenario.blocks.flatMap((block) => block.sourceIds)),
   ...facilityRegister.filter((record) => record.coverageRole === "additive").flatMap((record) => record.sourceIds),
+  ...chinaCapacityCrosschecks.flatMap((record) => record.sourceIds),
+  "china_computing_platform_2025",
+  "miit_monitoring_network_2026",
   ...benchmarks.globalBenchmark.sourceIds,
   ...benchmarks.marketForecast.sourceIds,
   ...benchmarks.countryOverrides.flatMap((record) => record.sourceIds)
@@ -339,6 +397,8 @@ Independent human review: **pending**
 - Official regional capacity for Great Britain and end-2025 live market capacity for India are in the register even where a qualifying regional price is absent.
 - The country-gap queue is generated from observed country totals where available and otherwise from named-market forecast minima; it is not presented as a complete country census.
 - The CAICT treemap is paired with the **10.43 million racks at 2025-03-31** denominator. The separately published June 2025 total is not mixed into the derivation.
+- CAICT does not publish the 31 province-level values behind Figure 6. The image-area result is therefore labelled an estimate, and **${chinaCapacityCrosschecks.length}** direct official observations covering **${new Set(chinaCapacityCrosschecks.filter((row) => row.geographicScope === "province").map((row) => row.province)).size} provinces** plus **${chinaCapacityCrosschecks.filter((row) => row.geographicScope === "subprovince").length} subregional observations** are published separately for triangulation.
+- The closest-date direct Jiangsu observation is **473,000 in-use standard racks at 2025-03-20**, materially below the image-implied estimate. This unresolved conflict is exposed in the cross-check file; direct observations with different dates or boundaries are not silently substituted into the matched March national total.
 - Hohhot / Helinger is **442.5 MW of commissioned design IT capacity**, derived from 11 × 16,091 standard racks × 2.5 kW. The reported 326 MW is an occupied facility-load cross-check, not the chart width.
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.
 - Applicable tariffs and official industrial averages are combined in the public curves, while every block retains its evidence class and the strict data-center-specific subset remains separately quantified. Hohhot's delivered-price observation is retained only in that subset because its capacity is nested inside Inner Mongolia's provincial width.
@@ -352,6 +412,8 @@ ${includedSources.map((source) => `| \`${source.id}\` | ${source.publisher} | ${
 ## Full register
 
 The machine-readable register, including excluded or only partially verified candidates, is in [source-verification.csv](source-verification.csv). Each record retains its URL, publication date, exact locator, check method, and human-review status.
+
+The Chinese provincial evidence comparison is in [china-provincial-capacity-crosschecks.csv](china-provincial-capacity-crosschecks.csv). It preserves each observation date, geographic scope, capacity boundary and replacement decision.
 `;
 writeFileSync(resolve(auditDir, "verification-report.md"), report);
 
