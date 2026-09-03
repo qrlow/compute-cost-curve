@@ -121,7 +121,7 @@
     .matrix-head { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 28px; }
     .matrix-head p { max-width: 570px; margin: 0; color: var(--muted); font-size: 13px; }
     .matrix { display: grid; gap: 52px; }
-    .coverage-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 28px; margin: 0 0 54px; align-items: start; }
+    .coverage-layout { display: grid; grid-template-columns: .62fr 1.38fr; gap: 28px; margin: 0 0 54px; align-items: start; }
     .coverage-copy { padding: 24px; border-top: 4px solid var(--accent); background: var(--surface); }
     .coverage-copy strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 29px; font-weight: 500; line-height: 1.05; }
     .coverage-copy p { margin: 0; color: var(--muted); font-size: 12px; }
@@ -141,7 +141,7 @@
     .region-country { min-width: 0; border-top: 2px solid var(--accent); }
     .region-country h4 { display: flex; justify-content: space-between; gap: 8px; margin: 0; padding: 7px 0 4px; font-size: 10px; }
     .region-country h4 span:last-child { color: var(--muted); font-weight: 500; white-space: nowrap; }
-    .region-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+    .region-list { display: grid; grid-template-columns: minmax(0, 1fr); }
     .region-item { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgb(203 196 183 / .65); font-size: 9px; }
     .region-item span:first-child { min-width: 0; overflow-wrap: anywhere; }
     .region-item span:last-child { color: var(--muted); text-align: right; white-space: nowrap; }
@@ -331,7 +331,7 @@
                   <tbody id="coverage-summary"></tbody>
                 </table>
               </div>
-              <p>Every summary layer is followed by its complete country-region breakdown. “Of register” answers how much documented capacity has a price. <a href="regional-coverage-breakdown.csv">Download the regional breakdown</a>.</p>
+              <p>Every summary layer is followed by all 58 registered country-region keys. Each regional percentage is covered capacity divided by that region’s registered capacity; 0% regions remain visible. <a href="regional-coverage-breakdown.csv">Download the regional breakdown</a>.</p>
             </div>
             <div class="coverage-box">
               <h3>Largest country-capacity research gaps</h3>
@@ -456,7 +456,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
     </footer>
   </div>
 
-  <script src="generated/chart-data.js?v=d892c5f4789b"></script>
+  <script src="generated/chart-data.js?v=fad8466de569"></script>
   <script>
     (() => {
       "use strict";
@@ -477,7 +477,6 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
       const compactCapacity = (value) => value >= 1000 ? gigawatts(value) : megawatts(value);
       const percentage = (value) => `${value.toFixed(1)}%`;
-      const sharePercentage = (value) => value > 0 && value < 0.05 ? "<0.1%" : percentage(value);
       const evidenceLabel = (evidenceClass) => ({
         reported_delivered_price: "Delivered price observation",
         constructed_public_tariff_proxy: "Applicable public tariff",
@@ -595,11 +594,13 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           byCountry.get(region.country).push(region);
         }
         const countries = [...byCountry.entries()].map(([country, regions]) => {
-          const countryCapacityMw = regions.reduce((sum, region) => sum + region.capacityMw, 0);
-          const items = regions.map((region) => `<div class="region-item"><span>${region.region}</span><span>${compactCapacity(region.capacityMw)} · ${sharePercentage(region.layerSharePct)}</span></div>`).join("");
-          return `<section class="region-country"><h4><span>${country}</span><span>${compactCapacity(countryCapacityMw)} · ${regions.length} region${regions.length === 1 ? "" : "s"}</span></h4><div class="region-list">${items}</div></section>`;
+          const countryCoveredMw = regions.reduce((sum, region) => sum + region.capacityMw, 0);
+          const countryRegisteredMw = regions.reduce((sum, region) => sum + region.registeredCapacityMw, 0);
+          const countryCoveragePct = countryRegisteredMw ? countryCoveredMw / countryRegisteredMw * 100 : 0;
+          const items = regions.map((region) => `<div class="region-item"><span>${region.region}</span><span>${percentage(region.coveragePct)} · ${compactCapacity(region.capacityMw)} / ${compactCapacity(region.registeredCapacityMw)}</span></div>`).join("");
+          return `<section class="region-country"><h4><span>${country}</span><span>${percentage(countryCoveragePct)} · ${compactCapacity(countryCoveredMw)} / ${compactCapacity(countryRegisteredMw)}</span></h4><div class="region-list">${items}</div></section>`;
         }).join("");
-        return `<div class="regional-breakdown"><div class="regional-breakdown-head"><strong>Regional breakdown</strong><span>${layer.regionCount} unique country-region keys · shares of this layer</span></div><div class="region-country-grid">${countries}</div></div>`;
+        return `<div class="regional-breakdown"><div class="regional-breakdown-head"><strong>Regional coverage: covered / registered</strong><span>${layer.coveredRegionCount} of ${layer.regionCount} regions have coverage in this layer</span></div><div class="region-country-grid">${countries}</div></div>`;
       }
 
       document.getElementById("coverage-summary").innerHTML = coverageRows.map((row) => {

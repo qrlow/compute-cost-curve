@@ -86,7 +86,7 @@ The global denominator is Knight Frank’s retrospective 62 GW headline for 2025
 
 The two public curves use the combined price category. Each block still exposes whether its price is an applicable public tariff, an official regional industrial average or an official national industrial average. The strict 672 MW subset is retained as an audit statistic rather than rendered as two sparse additional curves. Hohhot's delivered-price observation stays in that audit subset because its capacity is nested inside Inner Mongolia's provincial width; plotting both as additive blocks would double count capacity.
 
-[`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv) records the exact country-region contribution beneath all three layers. Records sharing a regional key are aggregated before reporting: Dallas–Fort Worth and Austin–San Antonio therefore form one Texas regional entry, while Mumbai and Pune form one Maharashtra entry. The regional rows reproduce each layer total exactly.
+[`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv) records covered capacity, registered capacity and the resulting coverage percentage for all 58 country-region keys beneath all three layers. The percentage is calculated within each region, not as that region’s share of a layer. Regions without qualifying price evidence remain visible at 0%. Records sharing a regional key are aggregated before reporting: Dallas–Fort Worth and Austin–San Antonio therefore form one Texas regional entry, while Mumbai and Pune form one Maharashtra entry. Covered regional capacity still reproduces each layer total exactly.
 
 ### US register and price coverage
 

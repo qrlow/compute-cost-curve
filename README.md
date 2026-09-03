@@ -68,7 +68,7 @@ The main audit outputs are:
 - [`audit/china-provincial-capacity-crosschecks.csv`](audit/china-provincial-capacity-crosschecks.csv): official provincial and subregional rack observations compared with the CAICT-implied values, including dates and capacity boundaries;
 - [`global-facility-register.csv`](global-facility-register.csv): all sourced or derived facility, campus, market and regional records with additive roles;
 - [`coverage-summary.csv`](coverage-summary.csv): capacity coverage separated from the combined chart layer and strict data-center-specific subset;
-- [`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv): every country-region contribution beneath each coverage layer, including regional aggregation of multiple market records;
+- [`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv): covered capacity, registered capacity and regional coverage percentage for all 58 country-region keys beneath every layer, including 0% price-coverage rows;
 - [`country-capacity-gaps.csv`](country-capacity-gaps.csv): the ranked country research queue, with benchmark scope and status;
 - [`audit/source-verification.csv`](audit/source-verification.csv): every source, exact locator, verification method and status;
 - [`audit/verification-report.md`](audit/verification-report.md): material corrections and included-source audit;

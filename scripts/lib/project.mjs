@@ -252,7 +252,7 @@ function groupCapacityByCountry(rows) {
   return totals;
 }
 
-function buildRegionalCoverageLayer(layer, label, rows) {
+function groupCapacityByRegion(rows) {
   const grouped = new Map();
   for (const row of rows) {
     const key = `${row.country}|${row.region}`;
@@ -266,18 +266,32 @@ function buildRegionalCoverageLayer(layer, label, rows) {
     current.recordCount += 1;
     grouped.set(key, current);
   }
+  return grouped;
+}
 
-  const capacityMw = [...grouped.values()].reduce((sum, row) => sum + row.capacityMw, 0);
-  const countryTotals = groupCapacityByCountry([...grouped.values()]);
-  const regions = [...grouped.values()]
-    .map((row) => ({
-      ...row,
-      layerSharePct: capacityMw ? row.capacityMw / capacityMw * 100 : 0
-    }))
+function buildRegionalCoverageLayer(layer, label, coveredRows, registeredRows) {
+  const coveredByRegion = groupCapacityByRegion(coveredRows);
+  const registeredByRegion = groupCapacityByRegion(registeredRows);
+  const capacityMw = [...coveredByRegion.values()].reduce((sum, row) => sum + row.capacityMw, 0);
+  const countryTotals = groupCapacityByCountry([...registeredByRegion.values()]);
+  const regions = [...registeredByRegion.entries()]
+    .map(([key, registered]) => {
+      const covered = coveredByRegion.get(key);
+      const coveredCapacityMw = covered?.capacityMw || 0;
+      return {
+        country: registered.country,
+        region: registered.region,
+        capacityMw: coveredCapacityMw,
+        registeredCapacityMw: registered.capacityMw,
+        coveragePct: registered.capacityMw ? coveredCapacityMw / registered.capacityMw * 100 : 0,
+        recordCount: covered?.recordCount || 0,
+        registeredRecordCount: registered.recordCount
+      };
+    })
     .sort((a, b) =>
       countryTotals.get(b.country) - countryTotals.get(a.country) ||
       a.country.localeCompare(b.country) ||
-      b.capacityMw - a.capacityMw ||
+      b.registeredCapacityMw - a.registeredCapacityMw ||
       a.region.localeCompare(b.region)
     );
 
@@ -286,6 +300,7 @@ function buildRegionalCoverageLayer(layer, label, rows) {
     label,
     capacityMw,
     regionCount: regions.length,
+    coveredRegionCount: regions.filter((row) => row.capacityMw > 0).length,
     regions
   };
 }
@@ -301,6 +316,7 @@ export function buildCoverage(project, benchmarks, facilityRegister, scenarios) 
   const capacityRegionBreakdown = buildRegionalCoverageLayer(
     "capacity_register",
     "Capacity register",
+    additiveRows,
     additiveRows
   );
 
@@ -317,13 +333,14 @@ export function buildCoverage(project, benchmarks, facilityRegister, scenarios) 
         country: block.country,
         region: block.capacityRegion,
         capacityMw: block.capacityMw
-      }))
+      })),
+      additiveRows
     );
     priceRegionBreakdowns.push(regionalBreakdown);
     return {
       evidenceId: evidence.id,
       label: evidence.title,
-      regionsWithPrice: regionalBreakdown.regionCount,
+      regionsWithPrice: regionalBreakdown.coveredRegionCount,
       priceCoveredMw,
       priceMissingMw: Math.max(0, registeredCapacityMw - priceCoveredMw),
       registeredCapacityCoveragePct: priceCoveredMw / registeredCapacityMw * 100,

@@ -16,6 +16,7 @@ Independent human review: **pending**
 
 - Capacity is now registered independently of price availability. The additive register contains **57,077.4 MW** across **58** country-region keys.
 - Price coverage is explicit: the combined observed-price-or-tariff category covers **68.7%** of registered capacity, while the strict data-center-specific audit subset covers **1.2%**.
+- Regional percentages divide each layer's covered MW by that same region's registered MW. All **58** registered regions remain in every breakdown, including explicit 0% price-coverage rows; the figures are not shares of the layer total.
 - Ten non-overlapping JLL US market records add **27,585 MW** of year-end 2025 leased plus hyperscaler-owned capacity. The earlier CBRE Virginia and Dallas wholesale records remain as non-additive source comparisons.
 - Official regional capacity for Great Britain and end-2025 live market capacity for India are in the register even where a qualifying regional price is absent.
 - The country-gap queue is generated from observed country totals where available and otherwise from named-market forecast minima; it is not presented as a complete country census.

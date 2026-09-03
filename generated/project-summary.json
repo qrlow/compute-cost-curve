@@ -7,6 +7,7 @@
     "verificationDate": "2026-09-03",
     "generationCommand": "npm run build"
   },
+  "chartDataSha256": "fad8466de569bf18d4fe87a0fcd074749d296661dabcec94c4a0541c83eddc17",
   "capacityMetric": "commissioned_design_it_power_mw",
   "provinceCount": 31,
   "nationalCapacityMw": 26075,

@@ -9,7 +9,8 @@ import {
   calculateCost,
   calculatePrice,
   deriveProvinceCapacities,
-  loadInputs
+  loadInputs,
+  sha256
 } from "./lib/project.mjs";
 
 const {project, benchmarks, geometry, inputHash} = loadInputs();
@@ -184,16 +185,21 @@ check(close(tariffCoverage.priceCoveredMw, 672.0025, 1e-6), "data-center tariff 
 check(coverage.regionBreakdowns.length === 3, "regional coverage is generated for the register and both price-evidence layers");
 for (const layer of coverage.regionBreakdowns) {
   check(close(layer.regions.reduce((sum, row) => sum + row.capacityMw, 0), layer.capacityMw, 1e-6), `${layer.layer} regional rows sum to the layer total`);
-  check(close(layer.regions.reduce((sum, row) => sum + row.layerSharePct, 0), 100, 1e-8), `${layer.layer} regional shares sum to 100%`);
+  check(layer.regionCount === coverage.capacityRegister.registeredRegionCount, `${layer.layer} retains all registered regions, including zero-coverage rows`);
+  check(layer.regions.every((row) => close(row.coveragePct, row.capacityMw / row.registeredCapacityMw * 100, 1e-8)), `${layer.layer} regional percentages use each region's registered capacity as denominator`);
+  check(layer.regions.every((row) => row.coveragePct >= 0 && row.coveragePct <= 100 + 1e-8), `${layer.layer} regional coverage stays between 0% and 100%`);
 }
 const capacityRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "capacity_register");
 const combinedRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "comparable_proxy");
 const strictRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "data_center_tariff_evidence");
 check(capacityRegionBreakdown.regionCount === 58, "capacity-register breakdown contains 58 unique country-region keys");
-check(combinedRegionBreakdown.regionCount === 27, "combined price breakdown contains 27 unique country-region keys");
-check(strictRegionBreakdown.regionCount === 2, "strict price breakdown contains two unique country-region keys");
+check(capacityRegionBreakdown.coveredRegionCount === 58 && capacityRegionBreakdown.regions.every((row) => close(row.coveragePct, 100)), "capacity-register breakdown shows 100% coverage for all 58 region keys");
+check(combinedRegionBreakdown.regionCount === 58 && combinedRegionBreakdown.coveredRegionCount === 27, "combined price breakdown shows all 58 regions, including 31 zero-coverage regions");
+check(strictRegionBreakdown.regionCount === 58 && strictRegionBreakdown.coveredRegionCount === 2, "strict price breakdown shows all 58 regions, including 56 zero-coverage regions");
 const combinedTexas = combinedRegionBreakdown.regions.find((row) => row.country === "United States" && row.region === "Texas");
-check(close(combinedTexas.capacityMw, 4123, 1e-6) && combinedTexas.recordCount === 2, "Texas regional price coverage aggregates Dallas–Fort Worth and Austin–San Antonio once");
+check(close(combinedTexas.capacityMw, 4123, 1e-6) && close(combinedTexas.registeredCapacityMw, 4123, 1e-6) && close(combinedTexas.coveragePct, 100) && combinedTexas.recordCount === 2, "Texas regional price coverage aggregates Dallas–Fort Worth and Austin–San Antonio against the registered Texas denominator");
+const strictInnerMongolia = strictRegionBreakdown.regions.find((row) => row.country === "China" && row.region === "Inner Mongolia");
+check(close(strictInnerMongolia.coveragePct, strictInnerMongolia.capacityMw / strictInnerMongolia.registeredCapacityMw * 100, 1e-8) && strictInnerMongolia.coveragePct > 0 && strictInnerMongolia.coveragePct < 100, "strict Inner Mongolia coverage uses the Hohhot subset over the registered provincial capacity");
 check(coverage.countryGaps[0].country === "Japan", "Japan is now the largest benchmarked country-capacity gap");
 const unitedStatesGap = coverage.countryGaps.find((row) => row.country === "United States");
 check(close(unitedStatesGap.missingCapacityMw, 0, 1e-6), "the prior 9,063.1 MW US benchmark gap is eliminated with observed JLL market data");
@@ -202,9 +208,20 @@ check(benchmarks.markets.reduce((sum, row) => sum + row.capacityMw, 0) < benchma
 
 const generatedPath = resolve(ROOT, "generated/chart-data.js");
 check(existsSync(generatedPath), "generated chart data exists");
+let chartOutputHash = null;
 if (existsSync(generatedPath)) {
   const generated = readFileSync(generatedPath, "utf8");
   check(generated.includes(`Input SHA-256: ${inputHash}`), "generated chart data matches the current canonical inputs");
+  const assignment = "window.COMPUTE_COST_DATA = ";
+  const assignmentStart = generated.indexOf(assignment);
+  if (assignmentStart >= 0) {
+    const chartJson = generated.slice(assignmentStart + assignment.length).trim().replace(/;$/, "");
+    chartOutputHash = sha256(chartJson);
+    check(generated.includes(`Output SHA-256: ${chartOutputHash}`), "generated chart-data output hash reproduces");
+    check(Boolean(JSON.parse(chartJson)), "generated chart data is valid JSON");
+  } else {
+    check(false, "generated chart data contains its JavaScript assignment");
+  }
 }
 
 const indexPath = resolve(ROOT, "index.html");
@@ -212,8 +229,8 @@ check(existsSync(indexPath), "public page exists");
 if (existsSync(indexPath)) {
   const indexHtml = readFileSync(indexPath, "utf8");
   check(
-    indexHtml.includes(`generated/chart-data.js?v=${inputHash.slice(0, 12)}`),
-    "public page cache-buster matches the current canonical inputs"
+    chartOutputHash && indexHtml.includes(`generated/chart-data.js?v=${chartOutputHash.slice(0, 12)}`),
+    "public page cache-buster matches the generated chart-data output"
   );
 }
 
