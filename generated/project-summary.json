@@ -53,12 +53,14 @@
   "priceCoverage": [
     {
       "evidenceId": "data_center_tariff_evidence",
+      "regionCount": 2,
       "priceCoveredMw": 672.0025,
       "registeredCapacityCoveragePct": 1.18,
       "globalCapacityCoveragePct": 1.08
     },
     {
       "evidenceId": "comparable_proxy",
+      "regionCount": 27,
       "priceCoveredMw": 39189.1939,
       "registeredCapacityCoveragePct": 68.66,
       "globalCapacityCoveragePct": 63.21

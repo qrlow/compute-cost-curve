@@ -78,11 +78,646 @@ window.COMPUTE_COST_DATA = {
       {
         "evidenceId": "comparable_proxy",
         "label": "Observed prices or applicable tariffs",
-        "regionsWithPrice": 28,
+        "regionsWithPrice": 27,
         "priceCoveredMw": 39189.19387322451,
         "priceMissingMw": 17888.20612677549,
         "registeredCapacityCoveragePct": 68.6597390091779,
         "globalCapacityCoveragePct": 63.20837721487824
+      }
+    ],
+    "regionBreakdowns": [
+      {
+        "layer": "capacity_register",
+        "label": "Capacity register",
+        "capacityMw": 57077.4,
+        "regionCount": 58,
+        "regions": [
+          {
+            "country": "United States",
+            "region": "Virginia",
+            "capacityMw": 8315,
+            "recordCount": 1,
+            "layerSharePct": 14.567937572489287
+          },
+          {
+            "country": "United States",
+            "region": "Texas",
+            "capacityMw": 4123,
+            "recordCount": 2,
+            "layerSharePct": 7.223524547369011
+          },
+          {
+            "country": "United States",
+            "region": "Pacific Northwest",
+            "capacityMw": 4120,
+            "recordCount": 1,
+            "layerSharePct": 7.2182685265972175
+          },
+          {
+            "country": "United States",
+            "region": "Ohio",
+            "capacityMw": 3541,
+            "recordCount": 1,
+            "layerSharePct": 6.203856517640958
+          },
+          {
+            "country": "United States",
+            "region": "Georgia",
+            "capacityMw": 2070,
+            "recordCount": 1,
+            "layerSharePct": 3.6266543325379224
+          },
+          {
+            "country": "United States",
+            "region": "Arizona",
+            "capacityMw": 1653,
+            "recordCount": 1,
+            "layerSharePct": 2.8960674452585438
+          },
+          {
+            "country": "United States",
+            "region": "Nebraska–Iowa",
+            "capacityMw": 1378,
+            "recordCount": 1,
+            "layerSharePct": 2.4142655411774188
+          },
+          {
+            "country": "United States",
+            "region": "Illinois",
+            "capacityMw": 1223,
+            "recordCount": 1,
+            "layerSharePct": 2.1427044679680574
+          },
+          {
+            "country": "United States",
+            "region": "Indiana",
+            "capacityMw": 1162,
+            "recordCount": 1,
+            "layerSharePct": 2.0358320456082444
+          },
+          {
+            "country": "China",
+            "region": "Hebei",
+            "capacityMw": 3880.5702777188885,
+            "recordCount": 1,
+            "layerSharePct": 6.798785995365746
+          },
+          {
+            "country": "China",
+            "region": "Guangdong",
+            "capacityMw": 2515.184439262243,
+            "recordCount": 1,
+            "layerSharePct": 4.406620552551873
+          },
+          {
+            "country": "China",
+            "region": "Jiangsu",
+            "capacityMw": 1921.7504894686303,
+            "recordCount": 1,
+            "layerSharePct": 3.366920163617527
+          },
+          {
+            "country": "China",
+            "region": "Guizhou",
+            "capacityMw": 1648.6082879197895,
+            "recordCount": 1,
+            "layerSharePct": 2.888373135286102
+          },
+          {
+            "country": "China",
+            "region": "Inner Mongolia",
+            "capacityMw": 1638.8532092930452,
+            "recordCount": 1,
+            "layerSharePct": 2.871282169988551
+          },
+          {
+            "country": "China",
+            "region": "Shanghai",
+            "capacityMw": 1599.6161152610289,
+            "recordCount": 1,
+            "layerSharePct": 2.802538509569512
+          },
+          {
+            "country": "China",
+            "region": "Zhejiang",
+            "capacityMw": 1344.3582245278863,
+            "recordCount": 1,
+            "layerSharePct": 2.355324917616931
+          },
+          {
+            "country": "China",
+            "region": "Beijing",
+            "capacityMw": 1310.3238390968004,
+            "recordCount": 1,
+            "layerSharePct": 2.29569643868992
+          },
+          {
+            "country": "China",
+            "region": "Shanxi",
+            "capacityMw": 1302.5739710766647,
+            "recordCount": 1,
+            "layerSharePct": 2.2821186162590883
+          },
+          {
+            "country": "China",
+            "region": "Shandong",
+            "capacityMw": 1047.0451059372233,
+            "recordCount": 1,
+            "layerSharePct": 1.834430275270463
+          },
+          {
+            "country": "China",
+            "region": "Hunan",
+            "capacityMw": 713.0962476150097,
+            "recordCount": 1,
+            "layerSharePct": 1.249349563250971
+          },
+          {
+            "country": "China",
+            "region": "Chongqing",
+            "capacityMw": 685.4568581725673,
+            "recordCount": 1,
+            "layerSharePct": 1.2009251615745764
+          },
+          {
+            "country": "China",
+            "region": "Sichuan",
+            "capacityMw": 685.4568581725673,
+            "recordCount": 1,
+            "layerSharePct": 1.2009251615745764
+          },
+          {
+            "country": "China",
+            "region": "Fujian",
+            "capacityMw": 574.8993004027984,
+            "recordCount": 1,
+            "layerSharePct": 1.0072275548689997
+          },
+          {
+            "country": "China",
+            "region": "Henan",
+            "capacityMw": 574.8993004027984,
+            "recordCount": 1,
+            "layerSharePct": 1.0072275548689997
+          },
+          {
+            "country": "China",
+            "region": "Hubei",
+            "capacityMw": 445.2651444296184,
+            "recordCount": 1,
+            "layerSharePct": 0.7801076160259899
+          },
+          {
+            "country": "China",
+            "region": "Ningxia",
+            "capacityMw": 419.576770712525,
+            "recordCount": 1,
+            "layerSharePct": 0.7351014074091058
+          },
+          {
+            "country": "China",
+            "region": "Guangxi",
+            "capacityMw": 385.3256057564005,
+            "recordCount": 1,
+            "layerSharePct": 0.6750931292532604
+          },
+          {
+            "country": "China",
+            "region": "Tianjin",
+            "capacityMw": 363.9186276588227,
+            "recordCount": 1,
+            "layerSharePct": 0.6375879554058571
+          },
+          {
+            "country": "China",
+            "region": "Xinjiang",
+            "capacityMw": 362.7263402711095,
+            "recordCount": 1,
+            "layerSharePct": 0.6354990596472676
+          },
+          {
+            "country": "China",
+            "region": "Gansu",
+            "capacityMw": 351.50799985035354,
+            "recordCount": 1,
+            "layerSharePct": 0.6158444495550841
+          },
+          {
+            "country": "China",
+            "region": "Jiangxi",
+            "capacityMw": 340.28965942959763,
+            "recordCount": 1,
+            "layerSharePct": 0.5961898394629006
+          },
+          {
+            "country": "China",
+            "region": "Anhui",
+            "capacityMw": 336.2250433351208,
+            "recordCount": 1,
+            "layerSharePct": 0.5890686039222544
+          },
+          {
+            "country": "China",
+            "region": "Shaanxi",
+            "capacityMw": 317.85297858808565,
+            "recordCount": 1,
+            "layerSharePct": 0.5568806192785335
+          },
+          {
+            "country": "China",
+            "region": "Liaoning",
+            "capacityMw": 291.676850939655,
+            "recordCount": 1,
+            "layerSharePct": 0.5110198623967718
+          },
+          {
+            "country": "China",
+            "region": "Yunnan",
+            "capacityMw": 278.99524872488746,
+            "recordCount": 1,
+            "layerSharePct": 0.4888016075099557
+          },
+          {
+            "country": "China",
+            "region": "Qinghai",
+            "capacityMw": 205.669574380526,
+            "recordCount": 1,
+            "layerSharePct": 0.3603345183566981
+          },
+          {
+            "country": "China",
+            "region": "Heilongjiang",
+            "capacityMw": 172.01455311825814,
+            "recordCount": 1,
+            "layerSharePct": 0.30137068808014755
+          },
+          {
+            "country": "China",
+            "region": "Hainan",
+            "capacityMw": 121.61331354674583,
+            "recordCount": 1,
+            "layerSharePct": 0.21306736737613455
+          },
+          {
+            "country": "China",
+            "region": "Jilin",
+            "capacityMw": 121.61331354674583,
+            "recordCount": 1,
+            "layerSharePct": 0.21306736737613455
+          },
+          {
+            "country": "China",
+            "region": "Tibet",
+            "capacityMw": 118.03645138360623,
+            "recordCount": 1,
+            "layerSharePct": 0.20680068010036587
+          },
+          {
+            "country": "India",
+            "region": "Maharashtra",
+            "capacityMw": 911.9000000000001,
+            "recordCount": 2,
+            "layerSharePct": 1.5976551139330104
+          },
+          {
+            "country": "India",
+            "region": "Tamil Nadu",
+            "capacityMw": 191.5,
+            "recordCount": 1,
+            "layerSharePct": 0.3355093259328561
+          },
+          {
+            "country": "India",
+            "region": "Delhi NCR",
+            "capacityMw": 174.5,
+            "recordCount": 1,
+            "layerSharePct": 0.3057252082260229
+          },
+          {
+            "country": "India",
+            "region": "Karnataka",
+            "capacityMw": 169.5,
+            "recordCount": 1,
+            "layerSharePct": 0.2969651736063661
+          },
+          {
+            "country": "India",
+            "region": "Telangana",
+            "capacityMw": 151.4,
+            "recordCount": 1,
+            "layerSharePct": 0.2652538482832084
+          },
+          {
+            "country": "India",
+            "region": "West Bengal",
+            "capacityMw": 23.1,
+            "recordCount": 1,
+            "layerSharePct": 0.04047135994281449
+          },
+          {
+            "country": "United Kingdom",
+            "region": "London",
+            "capacityMw": 1048,
+            "recordCount": 1,
+            "layerSharePct": 1.8361032562800688
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Wales",
+            "capacityMw": 154,
+            "recordCount": 1,
+            "layerSharePct": 0.26980906628542994
+          },
+          {
+            "country": "United Kingdom",
+            "region": "South East",
+            "capacityMw": 128,
+            "recordCount": 1,
+            "layerSharePct": 0.2242568862632145
+          },
+          {
+            "country": "United Kingdom",
+            "region": "South West",
+            "capacityMw": 53,
+            "recordCount": 1,
+            "layerSharePct": 0.09285636696836226
+          },
+          {
+            "country": "United Kingdom",
+            "region": "North West",
+            "capacityMw": 52,
+            "recordCount": 1,
+            "layerSharePct": 0.09110436004443088
+          },
+          {
+            "country": "United Kingdom",
+            "region": "East of England",
+            "capacityMw": 44,
+            "recordCount": 1,
+            "layerSharePct": 0.07708830465297999
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Scotland",
+            "capacityMw": 30,
+            "recordCount": 1,
+            "layerSharePct": 0.052560207717940906
+          },
+          {
+            "country": "United Kingdom",
+            "region": "North East",
+            "capacityMw": 17,
+            "recordCount": 1,
+            "layerSharePct": 0.029784117706833174
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Yorkshire and the Humber",
+            "capacityMw": 16,
+            "recordCount": 1,
+            "layerSharePct": 0.028032110782901812
+          },
+          {
+            "country": "United Kingdom",
+            "region": "West Midlands",
+            "capacityMw": 15,
+            "recordCount": 1,
+            "layerSharePct": 0.026280103858970453
+          },
+          {
+            "country": "United Kingdom",
+            "region": "East Midlands",
+            "capacityMw": 9,
+            "recordCount": 1,
+            "layerSharePct": 0.01576806231538227
+          },
+          {
+            "country": "Canada",
+            "region": "Quebec",
+            "capacityMw": 229.5,
+            "recordCount": 1,
+            "layerSharePct": 0.4020855890422479
+          }
+        ]
+      },
+      {
+        "layer": "data_center_tariff_evidence",
+        "label": "Strict data-center-specific subset",
+        "capacityMw": 672.0025,
+        "regionCount": 2,
+        "regions": [
+          {
+            "country": "China",
+            "region": "Inner Mongolia",
+            "capacityMw": 442.5025,
+            "recordCount": 1,
+            "layerSharePct": 65.84834133801584
+          },
+          {
+            "country": "Canada",
+            "region": "Quebec",
+            "capacityMw": 229.5,
+            "recordCount": 1,
+            "layerSharePct": 34.15165866198414
+          }
+        ]
+      },
+      {
+        "layer": "comparable_proxy",
+        "label": "Observed prices or applicable tariffs",
+        "capacityMw": 39189.19387322451,
+        "regionCount": 27,
+        "regions": [
+          {
+            "country": "United States",
+            "region": "Virginia",
+            "capacityMw": 8315,
+            "recordCount": 1,
+            "layerSharePct": 21.217583670893298
+          },
+          {
+            "country": "United States",
+            "region": "Texas",
+            "capacityMw": 4123,
+            "recordCount": 2,
+            "layerSharePct": 10.52075736321023
+          },
+          {
+            "country": "United States",
+            "region": "Ohio",
+            "capacityMw": 3541,
+            "recordCount": 1,
+            "layerSharePct": 9.035654092439346
+          },
+          {
+            "country": "United States",
+            "region": "Georgia",
+            "capacityMw": 2070,
+            "recordCount": 1,
+            "layerSharePct": 5.282068334185102
+          },
+          {
+            "country": "United States",
+            "region": "Arizona",
+            "capacityMw": 1653,
+            "recordCount": 1,
+            "layerSharePct": 4.217999495849263
+          },
+          {
+            "country": "United States",
+            "region": "Illinois",
+            "capacityMw": 1223,
+            "recordCount": 1,
+            "layerSharePct": 3.120758247685208
+          },
+          {
+            "country": "United States",
+            "region": "Indiana",
+            "capacityMw": 1162,
+            "recordCount": 1,
+            "layerSharePct": 2.965103093875888
+          },
+          {
+            "country": "China",
+            "region": "Hebei",
+            "capacityMw": 3880.5702777188885,
+            "recordCount": 1,
+            "layerSharePct": 9.902143663052575
+          },
+          {
+            "country": "China",
+            "region": "Guangdong",
+            "capacityMw": 2515.184439262243,
+            "recordCount": 1,
+            "layerSharePct": 6.418056077904446
+          },
+          {
+            "country": "China",
+            "region": "Jiangsu",
+            "capacityMw": 1921.7504894686303,
+            "recordCount": 1,
+            "layerSharePct": 4.903776524940566
+          },
+          {
+            "country": "China",
+            "region": "Guizhou",
+            "capacityMw": 1648.6082879197895,
+            "recordCount": 1,
+            "layerSharePct": 4.20679305946678
+          },
+          {
+            "country": "China",
+            "region": "Inner Mongolia",
+            "capacityMw": 1638.8532092930452,
+            "recordCount": 1,
+            "layerSharePct": 4.1819007928427165
+          },
+          {
+            "country": "China",
+            "region": "Zhejiang",
+            "capacityMw": 1344.3582245278863,
+            "recordCount": 1,
+            "layerSharePct": 3.430430921536258
+          },
+          {
+            "country": "China",
+            "region": "Beijing",
+            "capacityMw": 1310.3238390968004,
+            "recordCount": 1,
+            "layerSharePct": 3.343584569092301
+          },
+          {
+            "country": "China",
+            "region": "Shandong",
+            "capacityMw": 1047.0451059372233,
+            "recordCount": 1,
+            "layerSharePct": 2.671769950982847
+          },
+          {
+            "country": "United Kingdom",
+            "region": "London",
+            "capacityMw": 1048,
+            "recordCount": 1,
+            "layerSharePct": 2.6742065769207666
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Wales",
+            "capacityMw": 154,
+            "recordCount": 1,
+            "layerSharePct": 0.39296547027270806
+          },
+          {
+            "country": "United Kingdom",
+            "region": "South East",
+            "capacityMw": 128,
+            "recordCount": 1,
+            "layerSharePct": 0.3266206506162769
+          },
+          {
+            "country": "United Kingdom",
+            "region": "South West",
+            "capacityMw": 53,
+            "recordCount": 1,
+            "layerSharePct": 0.13524136314580212
+          },
+          {
+            "country": "United Kingdom",
+            "region": "North West",
+            "capacityMw": 52,
+            "recordCount": 1,
+            "layerSharePct": 0.13268963931286246
+          },
+          {
+            "country": "United Kingdom",
+            "region": "East of England",
+            "capacityMw": 44,
+            "recordCount": 1,
+            "layerSharePct": 0.11227584864934516
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Scotland",
+            "capacityMw": 30,
+            "recordCount": 1,
+            "layerSharePct": 0.07655171498818988
+          },
+          {
+            "country": "United Kingdom",
+            "region": "North East",
+            "capacityMw": 17,
+            "recordCount": 1,
+            "layerSharePct": 0.04337930515997427
+          },
+          {
+            "country": "United Kingdom",
+            "region": "Yorkshire and the Humber",
+            "capacityMw": 16,
+            "recordCount": 1,
+            "layerSharePct": 0.04082758132703461
+          },
+          {
+            "country": "United Kingdom",
+            "region": "West Midlands",
+            "capacityMw": 15,
+            "recordCount": 1,
+            "layerSharePct": 0.03827585749409494
+          },
+          {
+            "country": "United Kingdom",
+            "region": "East Midlands",
+            "capacityMw": 9,
+            "recordCount": 1,
+            "layerSharePct": 0.022965514496456965
+          },
+          {
+            "country": "Canada",
+            "region": "Quebec",
+            "capacityMw": 229.5,
+            "recordCount": 1,
+            "layerSharePct": 0.5856206196596526
+          }
+        ]
       }
     ],
     "countryGaps": [

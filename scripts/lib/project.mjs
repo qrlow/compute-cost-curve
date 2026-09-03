@@ -252,6 +252,44 @@ function groupCapacityByCountry(rows) {
   return totals;
 }
 
+function buildRegionalCoverageLayer(layer, label, rows) {
+  const grouped = new Map();
+  for (const row of rows) {
+    const key = `${row.country}|${row.region}`;
+    const current = grouped.get(key) || {
+      country: row.country,
+      region: row.region,
+      capacityMw: 0,
+      recordCount: 0
+    };
+    current.capacityMw += row.capacityMw;
+    current.recordCount += 1;
+    grouped.set(key, current);
+  }
+
+  const capacityMw = [...grouped.values()].reduce((sum, row) => sum + row.capacityMw, 0);
+  const countryTotals = groupCapacityByCountry([...grouped.values()]);
+  const regions = [...grouped.values()]
+    .map((row) => ({
+      ...row,
+      layerSharePct: capacityMw ? row.capacityMw / capacityMw * 100 : 0
+    }))
+    .sort((a, b) =>
+      countryTotals.get(b.country) - countryTotals.get(a.country) ||
+      a.country.localeCompare(b.country) ||
+      b.capacityMw - a.capacityMw ||
+      a.region.localeCompare(b.region)
+    );
+
+  return {
+    layer,
+    label,
+    capacityMw,
+    regionCount: regions.length,
+    regions
+  };
+}
+
 export function buildCoverage(project, benchmarks, facilityRegister, scenarios) {
   const additiveRows = facilityRegister.filter((row) =>
     row.coverageRole === "additive" && row.metricId === project.capacityStandard.metricId
@@ -260,16 +298,32 @@ export function buildCoverage(project, benchmarks, facilityRegister, scenarios) 
   const globalBenchmarkMw = benchmarks.globalBenchmark.capacityMw;
   const registeredRegionCount = new Set(additiveRows.map((row) => `${row.country}|${row.region}`)).size;
   const registeredCountryCapacity = groupCapacityByCountry(additiveRows);
+  const capacityRegionBreakdown = buildRegionalCoverageLayer(
+    "capacity_register",
+    "Capacity register",
+    additiveRows
+  );
 
+  const priceRegionBreakdowns = [];
   const priceScenarios = project.evidenceScenarios.map((evidence) => {
     const scenario = scenarios.find((candidate) =>
       candidate.evidenceId === evidence.id && candidate.technologyId === "same_technology"
     );
     const priceCoveredMw = scenario.totalCapacityMw;
+    const regionalBreakdown = buildRegionalCoverageLayer(
+      evidence.id,
+      evidence.title,
+      scenario.blocks.map((block) => ({
+        country: block.country,
+        region: block.capacityRegion,
+        capacityMw: block.capacityMw
+      }))
+    );
+    priceRegionBreakdowns.push(regionalBreakdown);
     return {
       evidenceId: evidence.id,
       label: evidence.title,
-      regionsWithPrice: scenario.blocks.length,
+      regionsWithPrice: regionalBreakdown.regionCount,
       priceCoveredMw,
       priceMissingMw: Math.max(0, registeredCapacityMw - priceCoveredMw),
       registeredCapacityCoveragePct: priceCoveredMw / registeredCapacityMw * 100,
@@ -323,6 +377,10 @@ export function buildCoverage(project, benchmarks, facilityRegister, scenarios) 
       compatibility: benchmarks.globalBenchmark.compatibility
     },
     priceScenarios,
+    regionBreakdowns: [
+      capacityRegionBreakdown,
+      ...priceRegionBreakdowns
+    ],
     countryGaps
   };
 }

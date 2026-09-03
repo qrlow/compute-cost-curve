@@ -133,6 +133,18 @@
     .coverage-table th, .coverage-table td { padding: 9px 10px; }
     .coverage-table td:nth-child(n + 2) { white-space: nowrap; }
     .coverage-table td strong { font-size: 12px; }
+    .coverage-breakdown-row td { padding: 0; border-top: 0; white-space: normal !important; }
+    .regional-breakdown { padding: 3px 10px 15px; border-bottom: 1px solid var(--line); }
+    .regional-breakdown-head { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0 9px; color: var(--muted); font-size: 9px; }
+    .regional-breakdown-head strong { color: var(--ink); font-size: 10px; }
+    .region-country-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 18px; }
+    .region-country { min-width: 0; border-top: 2px solid var(--accent); }
+    .region-country h4 { display: flex; justify-content: space-between; gap: 8px; margin: 0; padding: 7px 0 4px; font-size: 10px; }
+    .region-country h4 span:last-child { color: var(--muted); font-weight: 500; white-space: nowrap; }
+    .region-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+    .region-item { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgb(203 196 183 / .65); font-size: 9px; }
+    .region-item span:first-child { min-width: 0; overflow-wrap: anywhere; }
+    .region-item span:last-child { color: var(--muted); text-align: right; white-space: nowrap; }
     .gap-table td:first-child { width: 31px; color: var(--muted); font-weight: 700; }
     .evidence-row { padding-top: 28px; border-top: 1px solid var(--ink); }
     .evidence-head { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; margin-bottom: 20px; align-items: end; }
@@ -223,6 +235,7 @@
       .audit-strip div:nth-child(-n + 2) { border-bottom: 1px solid var(--ink); }
       .chart-grid { grid-template-columns: 1fr; }
       .evidence-head { grid-template-columns: 1fr; gap: 8px; }
+      .region-country-grid { grid-template-columns: 1fr; }
       .method-grid, .correction-grid { grid-template-columns: 1fr; }
       .downloads { grid-template-columns: 1fr 1fr; }
       .download:nth-child(even) { border-right: 0; }
@@ -240,6 +253,7 @@
       .audit-strip div:last-child, .download:last-child { border-bottom: 0; }
       .matrix-head { display: block; }
       .matrix-head p { margin-top: 12px; }
+      .region-list { grid-template-columns: 1fr; }
       footer { display: block; }
       footer p + p { margin-top: 10px; }
     }
@@ -301,11 +315,11 @@
               <h3>Capacity coverage versus price coverage</h3>
               <div class="table-scroll">
                 <table class="coverage-table">
-                  <thead><tr><th>Layer</th><th>Capacity</th><th>Of register</th><th>Of global benchmark</th><th>Regions priced</th></tr></thead>
+                  <thead><tr><th>Layer</th><th>Capacity</th><th>Of register</th><th>Of global benchmark</th><th>Regions</th></tr></thead>
                   <tbody id="coverage-summary"></tbody>
                 </table>
               </div>
-              <p>“Of register” answers how much documented capacity has a price. “Of global” answers how much of the indicative 62 GW benchmark reaches that evidential layer.</p>
+              <p>Every summary layer is followed by its complete country-region breakdown. “Of register” answers how much documented capacity has a price. <a href="regional-coverage-breakdown.csv">Download the regional breakdown</a>.</p>
             </div>
             <div class="coverage-box">
               <h3>Largest country-capacity research gaps</h3>
@@ -424,7 +438,9 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const money = (value, digits = 3) => `$${value.toFixed(digits)}`;
       const megawatts = (value) => `${value.toLocaleString(undefined, {maximumFractionDigits: 1})} MW`;
       const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
+      const compactCapacity = (value) => value >= 1000 ? gigawatts(value) : megawatts(value);
       const percentage = (value) => `${value.toFixed(1)}%`;
+      const sharePercentage = (value) => value > 0 && value < 0.05 ? "<0.1%" : percentage(value);
       const evidenceLabel = (evidenceClass) => ({
         reported_delivered_price: "Delivered price observation",
         constructed_public_tariff_proxy: "Applicable public tariff",
@@ -515,8 +531,9 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       document.getElementById("registered-capacity").textContent = gigawatts(capacityCoverage.registeredCapacityMw);
       document.getElementById("global-coverage").textContent = `${percentage(capacityCoverage.globalCapacityCoveragePct)} indicative`;
       document.getElementById("registered-regions").textContent = capacityCoverage.registeredRegionCount;
-      document.getElementById("coverage-summary").innerHTML = [
+      const coverageRows = [
         {
+          layer: "capacity_register",
           label: "Capacity register",
           capacityMw: capacityCoverage.registeredCapacityMw,
           registerPct: 100,
@@ -524,19 +541,40 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           regions: capacityCoverage.registeredRegionCount
         },
         ...[...data.coverage.priceScenarios].sort((a, b) => a.evidenceId === "comparable_proxy" ? -1 : b.evidenceId === "comparable_proxy" ? 1 : 0).map((scenario) => ({
+          layer: scenario.evidenceId,
           label: scenario.label,
           capacityMw: scenario.priceCoveredMw,
           registerPct: scenario.registeredCapacityCoveragePct,
           globalPct: scenario.globalCapacityCoveragePct,
           regions: scenario.regionsWithPrice
         }))
-      ].map((row) => `<tr>
-        <td><strong>${row.label}</strong></td>
-        <td>${gigawatts(row.capacityMw)}</td>
-        <td>${percentage(row.registerPct)}</td>
-        <td>${percentage(row.globalPct)}</td>
-        <td>${row.regions}</td>
-      </tr>`).join("");
+      ];
+
+      const breakdownByLayer = new Map(data.coverage.regionBreakdowns.map((layer) => [layer.layer, layer]));
+      function renderRegionalBreakdown(layer) {
+        const byCountry = new Map();
+        for (const region of layer.regions) {
+          if (!byCountry.has(region.country)) byCountry.set(region.country, []);
+          byCountry.get(region.country).push(region);
+        }
+        const countries = [...byCountry.entries()].map(([country, regions]) => {
+          const countryCapacityMw = regions.reduce((sum, region) => sum + region.capacityMw, 0);
+          const items = regions.map((region) => `<div class="region-item"><span>${region.region}</span><span>${compactCapacity(region.capacityMw)} · ${sharePercentage(region.layerSharePct)}</span></div>`).join("");
+          return `<section class="region-country"><h4><span>${country}</span><span>${compactCapacity(countryCapacityMw)} · ${regions.length} region${regions.length === 1 ? "" : "s"}</span></h4><div class="region-list">${items}</div></section>`;
+        }).join("");
+        return `<div class="regional-breakdown"><div class="regional-breakdown-head"><strong>Regional breakdown</strong><span>${layer.regionCount} unique country-region keys · shares of this layer</span></div><div class="region-country-grid">${countries}</div></div>`;
+      }
+
+      document.getElementById("coverage-summary").innerHTML = coverageRows.map((row) => {
+        const breakdown = breakdownByLayer.get(row.layer);
+        return `<tr>
+          <td><strong>${row.label}</strong></td>
+          <td>${gigawatts(row.capacityMw)}</td>
+          <td>${percentage(row.registerPct)}</td>
+          <td>${percentage(row.globalPct)}</td>
+          <td>${row.regions}</td>
+        </tr><tr class="coverage-breakdown-row"><td colspan="5">${renderRegionalBreakdown(breakdown)}</td></tr>`;
+      }).join("");
 
       const scopeLabel = (scope) => scope === "country_live_it_capacity"
         ? "Country live-IT total"

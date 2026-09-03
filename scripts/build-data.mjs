@@ -80,6 +80,7 @@ const summary = {
   })),
   priceCoverage: coverage.priceScenarios.map((scenario) => ({
     evidenceId: scenario.evidenceId,
+    regionCount: scenario.regionsWithPrice,
     priceCoveredMw: round(scenario.priceCoveredMw, 4),
     registeredCapacityCoveragePct: round(scenario.registeredCapacityCoveragePct, 2),
     globalCapacityCoveragePct: round(scenario.globalCapacityCoveragePct, 2)
@@ -230,6 +231,23 @@ writeFileSync(resolve(ROOT, "coverage-summary.csv"), toCsv(coverageHeaders, [
     denominator_note: "Price coverage uses registered capacity as its main denominator"
   }))
 ]));
+
+const regionalCoverageHeaders = [
+  "input_sha256", "layer", "layer_label", "country", "region", "capacity_mw",
+  "share_of_layer_pct", "source_records"
+];
+writeFileSync(resolve(ROOT, "regional-coverage-breakdown.csv"), toCsv(regionalCoverageHeaders,
+  coverage.regionBreakdowns.flatMap((layer) => layer.regions.map((region) => ({
+    input_sha256: inputHash,
+    layer: layer.layer,
+    layer_label: layer.label,
+    country: region.country,
+    region: region.region,
+    capacity_mw: round(region.capacityMw, 4),
+    share_of_layer_pct: round(region.layerSharePct, 4),
+    source_records: region.recordCount
+  })))
+));
 
 const countryGapHeaders = [
   "input_sha256", "rank", "country", "iso3", "benchmark_capacity_mw",

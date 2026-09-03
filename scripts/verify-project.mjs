@@ -161,6 +161,19 @@ const comparableCoverage = coverage.priceScenarios.find((row) => row.evidenceId 
 const tariffCoverage = coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence");
 check(close(comparableCoverage.priceCoveredMw, 39189.19387322451, 1e-6), "combined regional price evidence sums independently of the capacity register");
 check(close(tariffCoverage.priceCoveredMw, 672.0025, 1e-6), "data-center tariff evidence coverage sums independently of the capacity register");
+check(coverage.regionBreakdowns.length === 3, "regional coverage is generated for the register and both price-evidence layers");
+for (const layer of coverage.regionBreakdowns) {
+  check(close(layer.regions.reduce((sum, row) => sum + row.capacityMw, 0), layer.capacityMw, 1e-6), `${layer.layer} regional rows sum to the layer total`);
+  check(close(layer.regions.reduce((sum, row) => sum + row.layerSharePct, 0), 100, 1e-8), `${layer.layer} regional shares sum to 100%`);
+}
+const capacityRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "capacity_register");
+const combinedRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "comparable_proxy");
+const strictRegionBreakdown = coverage.regionBreakdowns.find((layer) => layer.layer === "data_center_tariff_evidence");
+check(capacityRegionBreakdown.regionCount === 58, "capacity-register breakdown contains 58 unique country-region keys");
+check(combinedRegionBreakdown.regionCount === 27, "combined price breakdown contains 27 unique country-region keys");
+check(strictRegionBreakdown.regionCount === 2, "strict price breakdown contains two unique country-region keys");
+const combinedTexas = combinedRegionBreakdown.regions.find((row) => row.country === "United States" && row.region === "Texas");
+check(close(combinedTexas.capacityMw, 4123, 1e-6) && combinedTexas.recordCount === 2, "Texas regional price coverage aggregates Dallas–Fort Worth and Austin–San Antonio once");
 check(coverage.countryGaps[0].country === "Japan", "Japan is now the largest benchmarked country-capacity gap");
 const unitedStatesGap = coverage.countryGaps.find((row) => row.country === "United States");
 check(close(unitedStatesGap.missingCapacityMw, 0, 1e-6), "the prior 9,063.1 MW US benchmark gap is eliminated with observed JLL market data");
@@ -190,6 +203,7 @@ const requiredOutputs = [
   "global-benchmark-capacity-data.csv",
   "global-facility-register.csv",
   "coverage-summary.csv",
+  "regional-coverage-breakdown.csv",
   "country-capacity-gaps.csv",
   "technology-scenario-data.csv",
   "audit/capacity-derivation.csv",
