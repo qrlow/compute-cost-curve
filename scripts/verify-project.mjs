@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { createContext, runInContext } from "node:vm";
 import {
   ROOT,
   buildCoverage,
@@ -305,6 +306,53 @@ for (const row of sourceReview.records) {
 }
 const generatedSummary = JSON.parse(readFileSync(resolve(ROOT, "generated/project-summary.json"), "utf8"));
 check(Object.values(generatedSummary.secondAgentReview.counts).reduce((sum, count) => sum + count, 0) === project.sources.length, "generated second-review counts cover the full register");
+
+// Execute the page script with only its real static element IDs. This catches
+// dangling references after presentation sections are removed, without a browser.
+const indexHtml = readFileSync(resolve(ROOT, "index.html"), "utf8");
+const pageElements = new Map([...indexHtml.matchAll(/\bid="([^"]+)"/g)].map((match) => [match[1], {
+  innerHTML: "",
+  textContent: "",
+  insertAdjacentHTML(position, html) {
+    if (position !== "beforeend") throw new Error(`Unsupported insertion: ${position}`);
+    this.innerHTML += html;
+  }
+}]));
+for (const removedId of ["global-coverage", "coverage-summary", "coverage-title", "registered-regions", "country-gaps"]) {
+  check(!pageElements.has(removedId), `public page omits retired dashboard element ${removedId}`);
+}
+check(!/globalCapacityCoveragePct|registeredCapacityCoveragePct|renderRegionalBreakdown|coverageCaveat/.test(indexHtml), "public page does not render legacy coverage percentages or their denominator caveat");
+check(!/href="(?:coverage-summary|regional-coverage-breakdown)\.csv"/.test(indexHtml), "coverage-percentage downloads are no longer promoted on the public page");
+check(existsSync(resolve(ROOT, "METHODOLOGY.md")) && indexHtml.includes("https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md"), "public page links to the blog methodology and limitations");
+
+try {
+  const context = createContext({
+    window: {},
+    document: {
+      getElementById(id) {
+        const element = pageElements.get(id);
+        if (!element) throw new Error(`Page script references missing element: ${id}`);
+        return element;
+      }
+    }
+  });
+  runInContext(readFileSync(resolve(ROOT, "generated/chart-data.js"), "utf8"), context, {timeout: 1000});
+  const inlineScripts = [...indexHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+  check(inlineScripts.length === 1, "public page has one chart rendering script");
+  for (const script of inlineScripts) runInContext(script[1], context, {timeout: 1000});
+  const renderedCurves = pageElements.get("scenario-matrix").innerHTML;
+  check((renderedCurves.match(/class="cost-curve"/g) || []).length === 2, "page script renders both public technology curves");
+  const expectedBlocks = scenarios.filter((scenario) => scenario.evidenceId === "comparable_proxy").reduce((sum, scenario) => sum + scenario.blocks.length, 0);
+  check((renderedCurves.match(/<rect class="bar /g) || []).length === expectedBlocks, "all public chart blocks survive the dashboard removal");
+  const formattedGw = (mw) => `${(mw / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
+  check(pageElements.get("registered-capacity").textContent === formattedGw(coverage.capacityRegister.registeredCapacityMw), "registered headline is an absolute capacity, with no percentage");
+  check(pageElements.get("plotted-capacity").textContent === formattedGw(comparableCoverage.priceCoveredMw), "plotted headline matches the public curve capacity, with no percentage");
+  check(pageElements.get("capacity-definition").textContent === project.capacityStandard.definition, "capacity definition does not append the retired global denominator claim");
+  check((pageElements.get("source-register").innerHTML.match(/<tr>/g) || []).length === project.sources.length, "complete source register still renders");
+  check((pageElements.get("china-capacity-crosschecks").innerHTML.match(/<tr>/g) || []).length === project.chinaCapacityCrosschecks.length, "Chinese capacity cross-checks still render");
+} catch (error) {
+  check(false, `page script smoke test: ${error.message}`);
+}
 
 if (warnings.length) {
   console.warn(`WARN (${warnings.length})`);

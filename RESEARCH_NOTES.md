@@ -1,5 +1,7 @@
 # Research and audit notes
 
+For a reader-facing explanation suitable for the accompanying blog post, see [Methodology](METHODOLOGY.md). The website no longer displays capacity- or price-coverage percentages or their regional breakdowns. The calculations below remain as audit history; they do not establish global completeness. Chart inputs and source-review outcomes are unchanged by this presentation update.
+
 ## Research question
 
 The project asks how much China’s electricity-price advantage can lower the operating electricity cost of raw AI compute, and whether that advantage survives a technology-access penalty. It does not estimate the full cost of training or inference and does not claim that peak dense-BF16 FLOPs equal useful model output.
@@ -82,7 +84,7 @@ Capacity is never removed merely because its regional electricity price is missi
 2. **Combined observed-price or applicable-tariff coverage:** 39,189.2 MW, or 68.7% of registered capacity.
 3. **Strict data-center-specific audit subset:** 672.0 MW, or 1.2% of registered capacity.
 
-The global denominator is Knight Frank’s retrospective 62 GW headline for 2025. Dividing the register by that total gives indicative global capacity coverage of 92.1%. It is not described as audit-grade global coverage because the source does not publish a country table with the same boundary as each register row.
+The legacy global denominator is Knight Frank’s retrospective 62 GW headline for 2025. Dividing the register by that total gives 92.1%, but this is not a reliable estimate of global completeness because the source does not publish a country table with the same boundary as each register row. This ratio and the regional coverage dashboard have been removed from the public page; the underlying audit calculations are retained for traceability.
 
 The two public curves use the combined price category. Each block still exposes whether its price is an applicable public tariff, an official regional industrial average or an official national industrial average. The strict 672 MW subset is retained as an audit statistic rather than rendered as two sparse additional curves. Hohhot's delivered-price observation stays in that audit subset because its capacity is nested inside Inner Mongolia's provincial width; plotting both as additive blocks would double count capacity.
 

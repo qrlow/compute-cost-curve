@@ -4,6 +4,8 @@ This project is an auditable, static cost-curve visualization for AI-compute ele
 
 [View the published curves](https://qrlow.github.io/compute-cost-curve/)
 
+Read the [blog-ready methodology and limitations](METHODOLOGY.md) for the capacity selection, electricity-price proxies and technology assumptions.
+
 The [second-agent source review](audit/second-agent-review.md) identifies unresolved issues in capacity comparability, tariff applicability and some citations. The charts remain a research scenario; they have not received overall audit sign-off.
 
 ## How to read the curves
@@ -18,7 +20,7 @@ The page shows two curves because it keeps the technology question separate whil
 1. **Price evidence:** demonstrably applicable tariffs and official industrial averages share one public category, with the exact evidence class retained on every block. Hohhot's delivered-price observation remains in the strict audit subset because its capacity is nested inside the Inner Mongolia provincial width.
 2. **Technology access:** NVIDIA GB200 NVL72 everywhere versus Huawei CloudMatrix384 in China and GB200 elsewhere.
 
-The additive capacity register currently contains **57,077.4 MW across 58 country-region keys**, equal to an indicative **92.1%** of Knight Frank’s 62 GW global 2025 headline. The combined price category covers **39,189.2 MW**, or **68.7%** of registered capacity; the strict data-center-specific subset covers **672.0 MW**, or **1.2%**. These percentages are generated rather than hand-maintained.
+The additive capacity register contains **57,077.4 MW across 58 country-region keys**; the two public curves plot **39,189.2 MW** with usable price inputs. The website reports these absolute amounts without capacity- or price-coverage percentages. It is an uneven sample of regional markets, and a matching global denominator has not been established. Legacy coverage calculations remain in the audit exports for traceability, not as claims of global completeness.
 
 ## Capacity standard
 

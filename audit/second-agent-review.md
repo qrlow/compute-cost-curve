@@ -17,7 +17,7 @@ These counts describe source-review outcomes, not the percentage of capacity ind
 
 ## Issues preventing overall sign-off
 
-- **Global coverage:** the 62 GW denominator is not reconciled to the mixed inventory boundaries; the displayed coverage ratio is only indicative.
+- **Global coverage:** the legacy 62 GW denominator is not reconciled to the mixed inventory boundaries. Coverage percentages are no longer displayed on the public page; the audit calculations remain for traceability, not as a global completeness claim.
 - **Provincial capacity:** the treemap is an estimate, and the direct March Jiangsu observation remains inconsistent with it. Guangdong's exact year-end observation date is not established by the cited passage.
 - **Electricity bills:** several Chinese tariffs have time-of-use schedules omitted from the base-rate calculation. Shandong's chosen voltage row excludes 110 kV.
 - **Montreal:** the 2026 operator-class filing does not establish 2025 classes, qualifying voltages or tariff coverage for all 229.5 MW.

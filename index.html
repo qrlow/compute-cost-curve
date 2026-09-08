@@ -121,31 +121,6 @@
     .matrix-head { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 28px; }
     .matrix-head p { max-width: 570px; margin: 0; color: var(--muted); font-size: 13px; }
     .matrix { display: grid; gap: 52px; }
-    .coverage-layout { display: grid; grid-template-columns: .62fr 1.38fr; gap: 28px; margin: 0 0 54px; align-items: start; }
-    .coverage-copy { padding: 24px; border-top: 4px solid var(--accent); background: var(--surface); }
-    .coverage-copy strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 29px; font-weight: 500; line-height: 1.05; }
-    .coverage-copy p { margin: 0; color: var(--muted); font-size: 12px; }
-    .coverage-tables { display: grid; gap: 18px; }
-    .coverage-box { border: 1px solid var(--line); background: rgb(255 253 248 / .76); }
-    .coverage-box h3 { margin: 0; padding: 14px 16px 10px; font-size: 13px; }
-    .coverage-box p { margin: 0; padding: 0 16px 14px; color: var(--muted); font-size: 10px; }
-    .coverage-table { min-width: 0; font-size: 10px; }
-    .coverage-table th, .coverage-table td { padding: 9px 10px; }
-    .coverage-table td:nth-child(n + 2) { white-space: nowrap; }
-    .coverage-table td strong { font-size: 12px; }
-    .coverage-breakdown-row td { padding: 0; border-top: 0; white-space: normal !important; }
-    .regional-breakdown { padding: 3px 10px 15px; border-bottom: 1px solid var(--line); }
-    .regional-breakdown-head { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0 9px; color: var(--muted); font-size: 9px; }
-    .regional-breakdown-head strong { color: var(--ink); font-size: 10px; }
-    .region-country-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px 18px; }
-    .region-country { min-width: 0; border-top: 2px solid var(--accent); }
-    .region-country h4 { display: flex; justify-content: space-between; gap: 8px; margin: 0; padding: 7px 0 4px; font-size: 10px; }
-    .region-country h4 span:last-child { color: var(--muted); font-weight: 500; white-space: nowrap; }
-    .region-list { display: grid; grid-template-columns: minmax(0, 1fr); }
-    .region-item { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 1px solid rgb(203 196 183 / .65); font-size: 9px; }
-    .region-item span:first-child { min-width: 0; overflow-wrap: anywhere; }
-    .region-item span:last-child { color: var(--muted); text-align: right; white-space: nowrap; }
-    .gap-table td:first-child { width: 31px; color: var(--muted); font-weight: 700; }
     .evidence-row { padding-top: 28px; border-top: 1px solid var(--ink); }
     .evidence-head { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; margin-bottom: 20px; align-items: end; }
     .evidence-head h3 { margin: 0; font-size: 19px; }
@@ -239,13 +214,12 @@
     code.hash { overflow-wrap: anywhere; }
 
     @media (max-width: 900px) {
-      .hero, .intro-grid, .section-head, .coverage-layout { grid-template-columns: 1fr; gap: 28px; }
+      .hero, .intro-grid, .section-head { grid-template-columns: 1fr; gap: 28px; }
       .audit-strip { grid-template-columns: 1fr 1fr; }
       .audit-strip div:nth-child(2) { border-right: 0; }
       .audit-strip div:nth-child(-n + 2) { border-bottom: 1px solid var(--ink); }
       .chart-grid { grid-template-columns: 1fr; }
       .evidence-head { grid-template-columns: 1fr; gap: 8px; }
-      .region-country-grid { grid-template-columns: 1fr; }
       .method-grid, .correction-grid, .crosscheck-stats { grid-template-columns: 1fr; }
       .crosscheck-stats div { border-right: 0; border-bottom: 1px solid var(--ink); }
       .crosscheck-stats div:last-child { border-bottom: 0; }
@@ -265,7 +239,6 @@
       .audit-strip div:last-child, .download:last-child { border-bottom: 0; }
       .matrix-head { display: block; }
       .matrix-head p { margin-top: 12px; }
-      .region-list { grid-template-columns: 1fr; }
       footer { display: block; }
       footer p + p { margin-top: 10px; }
     }
@@ -287,7 +260,7 @@
       </div>
       <div class="audit-strip" aria-label="Project controls">
         <div><small>Capacity registered</small><strong id="registered-capacity">—</strong></div>
-        <div><small>Indicative global coverage</small><strong id="global-coverage">—</strong></div>
+        <div><small>Capacity plotted</small><strong id="plotted-capacity">—</strong></div>
         <div><small>Observation cutoff</small><strong id="observation-cutoff">31 December 2025</strong></div>
         <div><small>Rebuild</small><strong>One command: npm run build</strong></div>
       </div>
@@ -316,44 +289,15 @@
           </div>
           <p>The y-axis is fixed across both charts. Applicable public tariffs and official industrial averages share one category, while their evidence classes remain visible and independently auditable.</p>
         </div>
-        <div class="coverage-layout" aria-labelledby="coverage-title">
-          <div class="coverage-copy">
-            <p class="kicker">Coverage, not hidden omissions</p>
-            <strong id="coverage-title"><span id="registered-regions">—</span> regional markets registered</strong>
-            <p>The global percentage uses Knight Frank’s retrospective 62 GW headline for 2025. It is explicitly indicative because the denominator is not published with the same regional boundary as every register row.</p>
-          </div>
-          <div class="coverage-tables">
-            <div class="coverage-box">
-              <h3>Capacity coverage versus price coverage</h3>
-              <div class="table-scroll">
-                <table class="coverage-table">
-                  <thead><tr><th>Layer</th><th>Capacity</th><th>Of register</th><th>Of global benchmark</th><th>Regions</th></tr></thead>
-                  <tbody id="coverage-summary"></tbody>
-                </table>
-              </div>
-              <p>Every summary layer is followed by all 58 registered country-region keys. Each regional percentage is covered capacity divided by that region’s registered capacity; 0% regions remain visible. <a href="regional-coverage-breakdown.csv">Download the regional breakdown</a>.</p>
-            </div>
-            <div class="coverage-box">
-              <h3>Largest country-capacity research gaps</h3>
-              <div class="table-scroll">
-                <table class="coverage-table gap-table">
-                  <thead><tr><th>#</th><th>Country</th><th>Missing GW</th><th>Benchmark scope</th></tr></thead>
-                  <tbody id="country-gaps"></tbody>
-                </table>
-              </div>
-              <p>Except where an observed country total is available, these are minimum gaps based on named markets in Knight Frank’s 2025 forecast map; true country gaps may be larger.</p>
-            </div>
-          </div>
-        </div>
         <div id="scenario-matrix" class="matrix"></div>
-        <div class="reading-note"><strong>Important:</strong> The US register now contains 27.585 GW across ten leading JLL markets. Pacific Northwest and Omaha remain in the capacity register but outside the curves because their published market boundaries cross states and cannot be assigned one factual state electricity price. Microsoft's Wisconsin Fairwater facility is excluded because its first phase came online after 2025. India likewise remains registered while awaiting qualifying regional price evidence.</div>
+        <div class="reading-note"><strong>Scope:</strong> These curves show selected regional estimates, not a complete global inventory. Only capacity with a usable electricity-price input is plotted, and prices mix public tariffs with industrial averages. <a href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Read the methodology and limitations</a>.</div>
       </section>
 
       <section class="section" aria-labelledby="method-title">
         <div class="section-head">
           <div>
             <p class="kicker">Harmonized method</p>
-            <h2 id="method-title">One width definition, with coverage clearly separated</h2>
+            <h2 id="method-title">From regional capacity to compute cost</h2>
           </div>
           <p id="capacity-definition"></p>
         </div>
@@ -377,6 +321,7 @@
         <div class="formula">Provincial MW = rectangle area ÷ full treemap area × 10,430,000 racks × 2.5 kW ÷ 1,000
 Tariff $/kWh = [energy charge + demand charge ÷ (730 × 90%)] ÷ annual FX
 Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10¹⁹ × technology multiplier</div>
+        <p><a href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Full methodology: data selection, technology assumptions and limitations</a>.</p>
       </section>
 
       <section class="section" aria-labelledby="china-crosscheck-title">
@@ -430,14 +375,14 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
           <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
-          <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, combined-price and strict data-center-specific coverage</span></a>
+          <a class="download" href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md"><strong>Methodology</strong><span>Capacity sources, price assumptions and key limitations</span></a>
           <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
           <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Original checks plus second-agent findings and required actions</span></a>
         </div>
         <div class="caveat">
           <p id="source-review-summary"></p>
           <p><a href="audit/second-agent-review.md">Read the complete second-agent review and required actions.</a></p>
-          <p>This is an AI review, not human sign-off. Original chart inputs remain unchanged pending resolution. The global-coverage denominator, Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work.</p>
+          <p>This is an AI review, not human sign-off. Original chart inputs remain unchanged pending resolution. Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work. The methodology explains why no global completeness percentage is claimed.</p>
         </div>
         <details>
           <summary>Open the complete source-by-source verification register</summary>
@@ -480,8 +425,6 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const money = (value, digits = 3) => `$${value.toFixed(digits)}`;
       const megawatts = (value) => `${value.toLocaleString(undefined, {maximumFractionDigits: 1})} MW`;
       const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
-      const compactCapacity = (value) => value >= 1000 ? gigawatts(value) : megawatts(value);
-      const percentage = (value) => `${value.toFixed(1)}%`;
       const evidenceLabel = (evidenceClass) => ({
         reported_delivered_price: "Delivered price observation",
         constructed_public_tariff_proxy: "Applicable public tariff",
@@ -536,7 +479,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         return `<article class="chart-card">
           <div class="chart-card-head">
             <div><h4 class="scenario-title">${scenario.technologyTitle}</h4><p class="scenario-tech">China: ${scenario.chinaTechnology}<br>Elsewhere: ${scenario.globalTechnology}</p></div>
-            <span class="scenario-total">${megawatts(scenario.totalCapacityMw)} price-covered</span>
+            <span class="scenario-total">${megawatts(scenario.totalCapacityMw)} plotted</span>
           </div>
           <div class="chart-scroll">
             <svg class="cost-curve" viewBox="0 0 ${width} ${height}" role="img" aria-label="${scenario.evidenceTitle}, ${scenario.technologyTitle}, sorted from lowest to highest electricity cost">
@@ -568,73 +511,8 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           </section>`);
       }
 
-      const capacityCoverage = data.coverage.capacityRegister;
-      document.getElementById("registered-capacity").textContent = gigawatts(capacityCoverage.registeredCapacityMw);
-      document.getElementById("global-coverage").textContent = `${percentage(capacityCoverage.globalCapacityCoveragePct)} indicative`;
-      document.getElementById("registered-regions").textContent = capacityCoverage.registeredRegionCount;
-      const coverageRows = [
-        {
-          layer: "capacity_register",
-          label: "Capacity register",
-          capacityMw: capacityCoverage.registeredCapacityMw,
-          registerPct: 100,
-          globalPct: capacityCoverage.globalCapacityCoveragePct,
-          regions: capacityCoverage.registeredRegionCount
-        },
-        ...[...data.coverage.priceScenarios].sort((a, b) => a.evidenceId === "comparable_proxy" ? -1 : b.evidenceId === "comparable_proxy" ? 1 : 0).map((scenario) => ({
-          layer: scenario.evidenceId,
-          label: scenario.label,
-          capacityMw: scenario.priceCoveredMw,
-          registerPct: scenario.registeredCapacityCoveragePct,
-          globalPct: scenario.globalCapacityCoveragePct,
-          regions: scenario.regionsWithPrice
-        }))
-      ];
-
-      const breakdownByLayer = new Map(data.coverage.regionBreakdowns.map((layer) => [layer.layer, layer]));
-      function renderRegionalBreakdown(layer) {
-        const byCountry = new Map();
-        for (const region of layer.regions) {
-          if (!byCountry.has(region.country)) byCountry.set(region.country, []);
-          byCountry.get(region.country).push(region);
-        }
-        const countries = [...byCountry.entries()].map(([country, regions]) => {
-          const countryCoveredMw = regions.reduce((sum, region) => sum + region.capacityMw, 0);
-          const countryRegisteredMw = regions.reduce((sum, region) => sum + region.registeredCapacityMw, 0);
-          const countryCoveragePct = countryRegisteredMw ? countryCoveredMw / countryRegisteredMw * 100 : 0;
-          const items = regions.map((region) => `<div class="region-item"><span>${region.region}</span><span>${percentage(region.coveragePct)} · ${compactCapacity(region.capacityMw)} / ${compactCapacity(region.registeredCapacityMw)}</span></div>`).join("");
-          return `<section class="region-country"><h4><span>${country}</span><span>${percentage(countryCoveragePct)} · ${compactCapacity(countryCoveredMw)} / ${compactCapacity(countryRegisteredMw)}</span></h4><div class="region-list">${items}</div></section>`;
-        }).join("");
-        return `<div class="regional-breakdown"><div class="regional-breakdown-head"><strong>Regional coverage: covered / registered</strong><span>${layer.coveredRegionCount} of ${layer.regionCount} regions have coverage in this layer</span></div><div class="region-country-grid">${countries}</div></div>`;
-      }
-
-      document.getElementById("coverage-summary").innerHTML = coverageRows.map((row) => {
-        const breakdown = breakdownByLayer.get(row.layer);
-        return `<tr>
-          <td><strong>${row.label}</strong></td>
-          <td>${gigawatts(row.capacityMw)}</td>
-          <td>${percentage(row.registerPct)}</td>
-          <td>${percentage(row.globalPct)}</td>
-          <td>${row.regions}</td>
-        </tr><tr class="coverage-breakdown-row"><td colspan="5">${renderRegionalBreakdown(breakdown)}</td></tr>`;
-      }).join("");
-
-      const scopeLabel = (scope) => scope === "country_live_it_capacity"
-        ? "Country live-IT total"
-        : scope === "ten_leading_markets_leased_plus_hyperscaler_capacity"
-          ? "Ten observed markets"
-        : scope === "named_market_forecast_minimum"
-          ? "Named-market minimum"
-          : "Observed regional total";
-      document.getElementById("country-gaps").innerHTML = data.coverage.countryGaps
-        .filter((row) => row.missingCapacityMw > 0)
-        .slice(0, 10)
-        .map((row, index) => `<tr>
-          <td>${index + 1}</td>
-          <td><strong>${row.country}</strong></td>
-          <td>${(row.missingCapacityMw / 1000).toFixed(2)}</td>
-          <td>${scopeLabel(row.benchmarkScope)}</td>
-        </tr>`).join("");
+      document.getElementById("registered-capacity").textContent = gigawatts(data.coverage.capacityRegister.registeredCapacityMw);
+      document.getElementById("plotted-capacity").textContent = gigawatts(displayedScenarios[0].totalCapacityMw);
 
       const sourceById = new Map(data.sources.map((source) => [source.id, source]));
       const chinaCrosschecks = [...data.chinaCapacityCrosschecks].sort((a, b) =>
@@ -698,7 +576,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         </tr>`).join("");
       document.getElementById("source-review-summary").textContent = `Second-agent review · ${data.sourceReview.reviewedOn}: ${Object.entries(data.sourceReview.counts).map(([status, count]) => `${count} ${status.replaceAll("_", " ")}`).join("; ")}.`;
 
-      document.getElementById("capacity-definition").textContent = `${data.capacityStandard.definition} ${data.capacityStandard.coverageCaveat}`;
+      document.getElementById("capacity-definition").textContent = data.capacityStandard.definition;
       document.getElementById("observation-cutoff").textContent = new Date(`${data.metadata.observationCutoff}T00:00:00Z`).toLocaleDateString("en-GB", {day: "numeric", month: "long", year: "numeric", timeZone: "UTC"});
       document.getElementById("input-hash").textContent = data.metadata.inputSha256.slice(0, 12) + "…";
     })();
