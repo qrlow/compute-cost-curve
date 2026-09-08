@@ -310,6 +310,39 @@ check(Object.values(generatedSummary.secondAgentReview.counts).reduce((sum, coun
 // Execute the page script with only its real static element IDs. This catches
 // dangling references after presentation sections are removed, without a browser.
 const indexHtml = readFileSync(resolve(ROOT, "index.html"), "utf8");
+check(/<span>Electricity-only · Capacity-weighted · exploratory<\/span>/.test(indexHtml), "top ribbon labels the project exploratory");
+check(!indexHtml.includes("China versus global benchmarks"), "headline eyebrow is removed");
+check(/h1\s*\{[^}]*white-space:\s*nowrap;/.test(indexHtml), "main headline stays on one line");
+check(/h2\s*\{[^}]*white-space:\s*nowrap;/.test(indexHtml), "Sources and methodology heading stays on one line");
+check(/\.section-head\s*\{[^}]*display:\s*block;/.test(indexHtml), "sources heading uses the full content width");
+check(/\.section-head\s*\{[^}]*overflow:\s*visible;/.test(indexHtml) && !/\.section-head\s*\{[^}]*overflow(?:-x)?:\s*(?:auto|scroll);/.test(indexHtml), "sources heading has no scrolling container");
+check(/\.section-head\s*\{[^}]*container-type:\s*inline-size;/.test(indexHtml) && /h2\s*\{[^}]*font-size:\s*clamp\(1rem, 5\.8cqw, 3rem\);/.test(indexHtml), "sources title scales to its available width without scrolling");
+check(/\.reading-note\s*\{[^}]*white-space:\s*normal;/.test(indexHtml) && /\.reading-note\s*\{[^}]*overflow-wrap:\s*anywhere;/.test(indexHtml), "scope paragraph wraps naturally, including long words on narrow screens");
+check(/\.reading-note\s*\{[^}]*max-width:\s*none;/.test(indexHtml) && !/\.reading-note\s*\{[^}]*overflow(?:-x)?:\s*(?:auto|scroll);/.test(indexHtml), "scope paragraph uses full width without a scrolling container");
+check(indexHtml.includes('href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Read the full methodology and limitations</a>.'), "scope link uses the requested full methodology wording");
+check(!indexHtml.includes("Country gap queue") && !indexHtml.includes('href="country-capacity-gaps.csv"'), "country gap queue is no longer promoted on the webpage");
+check(existsSync(resolve(ROOT, "country-capacity-gaps.csv")), "country gap dataset remains in the repository");
+check((indexHtml.match(/class="download"/g) || []).length === 4 && /\.downloads\s*\{[^}]*grid-template-columns:\s*repeat\(4, minmax\(0, 1fr\)\);/.test(indexHtml), "four remaining resources fill the desktop grid");
+check(indexHtml.includes("--font-display:") && indexHtml.includes("--font-body:"), "editorial typography separates display and body typefaces");
+check(indexHtml.includes("--text-measure: 72ch;") && /\.matrix-head \.curve-intro\s*\{[^}]*max-width:\s*var\(--text-measure\);/.test(indexHtml), "introductory paragraph has a readable line length");
+check(/@supports \(grid-template-rows: subgrid\)/.test(indexHtml), "paired chart cards share aligned rows when supported");
+check(!indexHtml.includes("The build derives the charts from the registered inputs."), "removed build description is absent");
+check(/id="curves-title"[^>]*>The two curves<\/p>\s*<p class="curve-intro">/.test(indexHtml), "technology explanation sits directly beneath The two curves");
+check(indexHtml.includes('href="https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72">estimated</a> to require 2.5×'), "technology explanation links the electricity-efficiency estimate");
+check(indexHtml.includes("data centers operational by December 31, 2025, and electricity prices effective during 2025."), "curve introduction states the capacity cutoff and price year");
+const publicPriceRefs = new Set(project.evidenceScenarios.find((scenario) => scenario.id === "comparable_proxy").blocks.map((block) => block.priceRef));
+check(project.priceRecords.filter((price) => publicPriceRefs.has(price.id)).every((price) => price.effectiveDate >= "2025-01-01" && price.effectiveDate <= "2025-12-31"), "all public price effective dates support the 2025 introduction");
+check(indexHtml.includes("<h1>An Exploratory Global Compute Cost Curve</h1>"), "main title uses the requested project name");
+check(/<\/h1>\s*<p class="hero-subtitle">How far can cheap power carry China in the AI race\?<\/p>/.test(indexHtml), "China question appears directly beneath the main title as a subtitle");
+check(indexHtml.includes("<title>An Exploratory Global Compute Cost Curve</title>"), "browser title matches the main project title");
+check(/<\/header>\s*<main>\s*<section aria-labelledby="curves-title">/.test(indexHtml), "cost curves appear directly after the headline section");
+check(/<div class="reading-note">[^\n]*<\/div>\s*<\/section>\s*<section class="section" aria-labelledby="audit-title">/.test(indexHtml), "source evidence section follows the curves and scope note directly");
+check(indexHtml.includes('<p class="kicker">Reproduce and inspect</p>'), "Reproduce and inspect section is retained");
+check(!/second[- ]?agent|sourceReview|source-review|AI review|human sign-off/i.test(indexHtml), "webpage omits second-agent review text, links and display code");
+check(indexHtml.includes("Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work."), "methodology limitations remain visible without review framing");
+for (const removedCopy of ["Two cost curves compare technology access", "Combined price evidence × technology access", "The y-axis is fixed across both charts."]) {
+  check(!indexHtml.includes(removedCopy), `page omits removed introductory copy: ${removedCopy}`);
+}
 const pageElements = new Map([...indexHtml.matchAll(/\bid="([^"]+)"/g)].map((match) => [match[1], {
   innerHTML: "",
   textContent: "",
@@ -321,9 +354,16 @@ const pageElements = new Map([...indexHtml.matchAll(/\bid="([^"]+)"/g)].map((mat
 for (const removedId of ["global-coverage", "coverage-summary", "coverage-title", "registered-regions", "country-gaps"]) {
   check(!pageElements.has(removedId), `public page omits retired dashboard element ${removedId}`);
 }
+for (const removedId of ["registered-capacity", "plotted-capacity", "observation-cutoff", "capacity-definition", "method-title", "china-crosscheck-title", "china-crosscheck-count", "china-crosscheck-provinces", "china-crosscheck-subregions", "china-capacity-crosschecks", "corrections-title"]) {
+  check(!pageElements.has(removedId), `page omits removed intermediate section element ${removedId}`);
+}
 check(!/globalCapacityCoveragePct|registeredCapacityCoveragePct|renderRegionalBreakdown|coverageCaveat/.test(indexHtml), "public page does not render legacy coverage percentages or their denominator caveat");
 check(!/href="(?:coverage-summary|regional-coverage-breakdown)\.csv"/.test(indexHtml), "coverage-percentage downloads are no longer promoted on the public page");
 check(existsSync(resolve(ROOT, "METHODOLOGY.md")) && indexHtml.includes("https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md"), "public page links to the blog methodology and limitations");
+check(!pageElements.has("source-register") && !pageElements.has("input-hash"), "page omits source table and footer fingerprint elements");
+check(!/<(?:details|footer)\b/.test(indexHtml), "page omits expandable source table and footer");
+check(/<p>Montreal tariff applicability,[^<]*<\/p>\s*<\/div>\s*<\/section>\s*<\/main>\s*<\/div>\s*<script src=/.test(indexHtml), "Montreal limitations paragraph is the final visible page content");
+check(existsSync(resolve(ROOT, "audit/source-verification.csv")) && indexHtml.includes('href="audit/source-verification.csv"'), "source register remains available as a download");
 
 try {
   const context = createContext({
@@ -341,15 +381,15 @@ try {
   check(inlineScripts.length === 1, "public page has one chart rendering script");
   for (const script of inlineScripts) runInContext(script[1], context, {timeout: 1000});
   const renderedCurves = pageElements.get("scenario-matrix").innerHTML;
+  check(!renderedCurves.includes('class="evidence-head"'), "introductory evidence heading above charts is removed");
+  check(!renderedCurves.includes("width and cannot be added without double counting"), "introductory evidence paragraph above charts is removed");
   check((renderedCurves.match(/class="cost-curve"/g) || []).length === 2, "page script renders both public technology curves");
+  const xAxisLabels = [...renderedCurves.matchAll(/<text class="axis-title x-axis-title"[^>]*>([\s\S]*?)<\/text>/g)];
+  check(xAxisLabels.length === 2, "both public curves display the updated x-axis label");
+  check(xAxisLabels.every((match) => match[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim() === "Cumulative data center capacity operational by end 2025, Design IT Capacity excluding cooling etc (MW)"), "x-axis labels preserve the user's exact wording");
+  check(xAxisLabels.every((match) => (match[1].match(/<tspan\b/g) || []).length === 2), "long x-axis labels use two lines at the existing font size");
   const expectedBlocks = scenarios.filter((scenario) => scenario.evidenceId === "comparable_proxy").reduce((sum, scenario) => sum + scenario.blocks.length, 0);
   check((renderedCurves.match(/<rect class="bar /g) || []).length === expectedBlocks, "all public chart blocks survive the dashboard removal");
-  const formattedGw = (mw) => `${(mw / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
-  check(pageElements.get("registered-capacity").textContent === formattedGw(coverage.capacityRegister.registeredCapacityMw), "registered headline is an absolute capacity, with no percentage");
-  check(pageElements.get("plotted-capacity").textContent === formattedGw(comparableCoverage.priceCoveredMw), "plotted headline matches the public curve capacity, with no percentage");
-  check(pageElements.get("capacity-definition").textContent === project.capacityStandard.definition, "capacity definition does not append the retired global denominator claim");
-  check((pageElements.get("source-register").innerHTML.match(/<tr>/g) || []).length === project.sources.length, "complete source register still renders");
-  check((pageElements.get("china-capacity-crosschecks").innerHTML.match(/<tr>/g) || []).length === project.chinaCapacityCrosschecks.length, "Chinese capacity cross-checks still render");
 } catch (error) {
   check(false, `page script smoke test: ${error.message}`);
 }

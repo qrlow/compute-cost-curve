@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Auditable, capacity-weighted electricity cost curves for AI compute in China and global benchmark markets.">
   <link rel="icon" href="data:,">
-  <title>AI compute electricity cost curves</title>
+  <title>An Exploratory Global Compute Cost Curve</title>
   <style>
     :root {
       --paper: #f2eee5;
       --surface: #fffdf8;
       --ink: #15201c;
-      --muted: #647069;
+      --muted: #5c675f;
       --line: #cbc4b7;
       --china: #b43e32;
-      --china-soft: #d98676;
       --us: #356d9b;
       --canada: #cb9222;
       --uk: #6f5d91;
       --accent: #264f42;
-      --verified: #267150;
-      --excluded: #9d4034;
       --white: #fff;
+      --font-display: "Iowan Old Style", "Baskerville", "Palatino Linotype", Georgia, serif;
+      --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --text-measure: 72ch;
     }
 
     * { box-sizing: border-box; }
@@ -29,108 +29,98 @@
     body {
       margin: 0;
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgb(21 32 28 / .025) 1px, transparent 1px) 0 0 / 32px 32px,
-        linear-gradient(rgb(21 32 28 / .025) 1px, transparent 1px) 0 0 / 32px 32px,
-        var(--paper);
-      font: 16px/1.55 Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--paper);
+      font: 400 1rem/1.65 var(--font-body);
     }
-
-    a { color: var(--accent); text-underline-offset: 3px; }
+    a { color: var(--accent); text-underline-offset: .2em; text-decoration-thickness: 1px; }
     a:hover { text-decoration-thickness: 2px; }
-    .page { width: min(1220px, calc(100% - 40px)); margin: 0 auto; }
+    a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+    .page { width: min(1360px, calc(100% - clamp(32px, 7vw, 112px))); margin: 0 auto; }
 
     .topbar {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       gap: 24px;
-      padding: 23px 0;
+      padding: 26px 0 20px;
       border-bottom: 1px solid var(--line);
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-    }
-    .topbar strong { color: var(--ink); }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .65fr);
-      gap: 70px;
-      padding: 72px 0 54px;
-      align-items: end;
-    }
-    .eyebrow, .kicker {
-      margin: 0 0 13px;
-      color: var(--accent);
-      font-size: 11px;
-      font-weight: 850;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-    h1, h2, .scenario-title { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
-    h1 {
-      max-width: 850px;
-      margin: 0;
-      font-size: clamp(46px, 7vw, 82px);
-      letter-spacing: -.047em;
-      line-height: .98;
-    }
-    h2 {
-      margin: 0;
-      font-size: clamp(31px, 4vw, 48px);
-      letter-spacing: -.03em;
-      line-height: 1.06;
-    }
-    .dek { margin: 0; color: #3d4943; font-size: 18px; line-height: 1.6; }
-
-    .audit-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--ink);
-      background: var(--surface);
-    }
-    .audit-strip div { min-height: 105px; padding: 20px 22px; border-right: 1px solid var(--ink); }
-    .audit-strip div:last-child { border-right: 0; }
-    .audit-strip small {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 850;
+      font-size: .75rem;
+      font-weight: 500;
       letter-spacing: .1em;
       text-transform: uppercase;
     }
-    .audit-strip strong { display: block; font-family: Georgia, serif; font-size: 19px; font-weight: 500; line-height: 1.25; }
-
-    main { padding: 74px 0; }
-    .intro-grid {
-      display: grid;
-      grid-template-columns: .75fr 1.25fr;
-      gap: 74px;
-      margin-bottom: 58px;
-      padding-bottom: 58px;
-      border-bottom: 1px solid var(--ink);
+    .topbar strong { color: var(--ink); font-weight: 600; }
+    .hero {
+      container-type: inline-size;
+      padding: clamp(44px, 5.5vw, 80px) 0 44px;
+      overflow-x: auto;
     }
-    .intro-grid p { margin: 0 0 15px; }
-    .plain-definition { padding: 20px 22px; border-left: 4px solid var(--accent); background: var(--surface); }
-    .plain-definition strong { display: block; margin-bottom: 6px; }
-    .plain-definition p { margin: 0; color: #3f4b45; font-size: 14px; }
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      font: 600 .75rem/1.4 var(--font-body);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, .scenario-title { font-family: var(--font-display); font-weight: 400; }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.25rem, 5cqw, 5rem);
+      letter-spacing: -.035em;
+      line-height: 1.12;
+      white-space: nowrap;
+    }
+    .hero-subtitle {
+      margin: 14px 0 0;
+      color: #46534b;
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.15cqw, 1.875rem);
+      font-style: italic;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(1rem, 5.8cqw, 3rem);
+      letter-spacing: -.025em;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
 
-    .matrix-head { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 28px; }
-    .matrix-head p { max-width: 570px; margin: 0; color: var(--muted); font-size: 13px; }
-    .matrix { display: grid; gap: 52px; }
-    .evidence-row { padding-top: 28px; border-top: 1px solid var(--ink); }
-    .evidence-head { display: grid; grid-template-columns: 1fr 1.25fr; gap: 40px; margin-bottom: 20px; align-items: end; }
-    .evidence-head h3 { margin: 0; font-size: 19px; }
-    .evidence-head p { margin: 0; color: var(--muted); font-size: 12px; }
-    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .chart-card { min-width: 0; border: 1px solid var(--line); background: rgb(255 253 248 / .76); }
-    .chart-card-head { display: flex; justify-content: space-between; gap: 18px; padding: 17px 18px 12px; }
-    .scenario-title { margin: 0; font-size: 19px; line-height: 1.15; }
-    .scenario-tech { margin: 4px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
-    .scenario-total { color: var(--muted); font-size: 10px; text-align: right; white-space: nowrap; }
+    main { padding: 0 0 56px; }
+    .matrix-head {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(220px, 1fr);
+      gap: 16px clamp(32px, 4vw, 64px);
+      align-items: start;
+      margin-bottom: 32px;
+    }
+    .matrix-head .kicker { grid-column: 1 / -1; color: var(--accent); font-size: .875rem; }
+    .matrix-head .curve-intro {
+      max-width: var(--text-measure);
+      margin: 0;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      text-wrap: pretty;
+    }
+    .matrix-head .curve-dates {
+      margin: 4px 0 0;
+      padding-left: 22px;
+      border-left: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .875rem;
+      line-height: 1.7;
+      font-variant-numeric: lining-nums;
+    }
+    .matrix { display: grid; gap: 48px; }
+    .evidence-row { padding-top: 24px; border-top: 1px solid var(--ink); }
+    .chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+    .chart-card { min-width: 0; border: 1px solid var(--line); background: var(--surface); }
+    .chart-card-head { display: grid; gap: 14px; padding: 24px; align-content: start; }
+    .scenario-title { margin: 0; font-size: clamp(1.5rem, 2.05vw, 1.875rem); line-height: 1.2; letter-spacing: -.015em; text-wrap: balance; }
+    .scenario-tech { margin: 10px 0 0; color: var(--muted); font-size: .8125rem; line-height: 1.55; }
+    .scenario-total { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
     .chart-scroll { overflow-x: auto; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .cost-curve { display: block; width: 100%; min-width: 550px; height: auto; background: #fffdf8; }
     .cost-curve text { font-family: Inter, ui-sans-serif, sans-serif; }
@@ -145,102 +135,80 @@
     .bar.uk { fill: var(--uk); }
     .bar-label { fill: var(--white); font-size: 9px; font-weight: 850; text-anchor: middle; }
     .bar-label.outside { fill: var(--ink); }
-    .chart-note { padding: 12px 17px 15px; color: var(--muted); font-size: 11px; }
-    .block-key { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
-    .block-key-item { display: grid; grid-template-columns: 25px 1fr; gap: 9px; padding: 12px 15px; border-bottom: 1px solid var(--line); }
+    .chart-note { margin: 0; padding: 18px 20px; color: var(--muted); font-size: .75rem; line-height: 1.65; }
+    .block-key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; border-top: 1px solid var(--line); }
+    .block-key-item { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; padding: 16px; border-bottom: 1px solid var(--line); }
     .block-key-item:nth-child(odd) { border-right: 1px solid var(--line); }
-    .key-number { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: var(--country); color: var(--white); font-size: 9px; font-weight: 850; }
-    .block-key-item strong { display: block; font-size: 11px; line-height: 1.25; }
-    .block-key-item span { display: block; color: var(--muted); font-size: 9px; line-height: 1.45; }
+    .key-number { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--country); color: var(--white); font-size: .75rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .block-key-item strong { display: block; margin-bottom: 5px; font-size: .875rem; font-weight: 600; line-height: 1.35; }
+    .block-key-item div span { display: block; color: var(--muted); font-size: .75rem; line-height: 1.6; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+
+    @supports (grid-template-rows: subgrid) {
+      .chart-grid { row-gap: 0; align-items: stretch; }
+      .chart-card { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 0; }
+    }
 
     .reading-note {
-      margin: 28px 0 72px;
-      padding: 17px 20px;
-      border-left: 4px solid var(--china);
-      background: var(--surface);
-      color: #3e4944;
-      font-size: 13px;
+      max-width: none;
+      margin: 26px 0 56px;
+      padding: 0;
+      color: var(--muted);
+      font-size: .875rem;
+      line-height: 1.75;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
-    .reading-note strong { color: var(--ink); }
-
-    .section { padding: 64px 0; border-top: 1px solid var(--ink); }
-    .section-head { display: grid; grid-template-columns: .72fr 1.28fr; gap: 70px; margin-bottom: 34px; }
-    .section-head p { margin: 0; color: #3f4a45; }
-    .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .method-card { padding: 23px; border: 1px solid var(--line); background: var(--surface); }
-    .method-card small { color: var(--accent); font-size: 9px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
-    .method-card h3 { margin: 8px 0 8px; font-size: 15px; }
-    .method-card p { margin: 0; color: var(--muted); font-size: 12px; }
-    .formula { margin-top: 20px; padding: 18px 20px; background: #18231f; color: #f4efe5; font: 12px/1.8 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; }
-
-    .crosscheck-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 22px; border: 1px solid var(--ink); background: var(--surface); }
-    .crosscheck-stats div { padding: 18px 20px; border-right: 1px solid var(--ink); }
-    .crosscheck-stats div:last-child { border-right: 0; }
-    .crosscheck-stats small { display: block; margin-bottom: 6px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .crosscheck-stats strong { display: block; font-family: Georgia, serif; font-size: 24px; font-weight: 500; }
-    .crosscheck-table { min-width: 980px; }
-    .crosscheck-table td:nth-child(3), .crosscheck-table td:nth-child(4) { white-space: nowrap; }
-    .crosscheck-table td span { color: var(--muted); }
-    .comparison-tag { display: inline-block; margin-bottom: 4px; padding: 2px 6px; border: 1px solid var(--line); color: var(--ink) !important; font-size: 8px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
-
-    .correction-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .correction { padding: 24px; border-top: 4px solid var(--china); background: var(--surface); }
-    .correction strong { display: block; margin-bottom: 8px; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
-    .correction p { margin: 0; color: #45504b; font-size: 13px; }
-
-    .downloads { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--ink); background: var(--surface); }
-    .download { padding: 18px; border-right: 1px solid var(--ink); }
-    .download:last-child { border-right: 0; }
-    .download strong { display: block; margin-bottom: 6px; font-size: 12px; }
-    .download span { display: block; color: var(--muted); font-size: 10px; }
-
-    details { margin-top: 28px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-    summary { cursor: pointer; padding: 16px 0; font-weight: 800; }
+    .reading-note strong { color: var(--ink); font-weight: 600; }
+    .section { padding: 40px 0 0; border-top: 1px solid var(--ink); }
+    .section-head { display: block; container-type: inline-size; margin-bottom: 30px; overflow: visible; }
+    .section-head .kicker { margin-bottom: 10px; }
+    .downloads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+    .download { display: block; padding: 18px 0 8px; border-top: 1px solid var(--line); text-decoration: none; }
+    .download strong { display: block; margin-bottom: 8px; font-size: 1rem; font-weight: 500; line-height: 1.4; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: .2em; }
+    .download:hover strong { text-decoration-color: currentColor; }
+    .download span { display: block; color: var(--muted); font-size: .875rem; line-height: 1.65; }
+    details { margin-top: 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    summary { cursor: pointer; padding: 18px 0; font-size: .9375rem; font-weight: 500; }
     .table-scroll { overflow-x: auto; }
-    table { width: 100%; min-width: 1100px; border-collapse: collapse; background: rgb(255 253 248 / .7); font-size: 10px; }
-    th, td { padding: 10px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
-    td:first-child { font-weight: 800; }
-    .status { display: inline-block; padding: 2px 6px; border: 1px solid currentColor; font-size: 8px; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
-    .status.verified, .status.verified_derived { color: var(--verified); }
-    .status.partial, .status.not_verified { color: var(--excluded); }
-
-    .caveat { margin-top: 30px; padding: 19px 22px; border-left: 4px solid var(--accent); background: var(--surface); font-size: 13px; }
-    .caveat p { margin: 0 0 8px; }
+    table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--surface); font-size: .875rem; line-height: 1.6; }
+    th, td { padding: 16px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: .75rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+    td:first-child { min-width: 12rem; font-weight: 500; overflow-wrap: anywhere; }
+    td:nth-child(3) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .caveat { max-width: 88ch; margin-top: 26px; color: var(--muted); font-size: .875rem; line-height: 1.75; text-wrap: pretty; }
+    .caveat strong { color: var(--ink); font-weight: 500; }
+    .caveat p { margin: 0 0 12px; }
     .caveat p:last-child { margin: 0; }
-
-    footer { display: flex; justify-content: space-between; gap: 30px; padding: 30px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
-    footer p { margin: 0; max-width: 770px; }
-    code.hash { overflow-wrap: anywhere; }
+    footer { display: flex; justify-content: space-between; gap: 32px; padding: 24px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; line-height: 1.7; }
+    footer p { margin: 0; max-width: 100ch; }
+    footer p:last-child { flex-shrink: 0; }
+    code.hash { overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 
     @media (max-width: 900px) {
-      .hero, .intro-grid, .section-head { grid-template-columns: 1fr; gap: 28px; }
-      .audit-strip { grid-template-columns: 1fr 1fr; }
-      .audit-strip div:nth-child(2) { border-right: 0; }
-      .audit-strip div:nth-child(-n + 2) { border-bottom: 1px solid var(--ink); }
-      .chart-grid { grid-template-columns: 1fr; }
-      .evidence-head { grid-template-columns: 1fr; gap: 8px; }
-      .method-grid, .correction-grid, .crosscheck-stats { grid-template-columns: 1fr; }
-      .crosscheck-stats div { border-right: 0; border-bottom: 1px solid var(--ink); }
-      .crosscheck-stats div:last-child { border-bottom: 0; }
-      .downloads { grid-template-columns: 1fr 1fr; }
-      .download:nth-child(even) { border-right: 0; }
-      .download { border-bottom: 1px solid var(--ink); }
-      .download:last-child { border-bottom: 0; }
+      .matrix-head { grid-template-columns: 1fr; gap: 14px; }
+      .matrix-head .curve-intro { max-width: var(--text-measure); font-size: 1.0625rem; }
+      .matrix-head .curve-dates { max-width: var(--text-measure); margin-top: 2px; padding-left: 0; border-left: 0; }
+      .chart-grid { grid-template-columns: 1fr; gap: 28px; }
+      .chart-card { display: block; grid-template-rows: none; grid-row: auto; }
+      .downloads { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .reading-note { margin-bottom: 40px; }
     }
     @media (max-width: 560px) {
-      .page { width: min(100% - 24px, 1220px); }
+      .topbar { padding-top: 20px; }
       .topbar span { display: none; }
-      h1 { font-size: 47px; }
+      .hero { padding-top: 36px; padding-bottom: 32px; }
+      .hero-subtitle { margin-top: 10px; }
       .cost-curve { min-width: 0; }
-      .audit-strip, .downloads, .block-key { grid-template-columns: 1fr; }
-      .audit-strip div, .download, .block-key-item:nth-child(odd) { border-right: 0; }
-      .audit-strip div, .download { border-bottom: 1px solid var(--ink); }
-      .audit-strip div:last-child, .download:last-child { border-bottom: 0; }
-      .matrix-head { display: block; }
-      .matrix-head p { margin-top: 12px; }
+      .downloads, .block-key { grid-template-columns: 1fr; }
+      .downloads { gap: 12px; }
+      .block-key-item:nth-child(odd) { border-right: 0; }
+      .chart-card-head { padding: 20px; }
+      .section { padding-top: 30px; }
       footer { display: block; }
-      footer p + p { margin-top: 10px; }
+      footer p + p { margin-top: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
@@ -249,161 +217,41 @@
     <header>
       <div class="topbar">
         <strong>Compute Cost Curve</strong>
-        <span>Electricity-only · Capacity-weighted · Auditable</span>
+        <span>Electricity-only · Capacity-weighted · exploratory</span>
       </div>
       <div class="hero">
-        <div>
-          <p class="eyebrow">China versus global benchmarks</p>
-          <h1>How far can cheap power carry China in the AI race?</h1>
-        </div>
-        <p class="dek">Two cost curves compare technology access using one combined regional price-evidence category. Every block still identifies whether its price is an applicable public tariff or an official industrial average.</p>
-      </div>
-      <div class="audit-strip" aria-label="Project controls">
-        <div><small>Capacity registered</small><strong id="registered-capacity">—</strong></div>
-        <div><small>Capacity plotted</small><strong id="plotted-capacity">—</strong></div>
-        <div><small>Observation cutoff</small><strong id="observation-cutoff">31 December 2025</strong></div>
-        <div><small>Rebuild</small><strong>One command: npm run build</strong></div>
+        <h1>An Exploratory Global Compute Cost Curve</h1>
+        <p class="hero-subtitle">How far can cheap power carry China in the AI race?</p>
       </div>
     </header>
 
     <main>
-      <section class="intro-grid">
-        <div>
-          <p class="kicker">What the chart measures</p>
-          <h2>A classical cost curve for AI operations</h2>
-        </div>
-        <div>
-          <p>Each block’s <strong>width</strong> is the location’s commissioned design IT power in MW. Its <strong>height</strong> is the electricity cost of performing 10<sup>19</sup> dense-BF16 floating-point operations. Blocks run from the lowest cost on the left to the highest on the right.</p>
-          <div class="plain-definition">
-            <strong>Read $0.20 on the y-axis as:</strong>
-            <p>At the stated electricity price, PUE and technology, the electricity required for 10 quintillion dense-BF16 operations costs 20 US cents. The inverse—5 × 10<sup>19</sup> FLOPs per dollar—is also reported in the downloadable data.</p>
-          </div>
-        </div>
-      </section>
-
       <section aria-labelledby="curves-title">
         <div class="matrix-head">
-          <div>
-            <p class="kicker">The two curves</p>
-            <h2 id="curves-title">Combined price evidence × technology access</h2>
-          </div>
-          <p>The y-axis is fixed across both charts. Applicable public tariffs and official industrial averages share one category, while their evidence classes remain visible and independently auditable.</p>
+          <p id="curves-title" class="kicker">The two curves</p>
+          <p class="curve-intro">One curve uses the same NVIDIA GB200 NVL72 technology everywhere. The other models export-control restrictions by assuming China uses Huawei CloudMatrix384, while other regions use GB200 NVL72. CloudMatrix384 is <a href="https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72">estimated</a> to require 2.5× as much electricity for the same amount of dense-BF16 compute.</p>
+          <p class="curve-dates">The curves use capacity estimates for data centers operational by December 31, 2025, and electricity prices effective during 2025.</p>
         </div>
         <div id="scenario-matrix" class="matrix"></div>
-        <div class="reading-note"><strong>Scope:</strong> These curves show selected regional estimates, not a complete global inventory. Only capacity with a usable electricity-price input is plotted, and prices mix public tariffs with industrial averages. <a href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Read the methodology and limitations</a>.</div>
-      </section>
-
-      <section class="section" aria-labelledby="method-title">
-        <div class="section-head">
-          <div>
-            <p class="kicker">Harmonized method</p>
-            <h2 id="method-title">From regional capacity to compute cost</h2>
-          </div>
-          <p id="capacity-definition"></p>
-        </div>
-        <div class="method-grid">
-          <article class="method-card">
-            <small>China provinces</small>
-            <h3>Reproducible image-to-capacity estimate</h3>
-            <p>Every rectangle boundary from CAICT Figure 6 is stored in pixels. The 31 areas exactly tile the treemap and are scaled to the matched 10.43 million-rack total at 31 March 2025. CAICT does not publish the 31 numeric inputs, so proportionality between rectangle area and rack count is an explicit assumption.</p>
-          </article>
-          <article class="method-card">
-            <small>Global regional register</small>
-            <h3>Capacity exists before a price joins it</h3>
-            <p>The register retains 31 Chinese provinces, ten leading US markets covering leased and hyperscaler-owned capacity, selected Canadian capacity, 11 official Great Britain regions and seven Indian live-IT markets. Additive, subset and excluded rows are explicit.</p>
-          </article>
-          <article class="method-card">
-            <small>Cost calculation</small>
-            <h3>One common conversion</h3>
-            <p>All prices are converted with 2025 Federal Reserve annual-average FX. Tariff demand charges use 730 hours per month and a 90% load factor. Common-technology PUE is fixed at 1.20.</p>
-          </article>
-        </div>
-        <div class="formula">Provincial MW = rectangle area ÷ full treemap area × 10,430,000 racks × 2.5 kW ÷ 1,000
-Tariff $/kWh = [energy charge + demand charge ÷ (730 × 90%)] ÷ annual FX
-Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10¹⁹ × technology multiplier</div>
-        <p><a href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Full methodology: data selection, technology assumptions and limitations</a>.</p>
-      </section>
-
-      <section class="section" aria-labelledby="china-crosscheck-title">
-        <div class="section-head">
-          <div>
-            <p class="kicker">China capacity evidence</p>
-            <h2 id="china-crosscheck-title">Direct observations now test the treemap estimate</h2>
-          </div>
-          <p>No public 31-province numeric table was found behind CAICT Figure 6. Official province and subregional observations are therefore kept as a separate dated evidence layer. They are not silently substituted into the March 2025 distribution when the date, geography or capacity boundary differs.</p>
-        </div>
-        <div class="crosscheck-stats" aria-label="Chinese capacity cross-check coverage">
-          <div><small>Direct observations</small><strong id="china-crosscheck-count">—</strong></div>
-          <div><small>Full provinces covered</small><strong id="china-crosscheck-provinces">—</strong></div>
-          <div><small>Subregional checks</small><strong id="china-crosscheck-subregions">—</strong></div>
-        </div>
-        <div class="table-scroll">
-          <table class="crosscheck-table">
-            <thead><tr><th>Province / scope</th><th>Direct observation</th><th>Direct racks</th><th>CAICT-implied racks</th><th>Comparison</th><th>Treatment</th></tr></thead>
-            <tbody id="china-capacity-crosschecks"></tbody>
-          </table>
-        </div>
-        <div class="caveat">
-          <p><strong>Most direct observations are corroboration, not replacements.</strong> The comparison file preserves the observation date, geographic scope, rack definition and reason each row was or was not substituted. The closest-date Jiangsu source is an unresolved conflict and is shown as such.</p>
-          <p><a href="audit/china-provincial-capacity-crosschecks.csv">Download all Chinese provincial and subregional cross-checks</a>.</p>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="corrections-title">
-        <div class="section-head">
-          <div>
-            <p class="kicker">Audit corrections</p>
-            <h2 id="corrections-title">Three material weaknesses removed</h2>
-          </div>
-          <p>These are not cosmetic changes: each one alters either a block width, a price claim or the evidential meaning of a curve.</p>
-        </div>
-        <div class="correction-grid">
-          <article class="correction"><strong>March matches March</strong><p>The CAICT provincial treemap is now scaled to 10.43 million racks at 31 March 2025. The later June national total is not mixed into a March distribution.</p></article>
-          <article class="correction"><strong>442.5 MW, not 269.4</strong><p>Hohhot width is commissioned design IT capacity: 11 × 16,091 racks × 2.5 kW. The reported 326 MW reconciles as occupied facility load after utilization and PUE.</p></article>
-          <article class="correction"><strong>No invented weighting</strong><p>The unsupported 169 MW Guangdong regional weighting is gone. The Pearl River Delta tariff is applied uniformly and explicitly labelled a conservative provincial proxy.</p></article>
-        </div>
+        <div class="reading-note"><strong>Scope:</strong> These curves show selected regional estimates, not a complete global inventory. Only capacity with a usable electricity-price input is plotted, and prices mix public tariffs with industrial averages. <a href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md">Read the full methodology and limitations</a>.</div>
       </section>
 
       <section class="section" aria-labelledby="audit-title">
         <div class="section-head">
-          <div>
-            <p class="kicker">Reproduce and inspect</p>
-            <h2 id="audit-title">Source evidence and unresolved checks</h2>
-          </div>
-          <p>The build derives the charts from the registered inputs. A separate second-agent pass reread the sources and recorded discrepancies, qualifications and failed-access checks. Passing the build does not resolve those findings or certify the curve.</p>
+          <p class="kicker">Reproduce and inspect</p>
+          <h2 id="audit-title">Sources and methodology</h2>
         </div>
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
           <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
           <a class="download" href="https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md"><strong>Methodology</strong><span>Capacity sources, price assumptions and key limitations</span></a>
-          <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
-          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Original checks plus second-agent findings and required actions</span></a>
+          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Source links, publication dates and registered claims</span></a>
         </div>
         <div class="caveat">
-          <p id="source-review-summary"></p>
-          <p><a href="audit/second-agent-review.md">Read the complete second-agent review and required actions.</a></p>
-          <p>This is an AI review, not human sign-off. Original chart inputs remain unchanged pending resolution. Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work. The methodology explains why no global completeness percentage is claimed.</p>
-        </div>
-        <details>
-          <summary>Open the complete source-by-source verification register</summary>
-          <div class="table-scroll">
-            <table>
-              <thead><tr><th>Source</th><th>Publisher</th><th>First pass</th><th>Registered claim</th><th>Second-agent result</th><th>Evidence checked</th><th>Findings</th><th>Required action</th></tr></thead>
-              <tbody id="source-register"></tbody>
-            </table>
-          </div>
-        </details>
-        <div class="caveat">
-          <p><strong>Observation dates are explicit, but not identical across all sources.</strong> Capacity must be operational by 31 December 2025. The expanded US and India market records are year-end 2025, China’s provincial distribution is dated 31 March 2025, and Great Britain’s official regional estimate is autumn 2024. The register exposes these vintages instead of silently treating them as a same-day census.</p>
-          <p><strong>Research publication cutoff:</strong> 24 August 2026. This is only the date by which supporting publications had to be available; it does not alter their observation dates.</p>
+          <p>Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work. The methodology explains why no global completeness percentage is claimed.</p>
         </div>
       </section>
     </main>
-
-    <footer>
-      <p>Electricity-only operating comparison. It excludes GPU acquisition, finance, construction, networking, labor, water, maintenance and utilization economics. “Export-constrained” uses a 2.5× China electricity-per-dense-FLOP engineering estimate, not a metered full-system benchmark.</p>
-      <p>Input <code id="input-hash" class="hash"></code></p>
-    </footer>
   </div>
 
   <script src="generated/chart-data.js?v=44481b70627d"></script>
@@ -424,7 +272,6 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const countryColor = (country) => country === "China" ? "#b43e32" : country === "Canada" ? "#cb9222" : country === "United Kingdom" ? "#6f5d91" : "#356d9b";
       const money = (value, digits = 3) => `$${value.toFixed(digits)}`;
       const megawatts = (value) => `${value.toLocaleString(undefined, {maximumFractionDigits: 1})} MW`;
-      const gigawatts = (value) => `${(value / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} GW`;
       const evidenceLabel = (evidenceClass) => ({
         reported_delivered_price: "Delivered price observation",
         constructed_public_tariff_proxy: "Applicable public tariff",
@@ -489,7 +336,10 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
               <line class="axisline" x1="${left}" y1="${baseline}" x2="${width - right}" y2="${baseline}"></line>
               <line class="axisline" x1="${left}" y1="${top}" x2="${left}" y2="${baseline}"></line>
               ${xTicks}
-              <text class="axis-title" x="${left + plotWidth / 2}" y="${baseline + 34}" text-anchor="middle">Cumulative commissioned design IT power (MW)</text>
+              <text class="axis-title x-axis-title" x="${left + plotWidth / 2}" y="${baseline + 34}" text-anchor="middle">
+                <tspan x="${left + plotWidth / 2}" dy="0">Cumulative data center capacity operational by end 2025,</tspan>
+                <tspan x="${left + plotWidth / 2}" dy="13">Design IT Capacity excluding cooling etc (MW)</tspan>
+              </text>
               <text class="axis-title" transform="translate(13 ${top + plotHeight / 2}) rotate(-90)" text-anchor="middle">USD per 10¹⁹ dense-BF16 FLOPs</text>
               <text class="tick" x="${left}" y="${height - 13}">LOWEST COST</text>
               <text class="tick" x="${width - right}" y="${height - 13}" text-anchor="end">HIGHEST COST →</text>
@@ -503,82 +353,12 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       const matrix = document.getElementById("scenario-matrix");
       for (const scenarios of byEvidence.values()) {
         const ordered = [...scenarios].sort((a, b) => a.technologyId === "same_technology" ? -1 : 1);
-        const first = ordered[0];
         matrix.insertAdjacentHTML("beforeend", `
           <section class="evidence-row">
-            <div class="evidence-head"><h3>${first.evidenceTitle}<br><small>${first.evidenceSubtitle}</small></h3><p>${first.evidenceNote}</p></div>
             <div class="chart-grid">${ordered.map(renderCurve).join("")}</div>
           </section>`);
       }
 
-      document.getElementById("registered-capacity").textContent = gigawatts(data.coverage.capacityRegister.registeredCapacityMw);
-      document.getElementById("plotted-capacity").textContent = gigawatts(displayedScenarios[0].totalCapacityMw);
-
-      const sourceById = new Map(data.sources.map((source) => [source.id, source]));
-      const chinaCrosschecks = [...data.chinaCapacityCrosschecks].sort((a, b) =>
-        (a.geographicScope === b.geographicScope ? 0 : a.geographicScope === "province" ? -1 : 1) ||
-        a.province.localeCompare(b.province) || a.observationDate.localeCompare(b.observationDate)
-      );
-      const fullProvinceNames = new Set(chinaCrosschecks
-        .filter((row) => row.geographicScope === "province")
-        .map((row) => row.province));
-      const subregionalRows = chinaCrosschecks.filter((row) => row.geographicScope === "subprovince");
-      document.getElementById("china-crosscheck-count").textContent = chinaCrosschecks.length;
-      document.getElementById("china-crosscheck-provinces").textContent = fullProvinceNames.size;
-      document.getElementById("china-crosscheck-subregions").textContent = subregionalRows.length;
-
-      const rackCount = (value, valueType = "point") => `${valueType === "lower_bound" ? "> " : ""}${Math.round(value).toLocaleString()}`;
-      const comparabilityLabel = (value) => ({
-        same_metric: "Same rack metric",
-        sector_subset: "Sector subset",
-        subregional_subset: "Subregional subtotal",
-        boundary_mismatch: "Different rack boundary",
-        boundary_mismatch_subset: "Different rack boundary"
-      })[value] || value.replaceAll("_", " ");
-      const treatmentLabel = (value) => ({
-        not_substituted_conflict: "Unresolved conflict—kept beside curve",
-        not_substituted_later_date: "Later date—not substituted",
-        not_substituted_earlier_date: "Earlier date—not substituted",
-        not_substituted_lower_bound: "Lower bound—not substituted",
-        not_substituted_scope_and_date: "Different scope and date—not substituted",
-        not_substituted_boundary_and_date: "Different boundary and date—not substituted",
-        not_substituted_subset: "Subset—not substituted"
-      })[value] || value.replaceAll("_", " ");
-      document.getElementById("china-capacity-crosschecks").innerHTML = chinaCrosschecks.map((row) => {
-        const source = sourceById.get(row.sourceIds[0]);
-        const difference = row.differencePct == null
-          ? row.valueType === "lower_bound" ? "Point difference not calculated for a lower bound" : "Not comparable as a provincial point estimate"
-          : `${row.differencePct >= 0 ? "+" : ""}${row.differencePct.toFixed(1)}% versus CAICT’s March estimate`;
-        return `<tr>
-          <td><strong>${row.province}</strong><br><span>${row.scopeLabel} · ${row.geographicScope === "province" ? "full province" : "subregional"}</span></td>
-          <td><a href="${source?.url || "#"}">${row.observationDate}</a><br><span>${source?.publisher || row.sourceIds[0]}</span></td>
-          <td>${rackCount(row.observedStandardRacks, row.valueType)}</td>
-          <td>${rackCount(row.caictImpliedStandardRacks)}<br><span>${row.caictObservationDate}</span></td>
-          <td><span class="comparison-tag">${comparabilityLabel(row.comparability)}</span><br>${difference}<br><span>${row.capacityBoundary}</span></td>
-          <td>${treatmentLabel(row.replacementStatus)}<br><span>${row.note}</span></td>
-        </tr>`;
-      }).join("");
-
-      const sources = [...data.sources].sort((a, b) => {
-        const rank = {discrepancy: 0, not_verified: 1, qualified: 2, confirmed: 3};
-        return rank[a.secondAgentReview.status] - rank[b.secondAgentReview.status] || a.publisher.localeCompare(b.publisher);
-      });
-      document.getElementById("source-register").innerHTML = sources.map((source) => `
-        <tr>
-          <td><a href="${source.url}">${source.id}</a></td>
-          <td>${source.publisher}<br><span>${source.publicationDate || "date unknown"}</span></td>
-          <td><span class="status ${source.verificationStatus}">${source.verificationStatus.replace("_", " ")}</span></td>
-          <td>${source.claim}</td>
-          <td><strong>${source.secondAgentReview.status.replaceAll("_", " ")}</strong><br>${data.sourceReview.reviewedOn}</td>
-          <td>${source.secondAgentReview.accessMethod}<br>${source.secondAgentReview.locator}<br>${source.secondAgentReview.evidenceUrls.map((url, index) => `<a href="${url}">Evidence ${index + 1}</a>`).join(" · ")}</td>
-          <td>${source.secondAgentReview.findings}</td>
-          <td>${source.secondAgentReview.action}</td>
-        </tr>`).join("");
-      document.getElementById("source-review-summary").textContent = `Second-agent review · ${data.sourceReview.reviewedOn}: ${Object.entries(data.sourceReview.counts).map(([status, count]) => `${count} ${status.replaceAll("_", " ")}`).join("; ")}.`;
-
-      document.getElementById("capacity-definition").textContent = data.capacityStandard.definition;
-      document.getElementById("observation-cutoff").textContent = new Date(`${data.metadata.observationCutoff}T00:00:00Z`).toLocaleDateString("en-GB", {day: "numeric", month: "long", year: "numeric", timeZone: "UTC"});
-      document.getElementById("input-hash").textContent = data.metadata.inputSha256.slice(0, 12) + "…";
     })();
   </script>
 </body>

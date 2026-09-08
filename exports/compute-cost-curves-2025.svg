@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1070" viewBox="0 0 1800 1070" role="img" aria-labelledby="title desc">
+<title id="title">An Exploratory Global Compute Cost Curve</title>
+<desc id="desc">Two electricity-only cost curves comparing standardized NVIDIA hardware everywhere with an export-constrained scenario using Huawei hardware in China. Each curve contains the same 28 regional capacity estimates, sorted by cost with identical axes. The China electricity-per-FLOP multiplier is an engineering estimate, not a measured fleet benchmark.</desc>
+<metadata>Input SHA-256: ff1e8ce94ab2cf3a06d6317e2982e5d04361ff7412dda11aabb26b02428cd7d9</metadata>
+<style>
+text { font-family: "Helvetica Neue", Arial, sans-serif; fill: #15201c; }
+.eyebrow { fill: #5c675f; font-size: 14px; font-weight: 600; letter-spacing: 2px; }
+.title { font-family: Georgia, serif; font-size: 45px; }
+.subtitle { font-family: Georgia, serif; font-style: italic; font-size: 25px; fill: #46534b; }
+.legend { font-size: 17px; }
+.panel-title { font-family: Georgia, serif; font-size: 30px; }
+.panel-subtitle { font-size: 17px; fill: #5c675f; }
+.tick { font-size: 16px; fill: #5c675f; }
+.axis-title { font-size: 17px; font-weight: 500; }
+.region-label { font-size: 16px; }
+.region-label[fill="white"] { fill: white; }
+.direction { font-size: 13px; letter-spacing: 1px; fill: #5c675f; }
+.note { font-size: 16px; fill: #5c675f; }
+</style>
+<rect width="1800" height="1070" fill="#fffdf8"/>
+<text x="64" y="48" class="eyebrow">2025 · ELECTRICITY-ONLY COMPUTE COST</text>
+<text x="64" y="108" class="title">An Exploratory Global Compute Cost Curve</text>
+<text x="64" y="151" class="subtitle">How far can cheap power carry China in the AI race?</text>
+<rect x="64" y="181" width="17" height="17" fill="#b43e32"/><text x="90" y="195" class="legend">China</text>
+<rect x="204" y="181" width="17" height="17" fill="#356d9b"/><text x="230" y="195" class="legend">United States</text>
+<rect x="401" y="181" width="17" height="17" fill="#cb9222"/><text x="427" y="195" class="legend">Canada · Montreal subtotal</text>
+<rect x="674" y="181" width="17" height="17" fill="#6f5d91"/><text x="700" y="195" class="legend">Great Britain</text>
+<text x="1736" y="195" class="legend" text-anchor="end">39,189 MW plotted in each curve · 28 regional estimates</text>
+<line x1="64" y1="220" x2="1736" y2="220" stroke="#bdb8ad"/>
+<g class="scenario" data-technology="same_technology" data-total-mw="39189.19387322451"><text x="64" y="264" class="panel-title">Same technology everywhere</text>
+<text x="64" y="299" class="panel-subtitle">NVIDIA GB200 NVL72 in every region</text>
+<text x="64" y="323" class="panel-subtitle">Standardized hardware and power efficiency</text>
+<line x1="136" y1="796" x2="856" y2="796" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="801" class="tick" text-anchor="end">0.0</text>
+<line x1="136" y1="741" x2="856" y2="741" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="746" class="tick" text-anchor="end">0.1</text>
+<line x1="136" y1="686" x2="856" y2="686" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="691" class="tick" text-anchor="end">0.2</text>
+<line x1="136" y1="631" x2="856" y2="631" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="636" class="tick" text-anchor="end">0.3</text>
+<line x1="136" y1="576" x2="856" y2="576" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="581" class="tick" text-anchor="end">0.4</text>
+<line x1="136" y1="521" x2="856" y2="521" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="526" class="tick" text-anchor="end">0.5</text>
+<line x1="136" y1="466.00000000000006" x2="856" y2="466.00000000000006" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="471.00000000000006" class="tick" text-anchor="end">0.6</text>
+<line x1="136" y1="411.00000000000006" x2="856" y2="411.00000000000006" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="416.00000000000006" class="tick" text-anchor="end">0.7</text>
+<line x1="136" y1="356" x2="856" y2="356" stroke="#dedbd3" stroke-width="1"/>
+<text x="123" y="361" class="tick" text-anchor="end">0.8</text>
+<rect class="capacity-block" data-mw="229.5" data-cost="0.09760252640602121" x="136" y="742.3186104766884" width="4.2164684615495105" height="53.68138952331162" fill="#cb9222"><title>Quebec — Montreal market subtotal: 229.5 MW; $0.098 per 10¹⁹ FLOPs</title></rect>
+<line x1="136" y1="742.3186104766884" x2="136" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1700" data-cost="0.14555555555555555" x="140.2164684615495" y="715.9444444444445" width="31.233099715181453" height="80.05555555555554" fill="#356d9b"><title>Texas — Austin–San Antonio: 1700.0 MW; $0.146 per 10¹⁹ FLOPs</title></rect>
+<line x1="140.2164684615495" y1="715.9444444444445" x2="140.2164684615495" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2423" data-cost="0.14555555555555555" x="171.44956817673096" y="715.9444444444445" width="44.51635329993218" height="80.05555555555554" fill="#356d9b"><title>Texas — Dallas–Fort Worth: 2423.0 MW; $0.146 per 10¹⁹ FLOPs</title></rect>
+<line x1="171.44956817673096" y1="715.9444444444445" x2="171.44956817673096" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1638.8532092930452" data-cost="0.15150178457194535" x="215.96592147666314" y="712.6740184854301" width="30.109685708467566" height="83.32598151456989" fill="#b43e32"><title>Inner Mongolia: 1638.9 MW; $0.152 per 10¹⁹ FLOPs</title></rect>
+<line x1="215.96592147666314" y1="712.6740184854301" x2="215.96592147666314" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2070" data-cost="0.17355555555555557" x="246.0756071851307" y="700.5444444444445" width="38.03089200613272" height="95.45555555555552" fill="#356d9b"><title>Georgia — Atlanta: 2070.0 MW; $0.174 per 10¹⁹ FLOPs</title></rect>
+<line x1="246.0756071851307" y1="700.5444444444445" x2="246.0756071851307" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1653" data-cost="0.18" x="284.1064991912634" y="697" width="30.36959637011472" height="99" fill="#356d9b"><title>Arizona — Phoenix: 1653.0 MW; $0.180 per 10¹⁹ FLOPs</title></rect>
+<line x1="284.1064991912634" y1="697" x2="284.1064991912634" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="3541" data-cost="0.1893333333333333" x="314.47609556137814" y="691.8666666666667" width="65.0567094655633" height="104.13333333333333" fill="#356d9b"><title>Ohio — Columbus: 3541.0 MW; $0.189 per 10¹⁹ FLOPs</title></rect>
+<line x1="314.47609556137814" y1="691.8666666666667" x2="314.47609556137814" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1344.3582245278863" data-cost="0.1949427981088096" x="379.53280502694145" y="688.7814610401547" width="24.69910263506108" height="107.21853895984532" fill="#b43e32"><title>Zhejiang: 1344.4 MW; $0.195 per 10¹⁹ FLOPs</title></rect>
+<line x1="379.53280502694145" y1="688.7814610401547" x2="379.53280502694145" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1648.6082879197895" data-cost="0.19506957927631824" x="404.2319076620025" y="688.711731398025" width="30.288910028160785" height="107.288268601975" fill="#b43e32"><title>Guizhou: 1648.6 MW; $0.195 per 10¹⁹ FLOPs</title></rect>
+<line x1="404.2319076620025" y1="688.711731398025" x2="404.2319076620025" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="3880.5702777188885" data-cost="0.19621483981499868" x="434.5208176901633" y="688.0818381017507" width="71.29543437397854" height="107.91816189824931" fill="#b43e32"><title>Hebei: 3880.6 MW; $0.196 per 10¹⁹ FLOPs</title></rect>
+<line x1="434.5208176901633" y1="688.0818381017507" x2="434.5208176901633" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1162" data-cost="0.19755555555555557" x="505.81625206414185" y="687.3444444444444" width="21.348742275906375" height="108.65555555555557" fill="#356d9b"><title>Indiana — Northern Indiana: 1162.0 MW; $0.198 per 10¹⁹ FLOPs</title></rect>
+<line x1="505.81625206414185" y1="687.3444444444444" x2="505.81625206414185" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1921.7504894686303" data-cost="0.20655883646203282" x="527.1649943400482" y="682.3926399458819" width="35.30719097957217" height="113.60736005411809" fill="#b43e32"><title>Jiangsu: 1921.8 MW; $0.207 per 10¹⁹ FLOPs</title></rect>
+<line x1="527.1649943400482" y1="682.3926399458819" x2="527.1649943400482" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="8315" data-cost="0.21000000000000002" x="562.4721853196204" y="680.5" width="152.7666024304317" height="115.5" fill="#356d9b"><title>Virginia: 8315.0 MW; $0.210 per 10¹⁹ FLOPs</title></rect>
+<line x1="562.4721853196204" y1="680.5" x2="562.4721853196204" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1310.3238390968004" data-cost="0.2141901018683961" x="715.2387877500521" y="678.1954439723821" width="24.073808897464687" height="117.80455602761788" fill="#b43e32"><title>Beijing: 1310.3 MW; $0.214 per 10¹⁹ FLOPs</title></rect>
+<line x1="715.2387877500521" y1="678.1954439723821" x2="715.2387877500521" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2515.184439262243" data-cost="0.22172843917969984" x="739.3125966475168" y="674.0493584511651" width="46.210003760911945" height="121.95064154883494" fill="#b43e32"><title>Guangdong: 2515.2 MW; $0.222 per 10¹⁹ FLOPs</title></rect>
+<line x1="739.3125966475168" y1="674.0493584511651" x2="739.3125966475168" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1047.0451059372233" data-cost="0.2252199001463246" x="785.5226004084287" y="672.1290549195215" width="19.236743647076537" height="123.87094508047846" fill="#b43e32"><title>Shandong: 1047.0 MW; $0.225 per 10¹⁹ FLOPs</title></rect>
+<line x1="785.5226004084287" y1="672.1290549195215" x2="785.5226004084287" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1223" data-cost="0.22533333333333336" x="804.7593440555053" y="672.0666666666666" width="22.469459383333515" height="123.9333333333334" fill="#356d9b"><title>Illinois — Chicago: 1223.0 MW; $0.225 per 10¹⁹ FLOPs</title></rect>
+<line x1="804.7593440555053" y1="672.0666666666666" x2="804.7593440555053" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="9" data-cost="0.7123680000300904" x="827.2288034388388" y="404.1975999834503" width="0.16535170437441593" height="391.8024000165497" fill="#6f5d91"><title>East Midlands: 9.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="44" data-cost="0.7123680000300904" x="827.3941551432132" y="404.1975999834503" width="0.8083861102752508" height="391.8024000165497" fill="#6f5d91"><title>East of England: 44.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="1048" data-cost="0.7123680000300904" x="828.2025412534884" y="404.1975999834503" width="19.254287353829568" height="391.8024000165497" fill="#6f5d91"><title>London: 1048.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="828.2025412534884" y1="404.1975999834503" x2="828.2025412534884" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="17" data-cost="0.7123680000300904" x="847.456828607318" y="404.1975999834503" width="0.3123309971517756" height="391.8024000165497" fill="#6f5d91"><title>North East: 17.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="52" data-cost="0.7123680000300904" x="847.7691596044698" y="404.1975999834503" width="0.9553654030527241" height="391.8024000165497" fill="#6f5d91"><title>North West: 52.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="30" data-cost="0.7123680000300904" x="848.7245250075225" y="404.1975999834503" width="0.5511723479148714" height="391.8024000165497" fill="#6f5d91"><title>Scotland: 30.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="128" data-cost="0.7123680000300904" x="849.2756973554374" y="404.1975999834503" width="2.351668684437186" height="391.8024000165497" fill="#6f5d91"><title>South East: 128.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="849.2756973554374" y1="404.1975999834503" x2="849.2756973554374" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="53" data-cost="0.7123680000300904" x="851.6273660398746" y="404.1975999834503" width="0.9737378146497804" height="391.8024000165497" fill="#6f5d91"><title>South West: 53.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="154" data-cost="0.7123680000300904" x="852.6011038545244" y="404.1975999834503" width="2.8293513859634913" height="391.8024000165497" fill="#6f5d91"><title>Wales: 154.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="852.6011038545244" y1="404.1975999834503" x2="852.6011038545244" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="15" data-cost="0.7123680000300904" x="855.4304552404878" y="404.1975999834503" width="0.27558617395754936" height="391.8024000165497" fill="#6f5d91"><title>West Midlands: 15.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="16" data-cost="0.7123680000300904" x="855.7060414144454" y="404.1975999834503" width="0.29395858555460563" height="391.8024000165497" fill="#6f5d91"><title>Yorkshire and the Humber: 16.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<text class="region-label" text-anchor="start" transform="translate(160.83301831914025 705.9444444444445) rotate(-90)">Austin–San Antonio</text>
+<text class="region-label" text-anchor="start" transform="translate(198.70774482669705 705.9444444444445) rotate(-90)">Dallas–Fort Worth</text>
+<text class="region-label" text-anchor="start" transform="translate(236.02076433089692 702.6740184854301) rotate(-90)">Inner Mongolia</text>
+<text class="region-label" text-anchor="start" transform="translate(270.09105318819707 690.5444444444445) rotate(-90)">Atlanta</text>
+<text class="region-label" text-anchor="start" transform="translate(304.2912973763208 687) rotate(-90)">Phoenix</text>
+<text class="region-label" text-anchor="start" transform="translate(352.0044502941598 681.8666666666667) rotate(-90)">Columbus</text>
+<text class="region-label" text-anchor="start" transform="translate(396.882356344472 678.7814610401547) rotate(-90)">Zhejiang</text>
+<text class="region-label" text-anchor="start" transform="translate(424.3763626760829 678.711731398025) rotate(-90)">Guizhou</text>
+<text class="region-label" text-anchor="start" transform="translate(475.1685348771526 678.0818381017507) rotate(-90)">Hebei</text>
+<text class="region-label" text-anchor="start" transform="translate(521.4906232020951 677.3444444444444) rotate(-90)">Northern Indiana</text>
+<text class="region-label" text-anchor="start" transform="translate(549.8185898298343 672.3926399458819) rotate(-90)">Jiangsu</text>
+<text class="region-label" text-anchor="start" transform="translate(643.8554865348362 670.5) rotate(-90)">Virginia</text>
+<text class="region-label" text-anchor="start" transform="translate(732.2756921987844 668.1954439723821) rotate(-90)">Beijing</text>
+<text class="region-label" text-anchor="start" transform="translate(767.4175985279728 664.0493584511651) rotate(-90)">Guangdong</text>
+<text class="region-label" text-anchor="start" transform="translate(800.140972231967 662.1290549195215) rotate(-90)">Shandong</text>
+<text class="region-label" text-anchor="start" transform="translate(820.994073747172 662.0666666666666) rotate(-90)">Chicago</text>
+<text class="region-label" fill="white" transform="translate(846.6144017194194 776) rotate(-90)">Great Britain · 11 regions</text>
+<line x1="136" y1="356" x2="136" y2="796" stroke="#15201c" stroke-width="1.3"/>
+<line x1="136" y1="796" x2="856" y2="796" stroke="#15201c" stroke-width="1.3"/>
+<line x1="136" y1="796" x2="136" y2="801" stroke="#15201c"/>
+<text x="136" y="823" class="tick" text-anchor="middle">0</text>
+<line x1="316" y1="796" x2="316" y2="801" stroke="#15201c"/>
+<text x="316" y="823" class="tick" text-anchor="middle">9,797</text>
+<line x1="496" y1="796" x2="496" y2="801" stroke="#15201c"/>
+<text x="496" y="823" class="tick" text-anchor="middle">19,595</text>
+<line x1="676" y1="796" x2="676" y2="801" stroke="#15201c"/>
+<text x="676" y="823" class="tick" text-anchor="middle">29,392</text>
+<line x1="856" y1="796" x2="856" y2="801" stroke="#15201c"/>
+<text x="856" y="823" class="tick" text-anchor="middle">39,189</text>
+<text x="496" y="857" class="axis-title" text-anchor="middle">Cumulative data center capacity operational by end 2025,</text>
+<text x="496" y="881" class="axis-title" text-anchor="middle">Design IT Capacity excluding cooling etc (MW)</text>
+<text class="axis-title" text-anchor="middle" transform="translate(81 576) rotate(-90)">USD per 10¹⁹ dense-BF16 FLOPs</text>
+<text x="136" y="912" class="direction">LOWEST COST</text>
+<text x="856" y="912" class="direction" text-anchor="end">HIGHEST COST →</text></g>
+<g class="scenario" data-technology="export_constrained" data-total-mw="39189.1938732245"><text x="924" y="264" class="panel-title">Export-control-constrained technology</text>
+<text x="924" y="299" class="panel-subtitle">China: Huawei CloudMatrix384 · Elsewhere: NVIDIA GB200 NVL72</text>
+<text x="924" y="323" class="panel-subtitle">China: 2.5× electricity per dense-BF16 FLOP (estimated)</text>
+<line x1="996" y1="796" x2="1716" y2="796" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="801" class="tick" text-anchor="end">0.0</text>
+<line x1="996" y1="741" x2="1716" y2="741" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="746" class="tick" text-anchor="end">0.1</text>
+<line x1="996" y1="686" x2="1716" y2="686" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="691" class="tick" text-anchor="end">0.2</text>
+<line x1="996" y1="631" x2="1716" y2="631" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="636" class="tick" text-anchor="end">0.3</text>
+<line x1="996" y1="576" x2="1716" y2="576" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="581" class="tick" text-anchor="end">0.4</text>
+<line x1="996" y1="521" x2="1716" y2="521" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="526" class="tick" text-anchor="end">0.5</text>
+<line x1="996" y1="466.00000000000006" x2="1716" y2="466.00000000000006" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="471.00000000000006" class="tick" text-anchor="end">0.6</text>
+<line x1="996" y1="411.00000000000006" x2="1716" y2="411.00000000000006" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="416.00000000000006" class="tick" text-anchor="end">0.7</text>
+<line x1="996" y1="356" x2="1716" y2="356" stroke="#dedbd3" stroke-width="1"/>
+<text x="983" y="361" class="tick" text-anchor="end">0.8</text>
+<rect class="capacity-block" data-mw="229.5" data-cost="0.09760252640602121" x="996" y="742.3186104766884" width="4.216468461549539" height="53.68138952331162" fill="#cb9222"><title>Quebec — Montreal market subtotal: 229.5 MW; $0.098 per 10¹⁹ FLOPs</title></rect>
+<line x1="996" y1="742.3186104766884" x2="996" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1700" data-cost="0.14555555555555555" x="1000.2164684615495" y="715.9444444444445" width="31.233099715181424" height="80.05555555555554" fill="#356d9b"><title>Texas — Austin–San Antonio: 1700.0 MW; $0.146 per 10¹⁹ FLOPs</title></rect>
+<line x1="1000.2164684615495" y1="715.9444444444445" x2="1000.2164684615495" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2423" data-cost="0.14555555555555555" x="1031.449568176731" y="715.9444444444445" width="44.516353299932234" height="80.05555555555554" fill="#356d9b"><title>Texas — Dallas–Fort Worth: 2423.0 MW; $0.146 per 10¹⁹ FLOPs</title></rect>
+<line x1="1031.449568176731" y1="715.9444444444445" x2="1031.449568176731" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2070" data-cost="0.17355555555555557" x="1075.9659214766632" y="700.5444444444445" width="38.03089200613272" height="95.45555555555552" fill="#356d9b"><title>Georgia — Atlanta: 2070.0 MW; $0.174 per 10¹⁹ FLOPs</title></rect>
+<line x1="1075.9659214766632" y1="700.5444444444445" x2="1075.9659214766632" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1653" data-cost="0.18" x="1113.996813482796" y="697" width="30.369596370114778" height="99" fill="#356d9b"><title>Arizona — Phoenix: 1653.0 MW; $0.180 per 10¹⁹ FLOPs</title></rect>
+<line x1="1113.996813482796" y1="697" x2="1113.996813482796" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="3541" data-cost="0.1893333333333333" x="1144.3664098529107" y="691.8666666666667" width="65.05670946556324" height="104.13333333333333" fill="#356d9b"><title>Ohio — Columbus: 3541.0 MW; $0.189 per 10¹⁹ FLOPs</title></rect>
+<line x1="1144.3664098529107" y1="691.8666666666667" x2="1144.3664098529107" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1162" data-cost="0.19755555555555557" x="1209.423119318474" y="687.3444444444444" width="21.34874227590649" height="108.65555555555557" fill="#356d9b"><title>Indiana — Northern Indiana: 1162.0 MW; $0.198 per 10¹⁹ FLOPs</title></rect>
+<line x1="1209.423119318474" y1="687.3444444444444" x2="1209.423119318474" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="8315" data-cost="0.21000000000000002" x="1230.7718615943804" y="680.5" width="152.7666024304317" height="115.5" fill="#356d9b"><title>Virginia: 8315.0 MW; $0.210 per 10¹⁹ FLOPs</title></rect>
+<line x1="1230.7718615943804" y1="680.5" x2="1230.7718615943804" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1223" data-cost="0.22533333333333336" x="1383.5384640248121" y="672.0666666666666" width="22.469459383333515" height="123.9333333333334" fill="#356d9b"><title>Illinois — Chicago: 1223.0 MW; $0.225 per 10¹⁹ FLOPs</title></rect>
+<line x1="1383.5384640248121" y1="672.0666666666666" x2="1383.5384640248121" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1638.8532092930452" data-cost="0.37875446142986335" x="1406.0079234081456" y="587.6850462135751" width="30.109685708467396" height="208.3149537864249" fill="#b43e32"><title>Inner Mongolia: 1638.9 MW; $0.379 per 10¹⁹ FLOPs</title></rect>
+<line x1="1406.0079234081456" y1="587.6850462135751" x2="1406.0079234081456" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1344.3582245278863" data-cost="0.48735699527202403" x="1436.117609116613" y="527.9536526003867" width="24.69910263506108" height="268.0463473996133" fill="#b43e32"><title>Zhejiang: 1344.4 MW; $0.487 per 10¹⁹ FLOPs</title></rect>
+<line x1="1436.117609116613" y1="527.9536526003867" x2="1436.117609116613" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1648.6082879197895" data-cost="0.48767394819079557" x="1460.8167117516741" y="527.7793284950625" width="30.2889100281609" height="268.2206715049375" fill="#b43e32"><title>Guizhou: 1648.6 MW; $0.488 per 10¹⁹ FLOPs</title></rect>
+<line x1="1460.8167117516741" y1="527.7793284950625" x2="1460.8167117516741" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="3880.5702777188885" data-cost="0.4905370995374967" x="1491.105621779835" y="526.2045952543768" width="71.29543437397842" height="269.79540474562316" fill="#b43e32"><title>Hebei: 3880.6 MW; $0.491 per 10¹⁹ FLOPs</title></rect>
+<line x1="1491.105621779835" y1="526.2045952543768" x2="1491.105621779835" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1921.7504894686303" data-cost="0.516397091155082" x="1562.4010561538134" y="511.9815998647049" width="35.30719097957217" height="284.0184001352951" fill="#b43e32"><title>Jiangsu: 1921.8 MW; $0.516 per 10¹⁹ FLOPs</title></rect>
+<line x1="1562.4010561538134" y1="511.9815998647049" x2="1562.4010561538134" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1310.3238390968004" data-cost="0.5354752546709902" x="1597.7082471333856" y="501.4886099309554" width="24.07380889746446" height="294.5113900690446" fill="#b43e32"><title>Beijing: 1310.3 MW; $0.535 per 10¹⁹ FLOPs</title></rect>
+<line x1="1597.7082471333856" y1="501.4886099309554" x2="1597.7082471333856" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="2515.184439262243" data-cost="0.5543210979492496" x="1621.78205603085" y="491.12339612791277" width="46.21000376091206" height="304.87660387208723" fill="#b43e32"><title>Guangdong: 2515.2 MW; $0.554 per 10¹⁹ FLOPs</title></rect>
+<line x1="1621.78205603085" y1="491.12339612791277" x2="1621.78205603085" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="1047.0451059372233" data-cost="0.5630497503658115" x="1667.9920597917621" y="486.3226372988037" width="19.236743647076764" height="309.6773627011963" fill="#b43e32"><title>Shandong: 1047.0 MW; $0.563 per 10¹⁹ FLOPs</title></rect>
+<line x1="1667.9920597917621" y1="486.3226372988037" x2="1667.9920597917621" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="9" data-cost="0.7123680000300904" x="1687.228803438839" y="404.1975999834503" width="0.16535170437418856" height="391.8024000165497" fill="#6f5d91"><title>East Midlands: 9.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="44" data-cost="0.7123680000300904" x="1687.394155143213" y="404.1975999834503" width="0.8083861102754781" height="391.8024000165497" fill="#6f5d91"><title>East of England: 44.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="1048" data-cost="0.7123680000300904" x="1688.2025412534886" y="404.1975999834503" width="19.254287353829568" height="391.8024000165497" fill="#6f5d91"><title>London: 1048.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="1688.2025412534886" y1="404.1975999834503" x2="1688.2025412534886" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="17" data-cost="0.7123680000300904" x="1707.4568286073181" y="404.1975999834503" width="0.3123309971515482" height="391.8024000165497" fill="#6f5d91"><title>North East: 17.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="52" data-cost="0.7123680000300904" x="1707.7691596044697" y="404.1975999834503" width="0.9553654030528378" height="391.8024000165497" fill="#6f5d91"><title>North West: 52.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="30" data-cost="0.7123680000300904" x="1708.7245250075225" y="404.1975999834503" width="0.5511723479148714" height="391.8024000165497" fill="#6f5d91"><title>Scotland: 30.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="128" data-cost="0.7123680000300904" x="1709.2756973554374" y="404.1975999834503" width="2.3516686844373" height="391.8024000165497" fill="#6f5d91"><title>South East: 128.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="1709.2756973554374" y1="404.1975999834503" x2="1709.2756973554374" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="53" data-cost="0.7123680000300904" x="1711.6273660398747" y="404.1975999834503" width="0.9737378146496667" height="391.8024000165497" fill="#6f5d91"><title>South West: 53.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="154" data-cost="0.7123680000300904" x="1712.6011038545244" y="404.1975999834503" width="2.8293513859634913" height="391.8024000165497" fill="#6f5d91"><title>Wales: 154.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<line x1="1712.6011038545244" y1="404.1975999834503" x2="1712.6011038545244" y2="796" stroke="#fffdf8" stroke-opacity=".7" stroke-width=".65"/>
+<rect class="capacity-block" data-mw="15" data-cost="0.7123680000300904" x="1715.4304552404878" y="404.1975999834503" width="0.2755861739574357" height="391.8024000165497" fill="#6f5d91"><title>West Midlands: 15.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<rect class="capacity-block" data-mw="16" data-cost="0.7123680000300904" x="1715.7060414144453" y="404.1975999834503" width="0.2939585855547193" height="391.8024000165497" fill="#6f5d91"><title>Yorkshire and the Humber: 16.0 MW; $0.712 per 10¹⁹ FLOPs</title></rect>
+<text class="region-label" text-anchor="start" transform="translate(1020.8330183191403 705.9444444444445) rotate(-90)">Austin–San Antonio</text>
+<text class="region-label" text-anchor="start" transform="translate(1058.707744826697 705.9444444444445) rotate(-90)">Dallas–Fort Worth</text>
+<text class="region-label" text-anchor="start" transform="translate(1099.9813674797297 690.5444444444445) rotate(-90)">Atlanta</text>
+<text class="region-label" text-anchor="start" transform="translate(1134.1816116678533 687) rotate(-90)">Phoenix</text>
+<text class="region-label" text-anchor="start" transform="translate(1181.8947645856924 681.8666666666667) rotate(-90)">Columbus</text>
+<text class="region-label" text-anchor="start" transform="translate(1225.0974904564273 677.3444444444444) rotate(-90)">Northern Indiana</text>
+<text class="region-label" text-anchor="start" transform="translate(1312.1551628095963 670.5) rotate(-90)">Virginia</text>
+<text class="region-label" text-anchor="start" transform="translate(1399.773193716479 662.0666666666666) rotate(-90)">Chicago</text>
+<text class="region-label" text-anchor="start" transform="translate(1426.0627662623792 577.6850462135751) rotate(-90)">Inner Mongolia</text>
+<text class="region-label" text-anchor="start" transform="translate(1453.4671604341436 517.9536526003867) rotate(-90)">Zhejiang</text>
+<text class="region-label" text-anchor="start" transform="translate(1480.9611667657546 517.7793284950625) rotate(-90)">Guizhou</text>
+<text class="region-label" text-anchor="start" transform="translate(1531.7533389668242 516.2045952543768) rotate(-90)">Hebei</text>
+<text class="region-label" text-anchor="start" transform="translate(1585.0546516435995 501.9815998647049) rotate(-90)">Jiangsu</text>
+<text class="region-label" text-anchor="start" transform="translate(1614.7451515821178 491.4886099309554) rotate(-90)">Beijing</text>
+<text class="region-label" text-anchor="start" transform="translate(1649.887057911306 481.12339612791277) rotate(-90)">Guangdong</text>
+<text class="region-label" text-anchor="start" transform="translate(1682.6104316153005 476.3226372988037) rotate(-90)">Shandong</text>
+<text class="region-label" fill="white" transform="translate(1706.6144017194194 776) rotate(-90)">Great Britain · 11 regions</text>
+<line x1="996" y1="356" x2="996" y2="796" stroke="#15201c" stroke-width="1.3"/>
+<line x1="996" y1="796" x2="1716" y2="796" stroke="#15201c" stroke-width="1.3"/>
+<line x1="996" y1="796" x2="996" y2="801" stroke="#15201c"/>
+<text x="996" y="823" class="tick" text-anchor="middle">0</text>
+<line x1="1176" y1="796" x2="1176" y2="801" stroke="#15201c"/>
+<text x="1176" y="823" class="tick" text-anchor="middle">9,797</text>
+<line x1="1356" y1="796" x2="1356" y2="801" stroke="#15201c"/>
+<text x="1356" y="823" class="tick" text-anchor="middle">19,595</text>
+<line x1="1536" y1="796" x2="1536" y2="801" stroke="#15201c"/>
+<text x="1536" y="823" class="tick" text-anchor="middle">29,392</text>
+<line x1="1716" y1="796" x2="1716" y2="801" stroke="#15201c"/>
+<text x="1716" y="823" class="tick" text-anchor="middle">39,189</text>
+<text x="1356" y="857" class="axis-title" text-anchor="middle">Cumulative data center capacity operational by end 2025,</text>
+<text x="1356" y="881" class="axis-title" text-anchor="middle">Design IT Capacity excluding cooling etc (MW)</text>
+<text class="axis-title" text-anchor="middle" transform="translate(941 576) rotate(-90)">USD per 10¹⁹ dense-BF16 FLOPs</text>
+<text x="996" y="912" class="direction">LOWEST COST</text>
+<text x="1716" y="912" class="direction" text-anchor="end">HIGHEST COST →</text></g>
+<line x1="64" y1="941" x2="1736" y2="941" stroke="#bdb8ad"/>
+<text x="64" y="974" class="note">Assumptions: PUE 1.20 throughout; GB200 NVL72 180 dense-BF16 PFLOP/s per 120 kW rack. China’s 2.5× multiplier is an engineering estimate, not a metered benchmark.</text>
+<text x="64" y="1003" class="note">Scope: selected regional estimates, not a global census. Capacity vintages differ; electricity prices effective during 2025 mix public tariffs and industrial averages.</text>
+<text x="64" y="1032" class="note">Sources and full methodology: github.com/qrlow/compute-cost-curve · GB regions share one price proxy; all 11 capacity blocks are retained.</text>
+</svg>
