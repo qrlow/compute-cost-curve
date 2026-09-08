@@ -12,7 +12,26 @@ import {
   toCsv
 } from "./lib/project.mjs";
 
-const {project, benchmarks, geometry, inputHash} = loadInputs();
+const {project, benchmarks, geometry, sourceReview, inputHash} = loadInputs();
+const reviewBySourceId = new Map(sourceReview.records.map((row) => [row.sourceId, row]));
+if (reviewBySourceId.size !== project.sources.length || sourceReview.records.length !== project.sources.length) {
+  throw new Error("Second-agent review must contain exactly one entry for every source");
+}
+for (const source of project.sources) {
+  if (reviewBySourceId.get(source.id)?.sourceSha256 !== sha256(JSON.stringify(source))) {
+    throw new Error(`Missing or stale second-agent review: ${source.id}. Reread the source before updating the review.`);
+  }
+}
+const reviewSummary = {
+  reviewedOn: sourceReview.reviewedOn,
+  reviewer: sourceReview.reviewer,
+  reviewerType: sourceReview.reviewerType,
+  scope: sourceReview.scope,
+  statusDefinitions: sourceReview.statusDefinitions,
+  counts: Object.fromEntries(Object.keys(sourceReview.statusDefinitions).map((status) => [
+    status, sourceReview.records.filter((row) => row.status === status).length
+  ]))
+};
 const provinces = deriveProvinceCapacities(project, geometry);
 const provinceByName = new Map(provinces.map((row) => [row.province, row]));
 const chinaCapacityCrosschecks = project.chinaCapacityCrosschecks.map((crosscheck) => {
@@ -45,6 +64,7 @@ const outputMetadata = {
   observationCutoff: project.metadata.observationCutoff,
   researchPublicationCutoff: project.metadata.researchPublicationCutoff,
   verificationDate: project.metadata.verificationDate,
+  secondAgentReviewDate: sourceReview.reviewedOn,
   generationCommand: "npm run build"
 };
 
@@ -56,7 +76,8 @@ const chartData = {
   coverage,
   chinaCapacityCrosschecks,
   scenarios,
-  sources: project.sources,
+  sourceReview: reviewSummary,
+  sources: project.sources.map((source) => ({...source, secondAgentReview: reviewBySourceId.get(source.id)})),
   exclusions: project.ledgerBlocks.map((block) => ({
     ...block,
     capacity: resolveCapacity(block.capacityRef),
@@ -99,6 +120,7 @@ const summary = {
       .map((status) => [status, project.sources.filter((source) => source.verificationStatus === status).length])
   ),
   independentHumanReview: "pending",
+  secondAgentReview: reviewSummary,
   scenarios: scenarios.map((scenario) => ({
     id: scenario.id,
     blocks: scenario.blocks.length,
@@ -353,7 +375,9 @@ writeFileSync(resolve(ROOT, "technology-scenario-data.csv"), toCsv(technologyHea
 const sourceHeaders = [
   "input_sha256", "source_id", "publisher", "title", "tier", "publication_date",
   "claim", "exact_locator", "verification_status", "verification_method", "verified_on",
-  "independent_human_review", "url"
+  "independent_human_review", "url", "second_agent_status", "second_agent_reviewed_on",
+  "second_agent_reviewer", "second_agent_access_method", "second_agent_evidence_urls",
+  "second_agent_locator", "second_agent_findings", "second_agent_required_action", "reviewed_source_sha256"
 ];
 writeFileSync(resolve(auditDir, "source-verification.csv"), toCsv(sourceHeaders, project.sources.map((source) => ({
   input_sha256: inputHash,
@@ -368,7 +392,16 @@ writeFileSync(resolve(auditDir, "source-verification.csv"), toCsv(sourceHeaders,
   verification_method: source.verificationMethod,
   verified_on: source.verifiedOn,
   independent_human_review: source.independentHumanReview,
-  url: source.url
+  url: source.url,
+  second_agent_status: reviewBySourceId.get(source.id).status,
+  second_agent_reviewed_on: sourceReview.reviewedOn,
+  second_agent_reviewer: sourceReview.reviewer,
+  second_agent_access_method: reviewBySourceId.get(source.id).accessMethod,
+  second_agent_evidence_urls: reviewBySourceId.get(source.id).evidenceUrls.join(";"),
+  second_agent_locator: reviewBySourceId.get(source.id).locator,
+  second_agent_findings: reviewBySourceId.get(source.id).findings,
+  second_agent_required_action: reviewBySourceId.get(source.id).action,
+  reviewed_source_sha256: reviewBySourceId.get(source.id).sourceSha256
 }))));
 
 const includedSourceIds = new Set([
@@ -392,11 +425,21 @@ Research-publication cutoff: **${project.metadata.researchPublicationCutoff}**
 
 Reproduction check: **complete**
 
-Independent human review: **pending**
+Second-agent review: **${sourceReview.reviewedOn} — ${sourceReview.records.length} source records assessed**
 
-“Independent” here means the build reconstructs each displayed value from canonical inputs and checks it against a source-specific locator. It does **not** mean a second human auditor has signed off.
+${Object.entries(reviewSummary.counts).map(([status, count]) => `**${count} ${status.replaceAll("_", " ")}**`).join("; ")}.
 
-## Material corrections in this audit pass
+${sourceReview.scope}
+
+Human review has not been performed. The legacy human-review fields are preserved; this second-agent pass is the requested additional check. Automated reproduction passing does not mean these source issues have been resolved.
+
+## Second-agent findings
+
+The original figures and first-pass statuses below have not been overwritten. The latest findings and required actions are in [source-verification.csv](source-verification.csv) and [second-agent-review.md](second-agent-review.md). In particular, the global-coverage denominator is not reconciled, the entire Montreal block is not established as 2025 strict tariff evidence, and several Chinese tariff calculations omit time-of-use weighting. These limitations prevent overall sign-off on the cost curve.
+
+## Earlier construction decisions
+
+These first-pass decisions are preserved for comparison. The second-agent qualifications above and in the linked report take precedence where they identify unresolved evidence or applicability problems.
 
 - Capacity is now registered independently of price availability. The additive register contains **${round(coverage.capacityRegister.registeredCapacityMw, 1).toLocaleString()} MW** across **${coverage.capacityRegister.registeredRegionCount}** country-region keys.
 - Price coverage is explicit: the combined observed-price-or-tariff category covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "comparable_proxy").registeredCapacityCoveragePct, 1)}%** of registered capacity, while the strict data-center-specific audit subset covers **${round(coverage.priceScenarios.find((row) => row.evidenceId === "data_center_tariff_evidence").registeredCapacityCoveragePct, 1)}%**.
@@ -411,7 +454,7 @@ Independent human review: **pending**
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.
 - Applicable tariffs and official industrial averages are combined in the public curves, while every block retains its evidence class and the strict data-center-specific subset remains separately quantified. Hohhot's delivered-price observation is retained only in that subset because its capacity is nested inside Inner Mongolia's provincial width.
 
-## Included source checks (${includedSources.length})
+## First-pass included source checks (${includedSources.length})
 
 | ID | Publisher | Status | Exact locator | Verification |
 |---|---|---|---|---|
@@ -419,11 +462,45 @@ ${includedSources.map((source) => `| \`${source.id}\` | ${source.publisher} | ${
 
 ## Full register
 
-The machine-readable register, including excluded or only partially verified candidates, is in [source-verification.csv](source-verification.csv). Each record retains its URL, publication date, exact locator, check method, and human-review status.
+The machine-readable register, including excluded or only partially verified candidates, is in [source-verification.csv](source-verification.csv). Each record preserves the first review and adds the second-agent status, review date, access method, evidence links, findings, action and reviewed-source fingerprint.
 
 The Chinese provincial evidence comparison is in [china-provincial-capacity-crosschecks.csv](china-provincial-capacity-crosschecks.csv). It preserves each observation date, geographic scope, capacity boundary and replacement decision.
 `;
 writeFileSync(resolve(auditDir, "verification-report.md"), report);
+
+const reviewReport = `# Second-agent source review
+
+Reviewed on **${sourceReview.reviewedOn}**. Input SHA-256: \`${inputHash}\`.
+
+${sourceReview.scope}
+
+## Results
+
+| Result | Sources | Meaning |
+|---|---:|---|
+${Object.entries(sourceReview.statusDefinitions).map(([status, definition]) => `| ${status.replaceAll("_", " ")} | ${reviewSummary.counts[status]} | ${definition} |`).join("\n")}
+
+These counts describe source-review outcomes, not the percentage of capacity independently verified. Source counts are not capacity weights. Several qualified sources support large parts of the model.
+
+## Issues preventing overall sign-off
+
+- **Global coverage:** the 62 GW denominator is not reconciled to the mixed inventory boundaries; the displayed coverage ratio is only indicative.
+- **Provincial capacity:** the treemap is an estimate, and the direct March Jiangsu observation remains inconsistent with it. Guangdong's exact year-end observation date is not established by the cited passage.
+- **Electricity bills:** several Chinese tariffs have time-of-use schedules omitted from the base-rate calculation. Shandong's chosen voltage row excludes 110 kV.
+- **Montreal:** the 2026 operator-class filing does not establish 2025 classes, qualifying voltages or tariff coverage for all 229.5 MW.
+- **Technology:** the power/performance comparison is an engineering scenario, not controlled metering; the 2026 BIS release alone does not establish the 2025 export-control boundary.
+- **Citation quality:** incorrect locators, a dead EIA URL and inaccessible sources are recorded below. A recovered alternative is identified explicitly rather than presented as a successful read of the original URL.
+
+The review is stored in [the canonical review file](../data/source-second-review.json). The build checks that each source has one review and that its fingerprint still matches. It will not silently reuse a review after the source record changes. Evidence documents can still change at their URLs; these fingerprints cover the registered source metadata, not remote document contents.
+
+## Source-by-source findings
+
+${project.sources.map((source) => {
+  const row = reviewBySourceId.get(source.id);
+  return `### ${source.id}\n\nResult: **${row.status.replaceAll("_", " ")}**. Original first-pass status: ${source.verificationStatus}.\n\nAccess: ${row.accessMethod}.\n\nLocator: ${row.locator}.\n\n${row.findings}\n\nFollow-up: ${row.action}\n\nEvidence: ${row.evidenceUrls.map((url, i) => `[${i === 0 ? "Registered source" : "Supporting evidence " + i}](${url})`).join("; ")}.`;
+}).join("\n\n")}
+`;
+writeFileSync(resolve(auditDir, "second-agent-review.md"), reviewReport);
 
 console.log(`Generated ${scenarios.length} curves from input ${inputHash.slice(0, 12)}…`);
 console.log(`Derived ${provinces.length} provincial capacities and registered ${project.sources.length} sources.`);

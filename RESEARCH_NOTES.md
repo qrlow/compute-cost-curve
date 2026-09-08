@@ -221,18 +221,23 @@ Each source record contains:
 - a page, table, article or paragraph locator;
 - verification status and method;
 - verification date; and
-- a separate human-review field.
+- the preserved first-pass human-review field; and
+- a separate dated second-agent result, access method, evidence links, findings and required action.
 
 All sources used by a displayed block must be `verified` or `verified_derived`. Partial, unverified, post-cutoff, undated and boundary-mismatched records remain in the ledger but cannot enter a displayed scenario.
 
-The build independently reconstructs every displayed number from canonical inputs. This is source-by-source reproduction, not an independent second-human audit; every record currently retains `independentHumanReview: pending`.
+The build reconstructs every displayed number from canonical inputs. A separate second-agent pass dated 8 September 2026 reread the source register, including failed-access attempts. Its findings are stored in `data/source-second-review.json` and generated into `audit/source-verification.csv` and `audit/second-agent-review.md`. The review is explicitly AI-authored; human review has not occurred. The legacy human-review fields are preserved rather than falsely signed off.
+
+The second pass distinguishes confirmed, qualified, discrepant and unverified sources. A confirmed row means the cited claim was supported by the evidence read, not that the underlying statistics or the whole model have been independently measured. The source-record fingerprints make the build fail if a source changes without a fresh review; they do not fingerprint remote web content. All review actions remain unresolved, and this audit does not change the chart's numerical inputs or advance the research-publication cutoff.
+
+The review identifies issues in the methodology above: the global denominator is not reconciled to the component inventories; the April-2026 Quebec filing does not establish 2025 LG/high-voltage eligibility for all Montreal inventory; several Chinese base-rate calculations omit time-of-use weighting; and the provincial rack derivation remains uncertain. These findings take precedence over earlier descriptions of source eligibility or overall verification. Passing the build is a reproduction check, not overall sign-off.
 
 ## Automated pipeline
 
 `npm run build` executes the entire data-to-chart process:
 
-1. read the canonical project JSON, global benchmark JSON and treemap geometry;
-2. hash all three inputs;
+1. read the canonical project JSON, global benchmark JSON, treemap geometry and second-agent review;
+2. hash all four inputs and check that each reviewed source still matches its fingerprint;
 3. derive provincial capacity, named capacity formulas and tariff bills;
 4. generate the combined-price public curves and the strict data-center-specific audit subset under both technology cases;
 5. sort every curve from lowest to highest cost;

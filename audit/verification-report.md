@@ -1,6 +1,6 @@
 # Source-verification report
 
-Input SHA-256: `d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249`
+Input SHA-256: `ff1e8ce94ab2cf3a06d6317e2982e5d04361ff7412dda11aabb26b02428cd7d9`
 
 Observation cutoff: **2025-12-31**
 
@@ -8,11 +8,21 @@ Research-publication cutoff: **2026-08-24**
 
 Reproduction check: **complete**
 
-Independent human review: **pending**
+Second-agent review: **2026-09-08 — 57 source records assessed**
 
-“Independent” here means the build reconstructs each displayed value from canonical inputs and checks it against a source-specific locator. It does **not** mean a second human auditor has signed off.
+**12 confirmed**; **29 qualified**; **9 discrepancy**; **7 not verified**.
 
-## Material corrections in this audit pass
+Fresh source-by-source reading of all 57 registered citations, including failed-access attempts. Checks the claim, date, units, geographic/status boundary and use in the model. This is an AI review, not human sign-off or assurance of the underlying statistics. Original input values and first-review decisions are preserved; actions below remain unresolved. The review date does not advance the 24 August 2026 research-publication cutoff.
+
+Human review has not been performed. The legacy human-review fields are preserved; this second-agent pass is the requested additional check. Automated reproduction passing does not mean these source issues have been resolved.
+
+## Second-agent findings
+
+The original figures and first-pass statuses below have not been overwritten. The latest findings and required actions are in [source-verification.csv](source-verification.csv) and [second-agent-review.md](second-agent-review.md). In particular, the global-coverage denominator is not reconciled, the entire Montreal block is not established as 2025 strict tariff evidence, and several Chinese tariff calculations omit time-of-use weighting. These limitations prevent overall sign-off on the cost curve.
+
+## Earlier construction decisions
+
+These first-pass decisions are preserved for comparison. The second-agent qualifications above and in the linked report take precedence where they identify unresolved evidence or applicability problems.
 
 - Capacity is now registered independently of price availability. The additive register contains **57,077.4 MW** across **58** country-region keys.
 - Price coverage is explicit: the combined observed-price-or-tariff category covers **68.7%** of registered capacity, while the strict data-center-specific audit subset covers **1.2%**.
@@ -27,7 +37,7 @@ Independent human review: **pending**
 - The unsupported 169 MW Guangdong regional weighting was removed. The proxy scenario applies the Pearl River Delta public tariff uniformly to the derived Guangdong capacity and labels it as a conservative proxy.
 - Applicable tariffs and official industrial averages are combined in the public curves, while every block retains its evidence class and the strict data-center-specific subset remains separately quantified. Hohhot's delivered-price observation is retained only in that subset because its capacity is nested inside Inner Mongolia's provincial width.
 
-## Included source checks (52)
+## First-pass included source checks (52)
 
 | ID | Publisher | Status | Exact locator | Verification |
 |---|---|---|---|---|
@@ -86,6 +96,6 @@ Independent human review: **pending**
 
 ## Full register
 
-The machine-readable register, including excluded or only partially verified candidates, is in [source-verification.csv](source-verification.csv). Each record retains its URL, publication date, exact locator, check method, and human-review status.
+The machine-readable register, including excluded or only partially verified candidates, is in [source-verification.csv](source-verification.csv). Each record preserves the first review and adds the second-agent status, review date, access method, evidence links, findings, action and reviewed-source fingerprint.
 
 The Chinese provincial evidence comparison is in [china-provincial-capacity-crosschecks.csv](china-provincial-capacity-crosschecks.csv). It preserves each observation date, geographic scope, capacity boundary and replacement decision.

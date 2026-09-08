@@ -13,7 +13,7 @@ import {
   sha256
 } from "./lib/project.mjs";
 
-const {project, benchmarks, geometry, inputHash} = loadInputs();
+const {project, benchmarks, geometry, sourceReview, inputHash} = loadInputs();
 const failures = [];
 const passes = [];
 const warnings = [];
@@ -34,6 +34,26 @@ function unique(items) {
 check(project.schemaVersion === "1.1.0", "canonical schema version is supported");
 check(project.capacityStandard.metricId === "commissioned_design_it_power_mw", "one harmonized capacity metric is declared");
 check(unique(project.sources.map((source) => source.id)), "source IDs are unique");
+check(sourceReview.schemaVersion === "1.0.0", "second-agent review schema version is supported");
+check(sourceReview.reviewerType === "ai_agent", "second review is explicitly labelled AI, not human");
+check(/^\d{4}-\d{2}-\d{2}$/.test(sourceReview.reviewedOn), "second review has a dated audit pass");
+check(sourceReview.records.length === project.sources.length, "every source has a second-review outcome, including failed access");
+check(unique(sourceReview.records.map((row) => row.sourceId)), "second-review source IDs are unique");
+const reviewStatuses = ["confirmed", "qualified", "discrepancy", "not_verified"];
+check(Object.keys(sourceReview.statusDefinitions).sort().join() === [...reviewStatuses].sort().join(), "review outcomes have explicit definitions");
+for (const row of sourceReview.records) {
+  const source = project.sources.find((item) => item.id === row.sourceId);
+  check(Boolean(source), `${row.sourceId}: second review references an existing source`);
+  check(source && row.sourceSha256 === sha256(JSON.stringify(source)), `${row.sourceId}: source fingerprint matches the review`);
+  check(reviewStatuses.includes(row.status), `${row.sourceId}: second-review status is valid`);
+  for (const field of ["accessMethod", "locator", "findings", "action"]) {
+    check(typeof row[field] === "string" && row[field].trim().length > 0, `${row.sourceId}: ${field} is recorded`);
+  }
+  check(row.evidenceUrls.length > 0 && row.evidenceUrls.includes(source?.url), `${row.sourceId}: registered source URL is retained`);
+  check(row.evidenceUrls.every((url) => /^https?:\/\//.test(url)), `${row.sourceId}: evidence URLs are explicit web links`);
+}
+const unresolvedReviewCount = sourceReview.records.filter((row) => row.status !== "confirmed").length;
+warnings.push(`Second-agent review: ${unresolvedReviewCount} sources qualified, discrepant or unverified. Build success verifies reproduction and review completeness, not resolution or overall source assurance.`);
 check(unique(project.capacityRecords.map((record) => record.id)), "capacity-record IDs are unique");
 check(unique(project.priceRecords.map((record) => record.id)), "price-record IDs are unique");
 check(unique(project.technologyScenarios.map((scenario) => scenario.id)), "technology-scenario IDs are unique");
@@ -246,9 +266,45 @@ const requiredOutputs = [
   "audit/capacity-derivation.csv",
   "audit/china-provincial-capacity-crosschecks.csv",
   "audit/source-verification.csv",
+  "audit/second-agent-review.md",
   "audit/verification-report.md"
 ];
 for (const relativePath of requiredOutputs) check(existsSync(resolve(ROOT, relativePath)), `${relativePath} exists`);
+
+// Parse quoted CSV independently of the generator so commas and quotes cannot
+// silently move review findings into the wrong columns.
+function parseCsv(raw) {
+  const rows = [];
+  let row = [], value = "", quoted = false;
+  for (let index = 0; index < raw.length; index += 1) {
+    const character = raw[index];
+    if (character === '"') {
+      if (quoted && raw[index + 1] === '"') { value += '"'; index += 1; }
+      else quoted = !quoted;
+    } else if (!quoted && character === ",") {
+      row.push(value); value = "";
+    } else if (!quoted && character === "\n") {
+      row.push(value.replace(/\r$/, "")); rows.push(row); row = []; value = "";
+    } else value += character;
+  }
+  if (row.length || value) { row.push(value); rows.push(row); }
+  if (quoted) throw new Error("Unterminated CSV field");
+  const headers = rows.shift();
+  return rows.map((cells) => {
+    if (cells.length !== headers.length) throw new Error("CSV column mismatch");
+    return Object.fromEntries(headers.map((header, index) => [header, cells[index]]));
+  });
+}
+const reviewCsv = parseCsv(readFileSync(resolve(ROOT, "audit/source-verification.csv"), "utf8"));
+check(reviewCsv.length === sourceReview.records.length, "review CSV has one row per source");
+for (const row of sourceReview.records) {
+  const csv = reviewCsv.find((item) => item.source_id === row.sourceId);
+  check(csv?.second_agent_status === row.status, `${row.sourceId}: CSV preserves review result`);
+  check(csv?.second_agent_findings === row.findings && csv?.second_agent_required_action === row.action, `${row.sourceId}: CSV preserves complete findings and action`);
+  check(csv?.reviewed_source_sha256 === row.sourceSha256 && csv?.second_agent_reviewed_on === sourceReview.reviewedOn, `${row.sourceId}: CSV preserves review fingerprint and date`);
+}
+const generatedSummary = JSON.parse(readFileSync(resolve(ROOT, "generated/project-summary.json"), "utf8"));
+check(Object.values(generatedSummary.secondAgentReview.counts).reduce((sum, count) => sum + count, 0) === project.sources.length, "generated second-review counts cover the full register");
 
 if (warnings.length) {
   console.warn(`WARN (${warnings.length})`);

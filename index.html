@@ -423,22 +423,27 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
         <div class="section-head">
           <div>
             <p class="kicker">Reproduce and inspect</p>
-            <h2 id="audit-title">Every displayed number has a route back to evidence</h2>
+            <h2 id="audit-title">Source evidence and unresolved checks</h2>
           </div>
-          <p>The build hashes the canonical project data, the global benchmark register and the CAICT geometry, then derives every chart, coverage percentage, capacity cross-check and research gap. Source-by-source reproduction is complete; a second human auditor’s review remains pending.</p>
+          <p>The build derives the charts from the registered inputs. A separate second-agent pass reread the sources and recorded discrepancies, qualifications and failed-access checks. Passing the build does not resolve those findings or certify the curve.</p>
         </div>
         <div class="downloads">
           <a class="download" href="data/project-data.json"><strong>Canonical dataset</strong><span>All claims, formulas, scenarios and source metadata</span></a>
           <a class="download" href="global-facility-register.csv"><strong>Global facility register</strong><span>Facilities, campuses and aggregate source units with additive roles</span></a>
           <a class="download" href="coverage-summary.csv"><strong>Coverage summary</strong><span>Capacity, combined-price and strict data-center-specific coverage</span></a>
           <a class="download" href="country-capacity-gaps.csv"><strong>Country gap queue</strong><span>Largest missing GW benchmarks and evidence scope</span></a>
-          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Claims, direct China observations, exact locators and check methods</span></a>
+          <a class="download" href="audit/source-verification.csv"><strong>Source register</strong><span>Original checks plus second-agent findings and required actions</span></a>
+        </div>
+        <div class="caveat">
+          <p id="source-review-summary"></p>
+          <p><a href="audit/second-agent-review.md">Read the complete second-agent review and required actions.</a></p>
+          <p>This is an AI review, not human sign-off. Original chart inputs remain unchanged pending resolution. The global-coverage denominator, Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work.</p>
         </div>
         <details>
           <summary>Open the complete source-by-source verification register</summary>
           <div class="table-scroll">
             <table>
-              <thead><tr><th>Source</th><th>Publisher</th><th>Status</th><th>Claim checked</th><th>Exact locator</th><th>Method</th><th>Human review</th></tr></thead>
+              <thead><tr><th>Source</th><th>Publisher</th><th>First pass</th><th>Registered claim</th><th>Second-agent result</th><th>Evidence checked</th><th>Findings</th><th>Required action</th></tr></thead>
               <tbody id="source-register"></tbody>
             </table>
           </div>
@@ -456,7 +461,7 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
     </footer>
   </div>
 
-  <script src="generated/chart-data.js?v=fad8466de569"></script>
+  <script src="generated/chart-data.js?v=44481b70627d"></script>
   <script>
     (() => {
       "use strict";
@@ -677,8 +682,8 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
       }).join("");
 
       const sources = [...data.sources].sort((a, b) => {
-        const rank = {verified_derived: 0, verified: 1, partial: 2, not_verified: 3};
-        return rank[a.verificationStatus] - rank[b.verificationStatus] || a.publisher.localeCompare(b.publisher);
+        const rank = {discrepancy: 0, not_verified: 1, qualified: 2, confirmed: 3};
+        return rank[a.secondAgentReview.status] - rank[b.secondAgentReview.status] || a.publisher.localeCompare(b.publisher);
       });
       document.getElementById("source-register").innerHTML = sources.map((source) => `
         <tr>
@@ -686,10 +691,12 @@ Cost per 10¹⁹ FLOPs = facility kW × $/kWh ÷ (dense FLOPs/s × 3,600) × 10�
           <td>${source.publisher}<br><span>${source.publicationDate || "date unknown"}</span></td>
           <td><span class="status ${source.verificationStatus}">${source.verificationStatus.replace("_", " ")}</span></td>
           <td>${source.claim}</td>
-          <td>${source.locator}</td>
-          <td>${source.verificationMethod}</td>
-          <td>${source.independentHumanReview}</td>
+          <td><strong>${source.secondAgentReview.status.replaceAll("_", " ")}</strong><br>${data.sourceReview.reviewedOn}</td>
+          <td>${source.secondAgentReview.accessMethod}<br>${source.secondAgentReview.locator}<br>${source.secondAgentReview.evidenceUrls.map((url, index) => `<a href="${url}">Evidence ${index + 1}</a>`).join(" · ")}</td>
+          <td>${source.secondAgentReview.findings}</td>
+          <td>${source.secondAgentReview.action}</td>
         </tr>`).join("");
+      document.getElementById("source-review-summary").textContent = `Second-agent review · ${data.sourceReview.reviewedOn}: ${Object.entries(data.sourceReview.counts).map(([status, count]) => `${count} ${status.replaceAll("_", " ")}`).join("; ")}.`;
 
       document.getElementById("capacity-definition").textContent = `${data.capacityStandard.definition} ${data.capacityStandard.coverageCaveat}`;
       document.getElementById("observation-cutoff").textContent = new Date(`${data.metadata.observationCutoff}T00:00:00Z`).toLocaleDateString("en-GB", {day: "numeric", month: "long", year: "numeric", timeZone: "UTC"});

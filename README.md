@@ -4,6 +4,8 @@ This project is an auditable, static cost-curve visualization for AI-compute ele
 
 [View the published curves](https://qrlow.github.io/compute-cost-curve/)
 
+The [second-agent source review](audit/second-agent-review.md) identifies unresolved issues in capacity comparability, tariff applicability and some citations. The charts remain a research scenario; they have not received overall audit sign-off.
+
 ## How to read the curves
 
 - **Width:** commissioned design IT power in MW.
@@ -57,7 +59,7 @@ npm run build
 
 That one command:
 
-1. reads [`data/project-data.json`](data/project-data.json), [`data/global-market-benchmarks.json`](data/global-market-benchmarks.json) and [`data/caict-treemap-geometry.csv`](data/caict-treemap-geometry.csv);
+1. reads [`data/project-data.json`](data/project-data.json), [`data/global-market-benchmarks.json`](data/global-market-benchmarks.json), [`data/caict-treemap-geometry.csv`](data/caict-treemap-geometry.csv) and [`data/source-second-review.json`](data/source-second-review.json);
 2. derives capacities, tariff bills, technology adjustments and cost ordering;
 3. regenerates the chart dataset, CSVs and audit outputs; and
 4. runs geometry, definition, date, reference, source-status and arithmetic checks.
@@ -70,11 +72,12 @@ The main audit outputs are:
 - [`coverage-summary.csv`](coverage-summary.csv): capacity coverage separated from the combined chart layer and strict data-center-specific subset;
 - [`regional-coverage-breakdown.csv`](regional-coverage-breakdown.csv): covered capacity, registered capacity and regional coverage percentage for all 58 country-region keys beneath every layer, including 0% price-coverage rows;
 - [`country-capacity-gaps.csv`](country-capacity-gaps.csv): the ranked country research queue, with benchmark scope and status;
-- [`audit/source-verification.csv`](audit/source-verification.csv): every source, exact locator, verification method and status;
+- [`audit/source-verification.csv`](audit/source-verification.csv): every source's original check plus second-agent result, evidence links, findings and required action;
+- [`audit/second-agent-review.md`](audit/second-agent-review.md): readable source-by-source findings and issues preventing overall sign-off;
 - [`audit/verification-report.md`](audit/verification-report.md): material corrections and included-source audit;
 - [`electricity-capacity-data.csv`](electricity-capacity-data.csv): the generated combined and strict-subset scenario datasets; the public page displays the two combined-price technology curves.
 
-Source-by-source reproduction is complete. The register intentionally records **independent human review as pending**; automated reconstruction is not represented as a second auditor’s sign-off.
+The second-agent pass is dated **8 September 2026** and covers every registered citation, including unsuccessful access attempts. It is explicitly an AI review, not human sign-off. Original values and first-review decisions remain preserved. The build detects stale source reviews and checks that the findings reach the CSV intact; passing it does not resolve the research issues.
 
 ## Scope
 

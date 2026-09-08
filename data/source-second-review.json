@@ -1,0 +1,705 @@
+{
+  "schemaVersion": "1.0.0",
+  "reviewedOn": "2026-09-08",
+  "reviewer": "Second-agent source review",
+  "reviewerType": "ai_agent",
+  "scope": "Fresh source-by-source reading of all 57 registered citations, including failed-access attempts. Checks the claim, date, units, geographic/status boundary and use in the model. This is an AI review, not human sign-off or assurance of the underlying statistics. Original input values and first-review decisions are preserved; actions below remain unresolved. The review date does not advance the 24 August 2026 research-publication cutoff.",
+  "statusDefinitions": {
+    "confirmed": "The cited figure, date and stated boundary were supported by the evidence read. This does not certify the underlying measurement or whole model.",
+    "qualified": "Relevant evidence was read, but access, dating, scope, estimation or applicability limits prevent unqualified acceptance.",
+    "discrepancy": "A specific error or unsupported assertion was identified in the registered citation, claim, date, locator or interpretation.",
+    "not_verified": "This pass did not obtain sufficient readable evidence to verify the claim. This is not proof the claim is false."
+  },
+  "records": [
+    {
+      "sourceId": "caict_treemap_2025",
+      "sourceSha256": "8dfb4d9cf7f9019e0b0157b5e31167f11fc3da20c28e262c186d54ebc4d4ecc5",
+      "status": "qualified",
+      "accessMethod": "Downloaded PDF; text extraction and visual inspection",
+      "evidenceUrls": [
+        "https://13115299.s21i.faiusr.com/61/1/ABUIABA9GAAg4pOYywYogpflxgc.pdf"
+      ],
+      "locator": "PDF 22 / printed 16, Figure 6; PDF 45 and 46, Appendices 1 and 3",
+      "findings": "The top-ten order and top-six >600,000-rack statement match. Appendix 1 dates unspecified data to March 2025; Appendix 3 defines in-use racks as design capacity in commissioned centres, normalized to 2.5 kW. The figure does not supply 31 raw values or explicitly state area proportionality. The direct March Jiangsu count conflicts with the treemap.",
+      "action": "Keep provincial widths labelled estimates; resolve the Jiangsu conflict before treating them as verified provincial measurements."
+    },
+    {
+      "sourceId": "china_computing_platform_2025",
+      "sourceSha256": "75690b8f6e83561b7eb7c898e394bb0348ee7122844a86b28ce521074e67d3c6",
+      "status": "discrepancy",
+      "accessMethod": "Official-hosted article read in full",
+      "evidenceUrls": [
+        "https://www.digitalchina.gov.cn/2025/xwzx/qwfb/202509/t20250904_5073458.htm"
+      ],
+      "locator": "Provincial-platform paragraph versus separate end-July operating-statistics paragraph",
+      "findings": "Ten connected provincial platforms are described at the 2025 conference; the explicit end-July date applies to operating statistics, not clearly to the ten-platform count. The page credits People's Posts and Telecommunications News, rather than being the platform's own dataset.",
+      "action": "Separate the observation dates and correct the publisher/tier attribution. Do not claim this proves that a public provincial table does not exist."
+    },
+    {
+      "sourceId": "miit_monitoring_network_2026",
+      "sourceSha256": "36eac63d56e6298d8c4bf9ffd3d39df4ccdfdd2b7ee8eb4dbe4455ce96128bbc",
+      "status": "qualified",
+      "accessMethod": "Regulator article read in full",
+      "evidenceUrls": [
+        "https://www.miit.gov.cn/xwfb/gxdt/sjdt/art/2026/art_d9a97da3826d4072beed83c66c19f81f.html"
+      ],
+      "locator": "Paragraph setting the end-2026 target",
+      "findings": "The 31-region automated-monitoring target is supported. A future monitoring target does not establish whether a public census or an internal provincial table already exists.",
+      "action": "Retain the target as context; remove the broader inference about absence of an existing public census from the first-review method."
+    },
+    {
+      "sourceId": "jiangsu_racks_2025_03",
+      "sourceSha256": "843a82287a482bf114c1424ceb2278bd0313eace498896bcf20c4928d46a7c65",
+      "status": "confirmed",
+      "accessMethod": "Official government republication read in full",
+      "evidenceUrls": [
+        "https://www.js.gov.cn/art/2025/3/20/art_91704_11521202.html"
+      ],
+      "locator": "Computing-infrastructure paragraph, as-of-now sentence",
+      "findings": "473,000 in-use standard racks, 37.9 EFLOPS and the publication date of 20 March 2025 match. The observation is described as current at publication, not as a precisely timed census.",
+      "action": "Retain this direct cross-check and its conflict with the treemap; do not infer intervening growth without another observation."
+    },
+    {
+      "sourceId": "jiangsu_racks_2025_08",
+      "sourceSha256": "e02b0e4d7d7b73fe294f5f30663582a6905bc4d1443328ea1ebf2eacf1b6a9bd",
+      "status": "confirmed",
+      "accessMethod": "Provincial regulator article read in full",
+      "evidenceUrls": [
+        "https://jsca.miit.gov.cn/xwdt/gzdt/art/2025/art_86a6ff1669a749b7acf3e6498ade8c15.html"
+      ],
+      "locator": "Opening paragraph, end-August statement",
+      "findings": "670,000 in-use standard racks at the end of August 2025 and the 27 October publication date match.",
+      "action": "Retain as a later observation, not a replacement inside a March national allocation."
+    },
+    {
+      "sourceId": "shandong_racks_2025_06",
+      "sourceSha256": "5617b04e8ae62f9210b0c02e701cb5be22c844e6279eeca15d473dbcc0dd9a90",
+      "status": "not_verified",
+      "accessMethod": "Official URL attempted in web reader and browser; targeted search",
+      "evidenceUrls": [
+        "https://gxt.shandong.gov.cn/art/2025/6/26/art_123005_38703.html"
+      ],
+      "locator": "Registered section could not be reread",
+      "findings": "The live page timed out and the browser reported a certificate-name error. Targeted searches did not recover the stated source passage. The >350,000 claim and its date were not independently confirmed in this pass.",
+      "action": "Keep the first review separate; obtain a readable official copy before treating this cross-check as second-agent verified."
+    },
+    {
+      "sourceId": "shanxi_racks_2025_06",
+      "sourceSha256": "786a0ff7f8822e90071fac353918edfb703eb024a5ddbc25e3c773145ef5fb45",
+      "status": "qualified",
+      "accessMethod": "Government-hosted Xinhua article read in browser",
+      "evidenceUrls": [
+        "https://www.jcgov.gov.cn/dtxx/gnyw/202508/t20250826_2190958.shtml"
+      ],
+      "locator": "Liu Yong quotation; header and Xinhua dateline",
+      "findings": "514,000 in-use standard racks as of June 2025 match. The host published on 26 August; the Xinhua dateline is 22 August. The quotation says as of June, without explicitly specifying the last day.",
+      "action": "Retain the count; describe the observation as June 2025 and distinguish the original and republication dates."
+    },
+    {
+      "sourceId": "hebei_racks_2025_12",
+      "sourceSha256": "85aff58c31ceb8574489a2b4343c7efc5b9bd2777f876efcb192f9f0bbaf326e",
+      "status": "confirmed",
+      "accessMethod": "Government-hosted article read in browser",
+      "evidenceUrls": [
+        "https://gxt.hebei.gov.cn/hbgyhxxht/xwzx32/snxw40/2026030909350910674/index.html"
+      ],
+      "locator": "Paragraph attributing figures to MIIT's 2025 monitoring data",
+      "findings": "2.396 million in-use standard racks at year-end 2025 and the 9 March 2026 host publication date match. This is a Hebei Daily report hosted by the department, quoting MIIT; the underlying monitoring table is not provided.",
+      "action": "Retain the attributed observation. Do not describe the hosted article as direct access to MIIT's underlying dataset."
+    },
+    {
+      "sourceId": "guangdong_racks_2025_12",
+      "sourceSha256": "cccc9d7e9f209d7bcf03defa8f517b9105207855184e39de8dda79ade39c868e",
+      "status": "discrepancy",
+      "accessMethod": "Search-indexed text of the registered government article; live TLS failure",
+      "evidenceUrls": [
+        "https://www.qb.gd.gov.cn/jrqx/content/post_1326148.html"
+      ],
+      "locator": "Rack-count paragraph and preceding renewable-power paragraph",
+      "findings": "The indexed article supports 1.42 million in-use racks and second-place ranking. The explicit year-end-2025 wording occurs in the renewable-generation paragraph; it does not unambiguously date the rack count. The stored year-end rack observation is unsupported by this passage.",
+      "action": "Mark the rack observation date unconfirmed until a dated primary capacity statement is obtained; do not infer it from nearby energy statistics."
+    },
+    {
+      "sourceId": "guangxi_racks_2024_12",
+      "sourceSha256": "ada8d8db24797c7f8b21230140d78c965aff13a27875d135ae7ef6da4af898be",
+      "status": "confirmed",
+      "accessMethod": "Provincial regulator article read in full",
+      "evidenceUrls": [
+        "https://gxca.miit.gov.cn/xwdt/gzdt/art/2025/art_ca101c47ce624793868f3a9256998089.html"
+      ],
+      "locator": "Second paragraph, end-2024 statement",
+      "findings": "164,000 standard racks of design capacity in in-use data centres at year-end 2024 match. This is commissioned design capacity, not occupied racks. Publication is 13 May 2025.",
+      "action": "Retain the explicit design-capacity boundary and 2024 observation date."
+    },
+    {
+      "sourceId": "hubei_racks_2025_06",
+      "sourceSha256": "3d737b8bfcd181361e24683c6ab89c793441bc55c0a216a9b6ad62c1b53dab27",
+      "status": "confirmed",
+      "accessMethod": "Downloaded newspaper PDF; extracted and checked the attributed paragraph",
+      "evidenceUrls": [
+        "https://epaper.hubeidaily.net/pc/attachment/202507/23/b16aa3fd-a816-44c6-a647-6a83a211b04f.pdf"
+      ],
+      "locator": "PDF 1 / newspaper page 2, Hubei Data Bureau paragraph",
+      "findings": "The 23 July 2025 newspaper states 243 in-use centres and more than 210,000 in-use standard racks at the end of June. The lower bound and observation month match.",
+      "action": "Retain the lower-bound sign. The government republication is the same report, not a second independent measurement."
+    },
+    {
+      "sourceId": "hubei_racks_2025_06_official_republication",
+      "sourceSha256": "c9c49031dcefa35ea8366f264801ff0696b6cd0c7b520156a5cabca34bae6a55",
+      "status": "confirmed",
+      "accessMethod": "Government republication read in full and compared with newspaper PDF",
+      "evidenceUrls": [
+        "https://kjj.wuhan.gov.cn/xwzx_8/kjspxw/202507/t20250723_2623861.html"
+      ],
+      "locator": "Section on 173% computing-capacity growth; Data Bureau paragraph",
+      "findings": "The June-end date, 243 centres and >210,000 standard racks match the newspaper version. The host date is 23 July 2025.",
+      "action": "Retain as an accessible corroborating copy, not independent statistical confirmation of the original report."
+    },
+    {
+      "sourceId": "zhejiang_racks_2025_12",
+      "sourceSha256": "dcf5741dc7e93fb4b48258f57e45c6f64862a18ccf6fddd52b1363c1daa7b917",
+      "status": "qualified",
+      "accessMethod": "Provincial regulator annual review read in full",
+      "evidenceUrls": [
+        "https://zjca.miit.gov.cn/zwgk/xysjtj/art/2026/art_40707d7bde224d0bafe17cb5bbac9980.html"
+      ],
+      "locator": "Infrastructure paragraph, all-industry built standard racks",
+      "findings": "579,000 built standard racks are reported for the communications industry. This describes a stock built, not 579,000 additions during 2025, and does not explicitly establish the same commissioned boundary as CAICT.",
+      "action": "Keep as a sector/boundary-limited cross-check; avoid interpreting built racks as newly added or all-province operational racks."
+    },
+    {
+      "sourceId": "guizhou_racks_2025_12",
+      "sourceSha256": "86823fc93428126bd830980a70de8e58c7c48133e9dbcbbe592cd2c0a934db16",
+      "status": "qualified",
+      "accessMethod": "Registered page inaccessible; search-indexed original newspaper report read",
+      "evidenceUrls": [
+        "https://drc.guizhou.gov.cn/xwzx/zwyw/202603/t20260320_89890350.html",
+        "https://szb.eyesnews.cn/pc/att/202603/20/0f9d075a-643d-423e-8c4c-8077e1ffd1fe.pdf"
+      ],
+      "locator": "Guizhou Daily, 20 March 2026, front-page report of 19 March press conference",
+      "findings": "The original report confirms growth from 80,000 to 320,000 standard racks during the 14th Five-Year Plan and 50 key centres under construction or in operation. It does not establish a province-wide commissioned-only rack total.",
+      "action": "Keep the mixed project-status boundary and seek a commissioned-only total. Record the original newspaper as supporting evidence."
+    },
+    {
+      "sourceId": "ningxia_racks_2025_10",
+      "sourceSha256": "72beb2d538b298757dad2734669fe194778b29a11a708baf1c9929576d623867",
+      "status": "qualified",
+      "accessMethod": "Search-indexed text of the registered government page; live access failed",
+      "evidenceUrls": [
+        "https://fzggw.nx.gov.cn/ztzl/sww/202510/t20251031_5070621.html"
+      ],
+      "locator": "31 October 2025 industry-development summary",
+      "findings": "208,900 standard racks are supported in the indexed text. It does not clearly separate built, commissioned and occupied capacity or give an exact census date.",
+      "action": "Retain as a qualified cross-check; do not upgrade to a precise operational census based on publication date alone."
+    },
+    {
+      "sourceId": "shanghai_racks_2023_09",
+      "sourceSha256": "3469b89cd7f0e37ba9b95a5cb764fd911456f4283c8b5c9cfa7e5960874a31fe",
+      "status": "not_verified",
+      "accessMethod": "Registered government URL attempted; targeted search",
+      "evidenceUrls": [
+        "https://data.beijing.gov.cn/publish/bjdata/xydt/qtss/2942db54cb4444cba9801068082aa2bc.htm"
+      ],
+      "locator": "Registered September-2023 statement not recovered from the cited official page",
+      "findings": "The government-hosted source could not be reread. Secondary search results repeat 423,000 racks, but this pass did not recover a readable official or original source supporting the registered date and boundary.",
+      "action": "Obtain the regulator's original release or an accessible official copy; do not count repetitions as second-agent verification."
+    },
+    {
+      "sourceId": "shanghai_pudong_racks_2025_11",
+      "sourceSha256": "85d64fb6b913d8987014511ae5e5fc802fe15e7c2fe0a5da7d1afe267e8f8d23",
+      "status": "qualified",
+      "accessMethod": "Shanghai government article read in full",
+      "evidenceUrls": [
+        "https://www.shanghai.gov.cn/nw15343/20251125/fd22ee263f8d4ba296fd5ec989bd47a8.html"
+      ],
+      "locator": "Pudong data-centre paragraph",
+      "findings": "The 25 November 2025 article reports 59 centres and 280,000 standard racks in Pudong. It does not report the entire Shanghai municipality or explicitly distinguish commissioned from built racks.",
+      "action": "Retain only as a subregional check, with the status boundary unresolved."
+    },
+    {
+      "sourceId": "helingeer_racks_2025_07",
+      "sourceSha256": "b1355ea4447b6894646c63deb0700ffdd9830f2e2aed58c9878d6c2510147854",
+      "status": "qualified",
+      "accessMethod": "Search-indexed Xinhua article read; alternate www host recovered",
+      "evidenceUrls": [
+        "https://nmg.news.cn/20250712/8bdd43f119184da0be15ac00aa9fe5c6/c.html",
+        "https://www.nmg.news.cn/20250712/8bdd43f119184da0be15ac00aa9fe5c6/c.html"
+      ],
+      "locator": "12 July 2025 report of the green-computing-index launch",
+      "findings": "339,000 standard racks and 7,683 PFLOPS for Helingear New Area match. The article reports a research launch, not an explicit July-day census, and does not define commissioned versus built racks.",
+      "action": "Keep the subregional scope and distinguish publication date from a precise observation date."
+    },
+    {
+      "sourceId": "wulanchabu_racks_2025_01",
+      "sourceSha256": "2762355834eda75b8911aad5e8efac4c48d9f35fdee619f0a3d67fa8403554df",
+      "status": "qualified",
+      "accessMethod": "Search-indexed text of the original registered article",
+      "evidenceUrls": [
+        "https://inews.nmgnews.com.cn/system/2025/01/16/030087913.shtml"
+      ],
+      "locator": "16 January 2025 article; cumulative-development paragraph",
+      "findings": "240,000 built racks and 170,000 actually used racks match. The source is a Wulanchabu Daily report; signed capacity above 1.1 million is explicitly separate.",
+      "action": "Retain the built-versus-used distinction and publication-date upper bound; do not add signed projects to operational capacity."
+    },
+    {
+      "sourceId": "wulanchabu_racks_2025_12",
+      "sourceSha256": "d0cb9c1d599bfa109f43fd23137f9eefe51f59c51a8c7002b2e36f79eab9dfba",
+      "status": "not_verified",
+      "accessMethod": "Registered URL attempted in browser and web reader; targeted search",
+      "evidenceUrls": [
+        "https://inews.nmgnews.com.cn/system/2026/01/26/030300987.shtml"
+      ],
+      "locator": "Registered 26 January 2026 article not recovered",
+      "findings": "The original article could not be reread. Repetitions on other sites do not independently verify 500,000 built racks, 330,000 operational racks or the year-end date.",
+      "action": "Recover the original report or an official statistical statement before accepting this row as independently checked."
+    },
+    {
+      "sourceId": "scio_racks_2025_03",
+      "sourceSha256": "9c218a2cb0db1fc4cb850c6466b88cb246668f87cf9cb197167b37a0151f3d00",
+      "status": "qualified",
+      "accessMethod": "Search-indexed official SCIO press-conference transcript",
+      "evidenceUrls": [
+        "https://english.scio.gov.cn/pressroom/node_9016674.html"
+      ],
+      "locator": "18 July 2025 briefing, end-March computing-capacity statement",
+      "findings": "The transcript supports 10.43 million standard racks in use at the end of March 2025. This verifies the national denominator, not the 31 provincial allocations.",
+      "action": "Retain the March denominator; record that this pass used the indexed transcript because live retrieval timed out."
+    },
+    {
+      "sourceId": "nda_standard_rack",
+      "sourceSha256": "364aa03bbf0dc022dc2e5e6c4504c61006bb020f1708261378a73aba8ce19f57",
+      "status": "discrepancy",
+      "accessMethod": "Downloaded official consultation PDF; text checked",
+      "evidenceUrls": [
+        "https://www.nda.gov.cn/sjj/ywpd/szkjyjcss/0608/ff808081-96b465bf-0197-4f0dae39-0700.pdf"
+      ],
+      "locator": "Cover; section 6.2.1, Table 3, PDF 9 / printed 5",
+      "findings": "The 2.5 kW standard-rack conversion is supported. However, the document is the consultation draft of computing-centre capability-assessment requirements, not the monitoring-indicators document named in the register. The cited section 6.2.3 is not the relevant rack-count section.",
+      "action": "Correct the title, draft status and locator. CAICT Appendix 3 also directly supports the 2.5 kW conversion."
+    },
+    {
+      "sourceId": "jll_na_active_capacity_2025",
+      "sourceSha256": "5cf4ce4cf076fe8015e57d32d0cd8c804fad2348553a10cbf6c4a53b7f6c34b1",
+      "status": "qualified",
+      "accessMethod": "JLL release read in full",
+      "evidenceUrls": [
+        "https://www.jll.com/en-us/newsroom/jll-north-america-data-center-report-year-end-2025"
+      ],
+      "locator": "Release header and opening active-capacity paragraph",
+      "findings": "39 GW of active North American capacity in 2025, split about equally between leased and hyperscaler-owned, is supported. The header is 17 February 2026; the body dateline says 2025, an apparent source typo.",
+      "action": "Use the 2026 header with a source-date note. Do not equate this North American series with a different provider's global denominator without reconciliation."
+    },
+    {
+      "sourceId": "dominion_jll_markets_2025",
+      "sourceSha256": "d0ecd90599f3e2ed73a9903f73cc40345bf2478d35f956a6a7f0d7a165842a26",
+      "status": "confirmed",
+      "accessMethod": "Downloaded investor PDF; table and footnotes checked",
+      "evidenceUrls": [
+        "https://s2.q4cdn.com/510812146/files/doc_financials/2025/q4/2026-02-23-DE-IR-4Q-2025-earnings-call-slides-vTCI.pdf"
+      ],
+      "locator": "PDF/slide 49, active data-centre market table",
+      "findings": "All ten market MW values match and sum to 27,585 MW. Virginia's 8,315 MW includes 6,315 MW Northern Virginia and 2,000 MW Southern Virginia. These are market aggregates reproduced by Dominion from JLL, not facility-level records.",
+      "action": "Retain the exact market boundaries and attribution; do not relabel the ten markets as a complete US or state census."
+    },
+    {
+      "sourceId": "cbre_inventory_h2_2025",
+      "sourceSha256": "a4061657f5f7d93c214596b6021dc5aa35c02762e40ef63915ccd517c5d0446d",
+      "status": "confirmed",
+      "accessMethod": "CBRE report page and market table read",
+      "evidenceUrls": [
+        "https://www.cbre.com/press-releases/northern-virginia-extends-lead-as-largest-u-s-data-center-market-in-2025"
+      ],
+      "locator": "H2 2025 market inventory table",
+      "findings": "Northern Virginia 4,039.6 MW, Dallas/Fort Worth 1,067.3 MW and Montreal 229.5 MW match. These are CBRE inventory observations, distinct from JLL's broader leased-plus-self-build series.",
+      "action": "Keep overlapping US observations non-additive and retain Montreal's inventory-subset scope."
+    },
+    {
+      "sourceId": "cbre_capacity_glossary",
+      "sourceSha256": "19c23ba1ec001471a46a0986f061767799e5aa289bc9f17f579d8bf87ab331c6",
+      "status": "discrepancy",
+      "accessMethod": "University-hosted CBRE PDF read via web PDF extraction",
+      "evidenceUrls": [
+        "https://trerc.tamu.edu/wp-content/uploads/files/PDFs/MktResearch/US_DataCenterTrends_CBRE_Semiannual.pdf"
+      ],
+      "locator": "PDF 16 for H1 2018 glossary; PDF 34 / printed 17 for H2 2017 glossary",
+      "findings": "The file concatenates two reports. The glossary supports commissioned wholesale power and the PDU boundary, but the registered PDF-page-17 locator does not identify it. The stored January-2018 publication month is not established by the reviewed glossary.",
+      "action": "Correct the locator and verify the publication date; do not use this historical glossary alone to establish other providers' coverage."
+    },
+    {
+      "sourceId": "hohhot_capacity_2023",
+      "sourceSha256": "bfc43d3ace7527aa3a1f7da69d05d083a4653d0d09e32285655c1a9a34cfd57b",
+      "status": "qualified",
+      "accessMethod": "Downloaded broker report; Figure 18 inputs and surrounding context checked",
+      "evidenceUrls": [
+        "https://pdf.dfcfw.com/pdf/H3_AP202503031643671670_1.pdf"
+      ],
+      "locator": "PDF 10, Figures 17–18",
+      "findings": "11 centres, 16,091 average design racks, 107,793 used racks, 60.9% utilization, 2.5 kW per rack, PUE 1.21 and the 326 MW load comparison match. 442.5025 MW is calculated from rounded reported inputs, not directly measured capacity.",
+      "action": "Retain as an attributed derived subset with rounding uncertainty; avoid presenting four-decimal precision as measurement accuracy."
+    },
+    {
+      "sourceId": "hohhot_price_2025",
+      "sourceSha256": "5470171f27e24ac65a4b98e8e8b12438079f05870d8deaff857c7eab16b59467",
+      "status": "confirmed",
+      "accessMethod": "NEA-hosted article read in full",
+      "evidenceUrls": [
+        "https://www.nea.gov.cn/20250718/410e42d872e4417687cb5b0ab357d088/c.html"
+      ],
+      "locator": "18 July 2025 article; delivered electricity-price paragraph",
+      "findings": "The article reports a delivered electricity transaction price of about CNY 0.35/kWh and green electricity above 80%. It is a reported local price, not an invoice establishing identical tariffs for all facilities.",
+      "action": "Retain the approximate sign and local scope; do not apply it to the whole province without evidence."
+    },
+    {
+      "sourceId": "mongxi_tariff_2025_06",
+      "sourceSha256": "8c6dd375b71d05faa42840e8729072ed7de08b4330f8e5d18328c9087062b5dc",
+      "status": "qualified",
+      "accessMethod": "Government notice and both original tariff images inspected visually",
+      "evidenceUrls": [
+        "https://www.xlgl.gov.cn/xlgl/zw/zwgk/tzgg/2025090509233740836/index.html",
+        "https://www.xlgl.gov.cn/xlgl/zw/zwgk/tzgg/2025090509233740836/2025090509221635776.jpg"
+      ],
+      "locator": "June 2025 industrial/commercial table; 110 kV two-part row and footnote 3",
+      "findings": "CNY 0.442525/kWh and 31.2/kW-month match. Time-of-use rates and special peak/trough periods apply. The utility territory is western Inner Mongolia, not the entire autonomous region.",
+      "action": "Treat the calculation as a base-rate tariff proxy. Reconstruct the time-weighted bill and distinguish western/eastern grid coverage before calling it a province-wide annual bill."
+    },
+    {
+      "sourceId": "zhejiang_tariff_2025_06",
+      "sourceSha256": "aeb912a22650eabdfab8e0e02f4df755b0f58dcc5021a03f9ab8e4deb7da04ce",
+      "status": "qualified",
+      "accessMethod": "Downloaded PDF; tariff page visually inspected",
+      "evidenceUrls": [
+        "https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web2241/site/attach/0/d94d1693bc7042f0a4349368bbb18419.pdf"
+      ],
+      "locator": "PDF 4, Table 1, 110 kV two-part rows and footnote 2",
+      "findings": "CNY 0.5672/kWh and 41.6/kW-month match June 2025. Separate large-industrial and general-commercial time-of-use schedules apply. June has seven peak, seven flat and ten low-price hours, so a constant-load bill does not equal the flat rate.",
+      "action": "Model time-of-use and customer class before treating the rate as a realized bill; keep the current simplified base-rate proxy clearly labelled."
+    },
+    {
+      "sourceId": "guizhou_tariff_2025_06",
+      "sourceSha256": "ebb7a270060b95e9b754d464baa6927775fb6e62ffc51e0012f644ec81dd2065",
+      "status": "qualified",
+      "accessMethod": "Search-indexed table from the registered official PDF; live download failed",
+      "evidenceUrls": [
+        "https://www.lp.gov.cn/xwdt/gsgg/202505/P020250805466901120249.pdf"
+      ],
+      "locator": "PDF/printed 3, June 2025 table, 110 kV two-part row",
+      "findings": "The indexed table supports CNY 0.583744/kWh, 31/kW-month, and 1–30 June. Peak, flat and low rates and their hour schedules are separately stated.",
+      "action": "Retain only as a dated tariff proxy; record indexed access and obtain an archived readable PDF for a fully reproducible document check."
+    },
+    {
+      "sourceId": "jibei_tariff_2025_04",
+      "sourceSha256": "2ed2d998bca645c4d4c67a70bded875e72b608cc2b87ce521a1414169ca1a37e",
+      "status": "discrepancy",
+      "accessMethod": "Downloaded published utility-copy PDF; tariff and footnotes checked",
+      "evidenceUrls": [
+        "https://ele.aiit.org.cn/static/elefile/99303281758074622710101893155890.pdf"
+      ],
+      "locator": "PDF 1, Appendix 1, 110 kV two-part row",
+      "findings": "CNY 0.58196875/kWh and 34.6/kW-month match April 2025. The table is Appendix 1, not Appendix 4. Jibei is a utility service territory, not all Hebei; time-of-use prices are separate.",
+      "action": "Correct the locator. Keep the geographic extrapolation and simplified tariff calculation explicit."
+    },
+    {
+      "sourceId": "jiangsu_tariff_2025_06",
+      "sourceSha256": "fb386951d625d68cf9f77f32957c7a8a45e44c6f8a6dbe50aad7720973ccaadf",
+      "status": "qualified",
+      "accessMethod": "Government-hosted notice and tariff table read in full",
+      "evidenceUrls": [
+        "https://www.jintan.gov.cn/html/czjt/2025/JFKEQAOD_0624/281022.html"
+      ],
+      "locator": "Appendix 2, 110 kV two-part row; time-of-use footnote",
+      "findings": "CNY 0.5999/kWh and 44.8/kW-month match. June's eight peak, eight flat and eight low-price hours imply an energy-only constant-load average of about CNY 0.621267/kWh, not 0.5999.",
+      "action": "Reconstruct the time-weighted bill before calling the displayed calculation a standard-load electricity cost; retain the current base-rate proxy label."
+    },
+    {
+      "sourceId": "beijing_tariff_2025_04",
+      "sourceSha256": "c90effb91f706373d589d2e7137603963ff926dad91e9680853894fb989b2af3",
+      "status": "qualified",
+      "accessMethod": "Downloaded utility-copy PDF; row and footnotes checked",
+      "evidenceUrls": [
+        "https://ele.aiit.org.cn/static/elefile/99303281924019507384201247156397.pdf"
+      ],
+      "locator": "PDF 1, April 2025 table, 35–110 kV two-part row",
+      "findings": "CNY 0.61971175/kWh and 48/kW-month match. The source is a utility document hosted by an industry association, not a customer invoice; it describes one effective month.",
+      "action": "Retain as an April tariff scenario, with voltage and assumed load factor explicit; it is not a measured annual data-centre average."
+    },
+    {
+      "sourceId": "guangdong_tariff_2025_04",
+      "sourceSha256": "cea5c8ef4ca139dc4bd55c9ff58133a0df08a4d6fd50fbd3a854fa1efd1dd801",
+      "status": "not_verified",
+      "accessMethod": "Official PDF retrieval attempted; targeted exact-value search",
+      "evidenceUrls": [
+        "https://www.gdsx.gov.cn/sgsxgdj/attachment/0/272/272080/2734391.pdf"
+      ],
+      "locator": "Registered five-city tariff table could not be reread",
+      "findings": "The official download failed TLS validation and the table was not recovered through the web reader or targeted search. Neither numeric input was independently reverified in this pass.",
+      "action": "Obtain an accessible official copy before sign-off. The existing whole-province use also requires justification beyond a five-city tariff."
+    },
+    {
+      "sourceId": "shandong_tariff_2025_03",
+      "sourceSha256": "b38e8c9f323590bf753e72b63b8e2a7262f74bd99325d7f4cd64007bb6c77322",
+      "status": "discrepancy",
+      "accessMethod": "Government tariff table and notes read in full",
+      "evidenceUrls": [
+        "https://www.yantai.gov.cn/art/2025/3/20/art_70253_3244147.html"
+      ],
+      "locator": "March 2025 two-part table, voltage rows",
+      "findings": "CNY 0.67486875/kWh and 35.2/kW-month belong to 35 kV to below 110 kV. At 110 kV to below 220 kV the energy rate is 0.65986875. The register's 35–110 kV label obscures the excluded upper endpoint.",
+      "action": "Correct the voltage label or use the actual 110 kV row if that is the chosen common voltage; also account for time-of-use before claiming a standardized bill."
+    },
+    {
+      "sourceId": "hydroquebec_rate_lg_2025",
+      "sourceSha256": "4bc436d501a1a3d3e1edd519a6d21dbe5684fc08a906d084773dedbd148e36b6",
+      "status": "qualified",
+      "accessMethod": "Original rate-book URL geographically restricted; official Gazette tariff tables read",
+      "evidenceUrls": [
+        "https://www.hydroquebec.com/data/documents-donnees/pdf/electricity-rates.pdf?v=HT-2025-v3",
+        "https://www.publicationsduquebec.gouv.qc.ca/fileadmin/gazette/pdf_encrypte/gaz_entiere/2518-A.pdf"
+      ],
+      "locator": "Gazette officielle du Québec, 30 April 2025, PDF 12/printed 1453 and PDF 21/printed 1462",
+      "findings": "Official Gazette tables confirm Rate LG CAD 15.963/kW-month, 0.04165/kWh and the 3.0063 high-voltage credit for 80 kV to below 170 kV, applicable 1 April 2025. These terms do not establish that all Montreal capacity qualifies for that rate and voltage credit.",
+      "action": "Retain alternate official evidence. Check facility eligibility and voltage before classifying all 229.5 MW as strict tariff-covered capacity."
+    },
+    {
+      "sourceId": "hydroquebec_datacenter_classes_2026",
+      "sourceSha256": "78bd85a34f028c8acf8bc17c35bd5a4c7bc7a5502957e0bd5c8f203d22efb341",
+      "status": "qualified",
+      "accessMethod": "Downloaded one-page regulator filing; member table checked",
+      "evidenceUrls": [
+        "https://www.regie-energie.qc.ca/fr/participants/dossiers/R-4333-2026/doc/R-4333-2026-C-Coalition-0009-DemInterv-Annexe-2026_04_15.pdf"
+      ],
+      "locator": "15 April 2026 coalition-member current-tariff table",
+      "findings": "The named operators and M/LG classes match. This is a coalition filing describing current classes in April 2026, not proof of their 2025 classes, connection voltages or the share of Montreal's 229.5 MW served under each class.",
+      "action": "Do not use this alone to certify the entire Montreal block as 2025 strict tariff evidence; obtain dated operator/capacity and voltage evidence."
+    },
+    {
+      "sourceId": "eia_industrial_prices_2025",
+      "sourceSha256": "5fd3aac33101d9bd4624a58dc4e06f7c6b3b617a5183319b303af437dde09f34",
+      "status": "discrepancy",
+      "accessMethod": "Broken registered URL checked; official archived PDF downloaded and table read",
+      "evidenceUrls": [
+        "https://www.eia.gov/electricity/monthly/current_month/february2026.pdf",
+        "https://www.eia.gov/electricity/monthly/archive/february2026.pdf"
+      ],
+      "locator": "Archived February 2026 Electric Power Monthly, PDF 138, Table 5.6.B, industrial December-2025 YTD column",
+      "findings": "All seven stored values match: TX 6.55, VA 9.45, OH 8.52, GA 7.81, AZ 8.10, IL 10.14 and IN 8.89 cents/kWh. The registered current_month URL now redirects to EIA's homepage. The table labels 2025 values preliminary estimates, not final statistics.",
+      "action": "Replace the dead citation with the dated archive and label values preliminary industrial averages. They do not establish data-centre customer classification."
+    },
+    {
+      "sourceId": "federal_reserve_fx_2025",
+      "sourceSha256": "ef74c81d390a28079a40f5b18f6a0c46993c8a73694bc9af807b9ce4596f8063",
+      "status": "confirmed",
+      "accessMethod": "Official annual-release table read",
+      "evidenceUrls": [
+        "https://www.federalreserve.gov/releases/g5a/current/"
+      ],
+      "locator": "5 January 2026 release, 2025 Canada/China/United Kingdom column",
+      "findings": "CNY 7.1875/USD, CAD 1.3973/USD and USD 1.3192/GBP match. Inverting the sterling convention yields about GBP 0.758035173/USD.",
+      "action": "Retain the explicit inverse. Prefer a dated archival release over the mutable current URL for long-term reproducibility."
+    },
+    {
+      "sourceId": "nvidia_gb200_spec",
+      "sourceSha256": "1e8fa5394ca746b20e2c0fdc5793465412921fe2c6430c9547e2fc66bdb50f97",
+      "status": "qualified",
+      "accessMethod": "Vendor specification table and footnote read",
+      "evidenceUrls": [
+        "https://www.nvidia.com/en-us/data-center/gb200-nvl72/"
+      ],
+      "locator": "GB200 NVL72 Specs, FP16/BF16 row and footnote 2",
+      "findings": "360 sparse PFLOP/s and half that for dense operation support the derived 180 PFLOP/s. This is theoretical peak hardware throughput; the vendor page is undated.",
+      "action": "Keep dense versus sparse explicit and do not present the result as measured model-serving throughput."
+    },
+    {
+      "sourceId": "nvidia_gb200_power",
+      "sourceSha256": "a31129b0aa35f911a5264217ce6a919e10d62a54bd33172eefd151f56973a6b0",
+      "status": "qualified",
+      "accessMethod": "Versioned vendor documentation read",
+      "evidenceUrls": [
+        "https://docs.nvidia.com/mission-control/docs/systems-administration-guide/2.1.0/prs/faq.html"
+      ],
+      "locator": "Example 1, full-load rack components; page footer",
+      "findings": "The approximate 120 kW example includes nodes and switches at full load. It is engineering guidance, not a metered benchmark. The current version's footer says last updated 16 July 2026; it does not establish the stored March-2026 publication month.",
+      "action": "Record the observable document-version date separately from an unconfirmed original publication date; keep power labelled approximate."
+    },
+    {
+      "sourceId": "huawei_cloudmatrix_performance",
+      "sourceSha256": "063b7abd6fd0c2715c966d767c90e180c3c67955ee2b9e35d5d7df4c69dc1466",
+      "status": "qualified",
+      "accessMethod": "Vendor keynote article read",
+      "evidenceUrls": [
+        "https://www.huawei.com/en/news/2025/9/hc-xu-keynote-speech"
+      ],
+      "locator": "Paragraph describing the March 2025 Atlas 900 A3 launch",
+      "findings": "384 Ascend 910C chips and up to 300 PFLOP/s match. The paragraph does not specify arithmetic precision; CloudMatrix cloud services and the Atlas hardware are related but distinct descriptions.",
+      "action": "Retain vendor peak-performance attribution; identify SemiAnalysis, rather than this paragraph alone, as support for dense-BF16 precision."
+    },
+    {
+      "sourceId": "semianalysis_cloudmatrix_power",
+      "sourceSha256": "0280687c70527176baa18ef71a760eea6094b44b694d5151f8cfd665acd92662",
+      "status": "qualified",
+      "accessMethod": "Public portion of original engineering article read",
+      "evidenceUrls": [
+        "https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72"
+      ],
+      "locator": "16 April 2025 article, drawback paragraph before paywall",
+      "findings": "The public text reports 4.1 times system power and 2.5 times power per dense-BF16 FLOP. 4.1 divided by 300/180 is about 2.46, consistent with rounding to 2.5; the subtitle instead rounds efficiency to 2.6. These are analyst estimates, not controlled metering.",
+      "action": "Use the 2.5 multiplier only as an engineering sensitivity scenario; preserve rounding and measurement uncertainty."
+    },
+    {
+      "sourceId": "bis_china_policy_2026",
+      "sourceSha256": "c710ed6035058f0cb0444c896fa56e356b6fccadff5ea8493481a0ac6ef94dc4",
+      "status": "qualified",
+      "accessMethod": "BIS press release read in full",
+      "evidenceUrls": [
+        "https://media.bis.gov/press-release/department-commerce-revises-license-review-policy-semiconductors-exported-china"
+      ],
+      "locator": "13 January 2026 licensing-policy announcement",
+      "findings": "The release supports case-by-case review for H200, MI325X and similar products. It is a 2026 policy announcement, not a standalone record of rules effective during 2025. The press-release text does not contain the numerical performance thresholds claimed by the locator.",
+      "action": "Cite the operative rule and 2025 rules separately before describing this as a factual 2025 export-restriction boundary; keep the curve a technology scenario."
+    },
+    {
+      "sourceId": "guian_capacity_2025",
+      "sourceSha256": "15a0aff2ae108a196dc436cc73917618f3b47a3f7af08508e66cac2b1a803aaa",
+      "status": "qualified",
+      "accessMethod": "Search-indexed government response read; live page timed out",
+      "evidenceUrls": [
+        "https://www.guiyang.gov.cn/zwgk/zwgkzdlyxxgkjyta/zwgkzdlyxxgkjytazxtawfws/zwgkzdlyxxgkjytazxtawfwsqs/202506/t20250603_87956837.html"
+      ],
+      "locator": "Response dated 27 May, published 3 June 2025; January–February capacity paragraph",
+      "findings": "137,400 powered-on racks and 1.4449 million planned standard racks are separate figures. The response also distinguishes commissioned, under-construction and planned centres. Powered-on racks are not the same boundary as commissioned design racks.",
+      "action": "Keep excluded from like-for-like chart widths and retain the January–February observation period."
+    },
+    {
+      "sourceId": "guian_price_target_2025",
+      "sourceSha256": "e04e91bd47cfd8d3b70068734ce360d115ad03abcdd631d1de3f63da31a37437",
+      "status": "qualified",
+      "accessMethod": "Search-indexed table from registered official budget PDF; live URL returned 404",
+      "evidenceUrls": [
+        "https://nyj.guizhou.gov.cn/zwgk/xxgkml/zdlyxx/czzj/202503/P020250307503578350701.pdf"
+      ],
+      "locator": "Printed page 40, project 52000022P00846010008H",
+      "findings": "The budget performance table sets a data-centre electricity-price quality target at no more than CNY 0.35/kWh. It does not demonstrate the achieved bill or that all facilities received this price.",
+      "action": "Keep excluded from observed-price scenarios and improve the locator to the project row and printed page."
+    },
+    {
+      "sourceId": "shanxi_tariff_2026_04",
+      "sourceSha256": "9c13e9708c27894a00b624bb1392fcf1d3bfde0a7e7ea0d650e575b9d70ab5e3",
+      "status": "not_verified",
+      "accessMethod": "Browser retrieval returned HTTP 403; web reader exposed no tariff content",
+      "evidenceUrls": [
+        "https://energydc.cn/policy/sx/2026-04/cbe2e026-2c0e-11f1-9e60-f679c2336431"
+      ],
+      "locator": "Registered 110 kV row inaccessible",
+      "findings": "The source could not be reread, so this pass did not confirm the numeric transcription or document date.",
+      "action": "Keep excluded. Obtain the original utility notice before independently verifying this candidate; a 2026 effective tariff is outside the chart period regardless."
+    },
+    {
+      "sourceId": "shanghai_source_mismatch",
+      "sourceSha256": "c7ea3e454e97ca5d50330e4f26f53d000187f0f7426323366e54fed577f46b7d",
+      "status": "not_verified",
+      "accessMethod": "Downloaded scanned PDF; title page visually inspected",
+      "evidenceUrls": [
+        "https://www.shanghai.gov.cn/cmsres/8d/8dbc9d8c392e43b791295f493f1d247e/5b1658885ab19ab927050e05dfbb83f9.pdf"
+      ],
+      "locator": "PDF 1, Shanghai development-reform notice [2025]31",
+      "findings": "The inspected document is a general notice about grid-company proxy purchasing, not an identified June-2025 tariff table. This pass did not establish support for CNY 0.7484/kWh; visual inspection of the cover alone does not prove the number is absent from every page.",
+      "action": "Keep excluded until an exact effective-month numeric row is supplied. Do not upgrade an absence-of-evidence check to numeric verification."
+    },
+    {
+      "sourceId": "knight_frank_global_capacity_2025",
+      "sourceSha256": "c014fd9d37639116981013d104122847fade133dc303f14fa40680669022f1e8",
+      "status": "qualified",
+      "accessMethod": "Publisher article read in full",
+      "evidenceUrls": [
+        "https://www.knightfrank.co.uk/research/article/2026/4/artificial-intelligence-trillion-dollar-question"
+      ],
+      "locator": "8 April 2026 article, Demand shock section",
+      "findings": "The 62 GW 2025 headline is present, but no matching country table or clear reconciliation to this project's mixed source boundaries is supplied. JLL's 39 GW North America plus China's derived 26.075 GW already exceed 62 GW before other countries.",
+      "action": "Keep 62 GW as an external indicative benchmark only. The resulting 92.1% ratio is not independently verified global coverage."
+    },
+    {
+      "sourceId": "knight_frank_global_forecast_2025",
+      "sourceSha256": "8daa4af791f2bfcc4383730411090ccca7cc79db1712341c44a2ee883c3f6e53",
+      "status": "discrepancy",
+      "accessMethod": "Downloaded PDF; global map visually inspected and all 38 labels compared",
+      "evidenceUrls": [
+        "https://content.knightfrank.com/research/2960/documents/en/data-centres-global-forecast-report-2025-11877.pdf"
+      ],
+      "locator": "PDF 3 / printed pages 4–5, Global Forecasts map and note",
+      "findings": "All 38 stored 2025 market labels and the 55,646 MW total match. The linked file has six PDF pages, so the registered PDF pages 46–47 locator is wrong. This is an early-2025 forecast, not a retrospective year-end observation.",
+      "action": "Correct the locator; continue using these forecasts only for indicative research gaps, never as observed 2025 chart widths."
+    },
+    {
+      "sourceId": "dcbyte_canada_live_2025",
+      "sourceSha256": "f3030c1d77ae34bcd91f88771a8eed908b177b0e95a919aeb1e36c43d3a36c66",
+      "status": "qualified",
+      "accessMethod": "Original DCD reporting and linked DC Byte publisher page read",
+      "evidenceUrls": [
+        "https://www.datacenterdynamics.com/en/news/canadian-data-center-market-to-see-exponential-growth-pipeline-almost-9gw-dc-byte/",
+        "https://www.dcbyte.com/market-spotlights/canada-data-centre-market-spotlight-2025/"
+      ],
+      "locator": "DCD 25 September 2025 report, Q2 live-capacity paragraph; DC Byte 24 September spotlight",
+      "findings": "DCD reports 1.4 GW live IT capacity in Q2 and distinguishes it from nearly 9 GW of pipeline. DC Byte's public page confirms the overall >10 GW pipeline-inclusive framing and 93% hub concentration, but does not expose a 1.4 GW live table.",
+      "action": "Retain the secondary-source attribution and Q2 date. Do not apply the 93% pipeline-inclusive concentration claim as a verified live-only distribution."
+    },
+    {
+      "sourceId": "uk_dsit_regional_capacity_2024",
+      "sourceSha256": "8e37ab26b96263941c754d63777f1287ad20d900cd70d35d160733b4445bb72d",
+      "status": "confirmed",
+      "accessMethod": "Official methodology and all regional table rows read",
+      "evidenceUrls": [
+        "https://www.gov.uk/government/publications/estimate-of-data-centre-capacity-great-britain-2024/estimate-of-data-centre-capacity-great-britain-2024"
+      ],
+      "locator": "Methodology and parliamentary-answer regional table",
+      "findings": "All 11 rows match and sum to 1,566 MW: North East 17, North West 52, Yorkshire/Humber 16, East Midlands 9, West Midlands 15, East of England 44, London 1,048, South East 128, South West 53, Wales 154, Scotland 30. The source explicitly calls these autumn-2024 modelled maximum IT-load estimates for colocation.",
+      "action": "Keep the 2024 vintage, modelled status and exclusions of enterprise facilities and Northern Ireland visible."
+    },
+    {
+      "sourceId": "knight_frank_india_capacity_2025",
+      "sourceSha256": "73ad8d3352611bfecddcc729b032cf4b10d99b39f4785aeb3c0d850b6605d4b0",
+      "status": "confirmed",
+      "accessMethod": "Downloaded PDF; introduction, map and definition checked",
+      "evidenceUrls": [
+        "https://content.knightfrank.com/research/3111/documents/en/india-data-centre-market-update-2025-12895.pdf"
+      ],
+      "locator": "PDF 5, end-2025 statement; PDF 6, city map and live-capacity note",
+      "findings": "NCR 174.5, Mumbai 766.6, Pune 145.3, Hyderabad 151.4, Bengaluru 169.5, Chennai 191.5 and Kolkata 23.1 MW match, totaling 1,621.9 MW. The definition is built IT capacity available to lease, and the introduction explicitly states end-2025.",
+      "action": "Retain this commercial live-capacity boundary; do not label it a complete inventory of enterprise and self-built facilities."
+    },
+    {
+      "sourceId": "uk_desnz_nondomestic_price_2025",
+      "sourceSha256": "d0bdaeab1de504527183cd94b06981084387f0f6307ea3755b678c4d52dc2991",
+      "status": "qualified",
+      "accessMethod": "Official performance report and update history read",
+      "evidenceUrls": [
+        "https://www.gov.uk/government/publications/desnz-annual-report-and-accounts-2025-to-2026/performance-report"
+      ],
+      "locator": "Average electricity/gas prices table, 2025 non-domestic electricity column",
+      "findings": "24.3 pence/kWh is supported as a provisional 2025 all-size-band non-domestic average including Climate Change Levy. This is national, not a measured regional or data-centre price.",
+      "action": "Retain the national-proxy and provisional labels; the source does not establish that it is a conservative upper bound for every region."
+    },
+    {
+      "sourceId": "saudi_capacity_2025",
+      "sourceSha256": "aab0e14659eb880fc8f8b7f52aef600abcaa1b8554d151e95c2c6685777026f4",
+      "status": "discrepancy",
+      "accessMethod": "SPA page read in browser; article body recovered from page output",
+      "evidenceUrls": [
+        "https://www.spa.gov.sa/ar/w2575816"
+      ],
+      "locator": "Operational-capacity paragraph and following Q1-2026 paragraph",
+      "findings": "440 MW operational in 2025 is supported, but the article also reports Q1-2026 capacity of 467 MW. The register's publication year 2025 is therefore inconsistent with the document. IT versus facility power remains unspecified.",
+      "action": "Correct the publication metadata after verifying the article date; retain the 2025 observation and exclusion for unresolved power boundary."
+    },
+    {
+      "sourceId": "saudi_tariff",
+      "sourceSha256": "ba720950e2f0f541f4b5a68d4c6d308ce40390106c0a0c11fbf65be928623db6",
+      "status": "not_verified",
+      "accessMethod": "Regulator URL attempted in browser and web reader",
+      "evidenceUrls": [
+        "https://sera.gov.sa/en/consumer/electric-tariff/electric-tariff-categories/consumption-tariff"
+      ],
+      "locator": "Cloud-computing category could not be reread",
+      "findings": "The regulator page timed out and no qualifying tariff table or effective date was recovered. USD 0.048/kWh was not independently verified in this pass.",
+      "action": "Keep excluded; obtain a dated regulator tariff, eligibility conditions and the explicit SAR-to-USD conversion."
+    }
+  ]
+}

@@ -1,13 +1,14 @@
 {
   "metadata": {
     "schemaVersion": "1.1.0",
-    "inputSha256": "d892c5f4789bd81657c742c32a755801fd756df200e7787470a86b11df6f8249",
+    "inputSha256": "ff1e8ce94ab2cf3a06d6317e2982e5d04361ff7412dda11aabb26b02428cd7d9",
     "observationCutoff": "2025-12-31",
     "researchPublicationCutoff": "2026-08-24",
     "verificationDate": "2026-09-03",
+    "secondAgentReviewDate": "2026-09-08",
     "generationCommand": "npm run build"
   },
-  "chartDataSha256": "fad8466de569bf18d4fe87a0fcd074749d296661dabcec94c4a0541c83eddc17",
+  "chartDataSha256": "44481b70627d72c67a316b86978aa749723baa780c0518aad0f8db97c1f7c474",
   "capacityMetric": "commissioned_design_it_power_mw",
   "provinceCount": 31,
   "nationalCapacityMw": 26075,
@@ -24,6 +25,24 @@
     "partial": 2
   },
   "independentHumanReview": "pending",
+  "secondAgentReview": {
+    "reviewedOn": "2026-09-08",
+    "reviewer": "Second-agent source review",
+    "reviewerType": "ai_agent",
+    "scope": "Fresh source-by-source reading of all 57 registered citations, including failed-access attempts. Checks the claim, date, units, geographic/status boundary and use in the model. This is an AI review, not human sign-off or assurance of the underlying statistics. Original input values and first-review decisions are preserved; actions below remain unresolved. The review date does not advance the 24 August 2026 research-publication cutoff.",
+    "statusDefinitions": {
+      "confirmed": "The cited figure, date and stated boundary were supported by the evidence read. This does not certify the underlying measurement or whole model.",
+      "qualified": "Relevant evidence was read, but access, dating, scope, estimation or applicability limits prevent unqualified acceptance.",
+      "discrepancy": "A specific error or unsupported assertion was identified in the registered citation, claim, date, locator or interpretation.",
+      "not_verified": "This pass did not obtain sufficient readable evidence to verify the claim. This is not proof the claim is false."
+    },
+    "counts": {
+      "confirmed": 12,
+      "qualified": 29,
+      "discrepancy": 9,
+      "not_verified": 7
+    }
+  },
   "scenarios": [
     {
       "id": "data_center_tariff_evidence__same_technology",

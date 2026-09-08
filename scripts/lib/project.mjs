@@ -16,6 +16,8 @@ export function loadInputs() {
   const benchmarkPath = resolve(ROOT, "data/global-market-benchmarks.json");
   const benchmarkRaw = readFileSync(benchmarkPath, "utf8");
   const benchmarks = JSON.parse(benchmarkRaw);
+  const sourceReviewRaw = readFileSync(resolve(ROOT, "data/source-second-review.json"), "utf8");
+  const sourceReview = JSON.parse(sourceReviewRaw);
   const geometryPath = resolve(ROOT, project.treemap.geometryFile);
   const geometryRaw = readFileSync(geometryPath, "utf8");
   const geometry = parseSimpleCsv(geometryRaw).map((row) => ({
@@ -32,9 +34,11 @@ export function loadInputs() {
     projectRaw,
     benchmarks,
     benchmarkRaw,
+    sourceReview,
+    sourceReviewRaw,
     geometryRaw,
     geometry,
-    inputHash: sha256(`${projectRaw}\n${benchmarkRaw}\n${geometryRaw}`)
+    inputHash: sha256(`${projectRaw}\n${benchmarkRaw}\n${geometryRaw}\n${sourceReviewRaw}`)
   };
 }
 
