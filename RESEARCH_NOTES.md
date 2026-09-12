@@ -1,7 +1,3 @@
-# Research and audit notes
-
-For a reader-facing explanation suitable for the accompanying blog post, see [Methodology](METHODOLOGY.md). The website no longer displays capacity- or price-coverage percentages or their regional breakdowns. The calculations below remain as audit history; they do not establish global completeness. Chart inputs and source-review outcomes are unchanged by this presentation update.
-
 ## Research question
 
 The project asks how much China’s electricity-price advantage can lower the operating electricity cost of raw AI compute, and whether that advantage survives a technology-access penalty. It does not estimate the full cost of training or inference and does not claim that peak dense-BF16 FLOPs equal useful model output.
