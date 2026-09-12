@@ -339,7 +339,7 @@ check(/<\/header>\s*<main>\s*<section aria-labelledby="curves-title">/.test(inde
 check(/<div class="reading-note">[^\n]*<\/div>\s*<\/section>\s*<section class="section" aria-labelledby="audit-title">/.test(indexHtml), "source evidence section follows the curves and scope note directly");
 check(indexHtml.includes('<p class="kicker">Reproduce and inspect</p>'), "Reproduce and inspect section is retained");
 check(!/second[- ]?agent|sourceReview|source-review|AI review|human sign-off/i.test(indexHtml), "webpage omits second-agent review text, links and display code");
-check(indexHtml.includes("Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work."), "methodology limitations remain visible without review framing");
+check(!indexHtml.includes("Montreal tariff applicability, Chinese time-of-use bills and provincial capacity estimates still need work."), "removed limitations paragraph is absent from the webpage");
 for (const removedCopy of ["Two cost curves compare technology access", "Combined price evidence × technology access", "The y-axis is fixed across both charts."]) {
   check(!indexHtml.includes(removedCopy), `page omits removed introductory copy: ${removedCopy}`);
 }
@@ -362,7 +362,7 @@ check(!/href="(?:coverage-summary|regional-coverage-breakdown)\.csv"/.test(index
 check(existsSync(resolve(ROOT, "METHODOLOGY.md")) && indexHtml.includes("https://github.com/qrlow/compute-cost-curve/blob/main/METHODOLOGY.md"), "public page links to the blog methodology and limitations");
 check(!pageElements.has("source-register") && !pageElements.has("input-hash"), "page omits source table and footer fingerprint elements");
 check(!/<(?:details|footer)\b/.test(indexHtml), "page omits expandable source table and footer");
-check(/<p>Montreal tariff applicability,[^<]*<\/p>\s*<\/div>\s*<\/section>\s*<\/main>\s*<\/div>\s*<script src=/.test(indexHtml), "Montreal limitations paragraph is the final visible page content");
+check(!indexHtml.includes('<div class="caveat">'), "removed limitations paragraph leaves no empty caveat container");
 check(existsSync(resolve(ROOT, "audit/source-verification.csv")) && indexHtml.includes('href="audit/source-verification.csv"'), "source register remains available as a download");
 
 try {
