@@ -4,9 +4,9 @@ This project is an auditable, static cost-curve visualization for AI-compute ele
 
 [View the published curves](https://qrlow.github.io/compute-cost-curve/)
 
-Read the [blog-ready methodology and limitations](METHODOLOGY.md) for the capacity selection, electricity-price proxies and technology assumptions.
+Read the [methodology and limitations](METHODOLOGY.md) for the capacity selection, electricity-price proxies and technology assumptions.
 
-The [second-agent source review](audit/second-agent-review.md) identifies unresolved issues in capacity comparability, tariff applicability and some citations. The charts remain a research scenario; they have not received overall audit sign-off.
+The [second-agent source review](audit/second-agent-review.md) identifies unresolved issues in capacity comparability, tariff applicability and some citations. 
 
 ## How to read the curves
 
