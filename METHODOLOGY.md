@@ -10,9 +10,9 @@ The target measure is **commissioned design IT power**: the non-redundant power 
 
 Capacity must have been operational by **31 December 2025**. Planned projects, unfinished phases and capacity with an unresolved IT-versus-facility-power boundary are excluded from the plotted widths.
 
-The [global facility register](https://qrlow.github.io/compute-cost-curve/global-facility-register.csv) records capacities, source references, observation dates and definitions. Despite its name, it contains regional, market and campus aggregates as well as facility records: public sources often disclose only these larger totals. Overlapping observations are marked as non-additive so that a campus is not counted again within its regional total. A named market is not assumed to represent its entire state or country.
+The [global facility register](https://qrlow.github.io/compute-cost-curve/global-facility-register.csv) records capacities, source references, observation dates and definitions. It contains regional, market and campus aggregates as well as facility records: public sources often disclose only these larger totals. Overlapping observations are marked as non-additive so that a campus is not counted again within its regional total. A named market is not assumed to represent its entire state or country.
 
-China's provincial capacities remain estimates derived from the rectangle areas in CAICT's 2025 provincial rack-distribution treemap. The areas are scaled to the matching national total of 10.43 million standard racks at 31 March 2025, then converted at 2.5 kW per standard rack:
+China's provincial capacities are estimates derived from the rectangle areas in CAICT's 2025 provincial rack-distribution treemap. The areas are scaled to the matching national total of 10.43 million standard racks at 31 March 2025, then converted at 2.5 kW per standard rack:
 
 ```text
 Provincial capacity (MW)
@@ -20,7 +20,7 @@ Provincial capacity (MW)
     × 10,430,000 standard racks × 2.5 kW / 1,000
 ```
 
-This derivation can be reproduced from the recorded geometry, but it is not a published table of provincial MW. It assumes rectangle areas are proportional to rack counts. [Direct provincial observations](https://qrlow.github.io/compute-cost-curve/audit/china-provincial-capacity-crosschecks.csv) are retained as cross-checks; the near-date Jiangsu observation conflicts with the treemap estimate and remains unresolved. Reproducing the calculation does not settle that discrepancy.
+This derivation can be reproduced from the recorded geometry, but it is not a published table of provincial MW. It assumes rectangle areas are proportional to rack counts. [Direct provincial observations](https://qrlow.github.io/compute-cost-curve/audit/china-provincial-capacity-crosschecks.csv) are retained as cross-checks; the near-date Jiangsu observation conflicts with the treemap estimate and remains unresolved. Reproducing the calculation does not settle that discrepancy. This was the best estimation workaround at this time given the data limitations.
 
 The other inputs include US leased and hyperscaler-owned market capacity, a Montreal market subtotal, Great Britain's regional colocation estimates and Indian live-IT market estimates. These sources cover different parts of their local markets, even where the power units can be aligned.
 
@@ -31,9 +31,9 @@ The other inputs include US leased and hyperscaler-owned market capacity, a Mont
 Public data on the electricity bills actually paid by data centers are sparse. The curves therefore combine public large-load tariff calculations with official industrial or non-domestic averages:
 
 - Selected Chinese provincial or utility-area industrial tariffs, including energy and demand charges;
-- EIA calendar-2025 industrial averages for seven US states;
+- EIA calendar-2025 industrial averages for US states;
 - Hydro-Québec Rate LG as a tariff scenario for Montreal;
-- The provisional 2025 UK non-domestic average, applied to Great Britain's regional capacities.
+- UK 2025 provisional non-domestic average, applied to Great Britain's regional capacities.
 
 These are transparent proxies, not equally comparable observations of data-center contracts. Their evidence classes remain identified on each block and in the [source register](https://qrlow.github.io/compute-cost-curve/audit/source-verification.csv).
 
@@ -85,6 +85,6 @@ Each block's width represents the included regional or market IT capacity in MW;
 
 **Existing IT capacity is not necessarily AI-ready capacity.** Older facilities may need additional cooling, electrical distribution and rack-density upgrades to support the assumed systems. The curves do not establish that all recorded MW could run GB200 or CloudMatrix384 without further investment.
 
-**This is an electricity-only scenario, not the full cost of AI.** It excludes hardware acquisition, construction, financing, labor, maintenance, separate networking and water costs, downtime and utilization economics. Cooling electricity is included through PUE, and the rack-power assumption includes rack components. Peak FLOPs do not measure useful tokens, training quality or actual application throughput. Cheap electricity alone cannot establish who will lead the AI race.
+**This is an electricity-only scenario, not the full cost of AI.** Cooling electricity is included through PUE, and the rack-power assumption includes rack components. Peak FLOPs do not measure useful tokens, training quality or actual application throughput. Other costs such as hardware acquisition, construction, financing, labor, maintenance, separate networking and water costs, downtime and utilization economics are not accounted for. 
 
-The chart values and audit exports are generated from the registered inputs by one automated build. A [second-agent source review](https://github.com/qrlow/compute-cost-curve/blob/main/audit/second-agent-review.md) records qualifications, discrepancies and unsuccessful verification attempts. Passing the automated checks establishes reproducibility, not that every input is accurate or that the project has received human audit sign-off.
+The chart values and audit exports are generated from the registered inputs by one automated build. A [second-agent source review](https://github.com/qrlow/compute-cost-curve/blob/main/audit/second-agent-review.md) records qualifications, discrepancies and unsuccessful verification attempts. Passing the automated checks establishes reproducibility, not that every input is accurate.
